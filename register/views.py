@@ -31,5 +31,6 @@ def home(request):
     return render(request, 'register/home.html')
 
 
-
+def landing_view(request):
+    return render(request, 'register/landing.html')
 
