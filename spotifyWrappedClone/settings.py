@@ -11,6 +11,20 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # sends to terminal (testing purposes)
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # sends real email
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_FROM_DEFAULT = 'derrickchen0201@gmail.com' # i will create a dedicated email address later for this project
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

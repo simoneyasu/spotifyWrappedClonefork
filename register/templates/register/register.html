@@ -4,18 +4,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Sign Up</title>
+    <title>Register</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
     <div class="container">
-        <h2>Sign Up for Spotify</h2>
-        <form method="POST" action="{% url 'register' %}">
+        <h2>Register</h2>
+
+        <!-- Messages for success or error -->
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Registration form -->
+        <form method="POST" class="registration-form">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn">Sign Up</button>
+
+            <!-- Display form fields and their associated errors -->
+            <div class="form-group">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                <small class="error-text">{{ form.username.errors }}</small>
+            </div>
+
+            <div class="form-group">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                <small class="error-text">{{ form.email.errors }}</small>
+            </div>
+
+            <div class="form-group">
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+                <small class="error-text">{{ form.password1.errors }}</small>
+            </div>
+
+            <div class="form-group">
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+                <small class="error-text">{{ form.password2.errors }}</small>
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary">Register</button>
         </form>
-        <p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+
+        <p>Already have an account? <a href="{% url 'login' %}">Log in here</a>.</p>
     </div>
 </body>
 </html>
+
