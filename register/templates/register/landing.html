@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Restaurant Page</title>
+  <link rel='stylesheet' href="{% static 'register/landing.css' %}" >
+</head>
+
+<template>
+
+</template>
+
+<div class="header">
+  <h1> Spotify Wrapper </h1>
+
+</div>
+<body>
+  <div class="text">
+    <h2> This website allows you to view your past music history through creative slide shows </h2>
+    <h2> If you do not have an account, register with the button below</h2>
+    <button class = "button" onclick="location.href='/register/register'"> Register </button>
+    <h2> If you have an account you can login with your username and password below</h2>
+    <button class = "button" onclick="location.href='/register/login'"> Login </button>
+  </div>
+</body>
+
+
+
+</html>
