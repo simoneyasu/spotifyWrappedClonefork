@@ -4,18 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Login</title>
+    <title>Login</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
     <div class="container">
-        <h2>Login to Spotify</h2>
-        <form method="POST" action="{% url 'login' %}">
+        <h2>Login</h2>
+
+        <!-- Display form-wide non-field errors (e.g., incorrect username or password) -->
+        {% if form.non_field_errors %}
+            <div class="error-message">
+                <ul>
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <!-- Login form -->
+        <form method="POST" class="login-form">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn">Login</button>
+
+            <!-- Display form field errors -->
+            <div class="form-group">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                <small class="error-text">{{ form.username.errors }}</small>
+            </div>
+
+            <div class="form-group">
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                <small class="error-text">{{ form.password.errors }}</small>
+            </div>
+
+            <!-- Submit button for login -->
+            <button type="submit" class="btn btn-primary">Login</button>
         </form>
-        <p>Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
+
+        <!-- Forgot password link -->
+        <p><a href="{% url 'password_reset' %}">Forgot my password?</a></p>
+
+        <!-- "Don't have an account" button -->
+        <div class="signup-container">
+            <p>Don't have an account?</p>
+            <a href="{% url 'register' %}" class="btn btn-secondary">Sign up</a>
+        </div>
     </div>
 </body>
 </html>
+
