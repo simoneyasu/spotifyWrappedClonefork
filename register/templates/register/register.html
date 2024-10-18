@@ -11,7 +11,7 @@
     <div class="container">
         <h2>Register</h2>
 
-        <!-- Messages for success or error -->
+        <!-- message for success or error -->
         {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
@@ -22,11 +22,9 @@
             </ul>
         {% endif %}
 
-        <!-- Registration form -->
         <form method="POST" class="registration-form">
             {% csrf_token %}
 
-            <!-- Display form fields and their associated errors -->
             <div class="form-group">
                 {{ form.username.label_tag }}
                 {{ form.username }}

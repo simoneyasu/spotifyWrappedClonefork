@@ -11,13 +11,12 @@
     <div class="container">
         <h2>Your Profile</h2>
 
-        <!-- Display user information -->
+        <!-- displays user info -->
         <ul class="user-info">
             <li><strong>Username:</strong> {{ user.username }}</li>
             <li><strong>Email:</strong> {{ user.email }}</li>
         </ul>
 
-        <!-- Link to delete account or other features -->
         <a href="{% url 'delete_account' %}" class="btn btn-danger">Delete My Account</a>
     </div>
 </body>
