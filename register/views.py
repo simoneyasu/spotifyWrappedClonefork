@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, get_user_model
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -31,6 +32,21 @@ def login_view(request):
         form = CustomAuthenticationForm()
     return render(request, 'register/login.html', {'form': form})
 
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        # Delete the user account if the form is submitted
+        user = request.user
+        user.delete()
+        messages.success(request, 'Your account has been successfully deleted.')
+        return redirect('login')  # Redirect to login or homepage after deletion
+    return render(request, 'register/delete_account.html')
+
+@login_required
+def profile(request):
+    return render(request, 'register/profile.html', {
+        'user': request.user  # Pass the current user to the template
+    })
 
 def home(request):
     return render(request, 'register/home.html')

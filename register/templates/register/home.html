@@ -11,10 +11,17 @@
     <div class="container">
         <h2>Welcome to Spotify!</h2>
         <p>You are logged in as {{ user.username }}.</p>
+
+        <!-- Logout form -->
         <form method="POST" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit" class="btn">Logout</button>
         </form>
+
+        <!-- Profile button -->
+        <a href="{% url 'profile' %}" class="btn btn-primary">Go to Profile</a>
+
     </div>
 </body>
 </html>
+

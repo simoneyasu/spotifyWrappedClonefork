@@ -11,21 +11,22 @@
     <div class="container">
         <h2>Login</h2>
 
-        <!-- Messages for success or error -->
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                        {{ message }}
-                    </li>
-                {% endfor %}
-            </ul>
+        <!-- Display form-wide non-field errors (e.g., incorrect username or password) -->
+        {% if form.non_field_errors %}
+            <div class="error-message">
+                <ul>
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         {% endif %}
 
         <!-- Login form -->
         <form method="POST" class="login-form">
             {% csrf_token %}
 
+            <!-- Display form field errors -->
             <div class="form-group">
                 {{ form.username.label_tag }}
                 {{ form.username }}
@@ -53,3 +54,4 @@
     </div>
 </body>
 </html>
+

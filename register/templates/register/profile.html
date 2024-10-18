@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Your Profile</h2>
+
+        <!-- Display user information -->
+        <ul class="user-info">
+            <li><strong>Username:</strong> {{ user.username }}</li>
+            <li><strong>Email:</strong> {{ user.email }}</li>
+        </ul>
+
+        <!-- Link to delete account or other features -->
+        <a href="{% url 'delete_account' %}" class="btn btn-danger">Delete My Account</a>
+    </div>
+</body>
+</html>
+
+
