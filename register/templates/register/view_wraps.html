@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Spotify Wraps</title>
+</head>
+<body>
+
+    <h1>Your Spotify Wraps</h1>
+
+    <ul>
+        {% if wrap_data.items %}
+            {% for artist in wrap_data.items %}
+                <li class="wrap-item">
+                    <span>{{ artist.name }}</span>
+                    <button>View Details</button>
+                </li>
+            {% endfor %}
+        {% else %}
+            <li>No wrap data available.</li>
+        {% endif %}
+    </ul>
+
+</body>
+</html>
