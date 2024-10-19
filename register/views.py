@@ -33,7 +33,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('spotify_login')  # Redirect to a spotify login
+            return redirect('home')  # Redirect to a home
     else:
         form = CustomAuthenticationForm()
     return render(request, 'register/login.html', {'form': form})
@@ -118,3 +118,19 @@ def view_wraps(request):
     wrap_data = request.session.get('wrap_data', [])
     # temporary...
     return render(request, 'view_wraps.html', {'wrap_data': wrap_data})
+
+@login_required
+def refresh_spotify_token(user_profile):
+    if timezone.now() > user_profile.token_expires_at:
+        url = "https://accounts.spotify.com/api/token"
+        data = {
+            'grant_type': 'refresh_token',
+            'refresh_token': user_profile.refresh_token,
+            'client_id': settings.SPOTIFY_CLIENT_ID,
+            'client_secret': settings.SPOTIFY_CLIENT_SECRET,
+        }
+        response = requests.post(url, data=data)
+        token_data = response.json()
+        user_profile.access_token = token_data['access_token']
+        user_profile.token_expires_at = timezone.now() + timezone.timedelta(seconds=token_data['expires_in'])
+        user_profile.save()
