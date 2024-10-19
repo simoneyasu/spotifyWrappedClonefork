@@ -33,7 +33,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('spotify_login')  # Redirect to a spotify login
+            return redirect('home')  # Redirect to a home
     else:
         form = CustomAuthenticationForm()
     return render(request, 'register/login.html', {'form': form})
