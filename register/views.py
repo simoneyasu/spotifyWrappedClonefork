@@ -88,7 +88,32 @@ def landing_view(request):
 
 @login_required
 def spotify_login(request):
-    # Spotify OAuth 인증 URL 생성
+    # Spotify OAuth URL creation
     spotify_auth_url = f"https://accounts.spotify.com/authorize?client_id={settings.SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri={settings.SPOTIFY_REDIRECT_URI}&scope=user-top-read"
 
     return redirect(spotify_auth_url)
+
+@login_required
+def fetch_wrap_data(request):
+    access_token = request.session.get('access_token')
+    if not access_token:
+        return redirect('spotify_login') # access_token(X) -> login
+
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    # request wrap data using spotify api
+    response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers)
+    wrap_data = response.json()
+
+    # store wrap data into session storage
+    request.session['wrap_data'] = wrap_data
+
+    # redirect to screen that shows wrap data
+    return redirect('view_wraps')
+
+@login_required
+def view_wraps(request):
+    wrap_data = request.session.get('wrap_data', [])
+    return render(request, 'view_wraps.html', {'wrap_data': wrap_data})
