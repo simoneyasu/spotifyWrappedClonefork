@@ -2,7 +2,7 @@ from django.urls import path
 from .views import register, login_view, home, landing_view, delete_account, profile
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import views as auth_views
-
+from . import views
 
 urlpatterns = [
     path('register/', register, name='register'),
@@ -26,4 +26,8 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(template_name='register/password_reset_complete.html'),
          name='password_reset_complete'),
 
+    path('spotify_login/', views.spotify_login, name='spotify_login'),
+    path('callback/', views.spotify_callback, name='spotify_callback'),
+    path('fetch_wrap_data/', views.fetch_wrap_data, name='fetch_wrap_data'),
+    path('view_wraps/', views.view_wraps, name='view_wraps'),
     ]

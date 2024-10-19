@@ -116,4 +116,5 @@ def fetch_wrap_data(request):
 @login_required
 def view_wraps(request):
     wrap_data = request.session.get('wrap_data', [])
+    # temporary...
     return render(request, 'view_wraps.html', {'wrap_data': wrap_data})
