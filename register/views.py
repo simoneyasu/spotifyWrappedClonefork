@@ -33,7 +33,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('home')  # Redirect to a home page or any other page
+            return redirect('spotify_login')  # Redirect to a spotify login
     else:
         form = CustomAuthenticationForm()
     return render(request, 'register/login.html', {'form': form})
@@ -57,30 +57,64 @@ def profile(request):
 def home(request):
     return render(request, 'register/home.html')
 
+@login_required
 def get_spotify_token(code):
     url = "https://accounts.spotify.com/api/token"
     data = {
         'grant_type': 'authorization_code',
         'code': code,
-        'redirect_uri': 'http://localhost:8000/callback',
+        'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
         'client_id': settings.SPOTIFY_CLIENT_ID,
         'client_secret': settings.SPOTIFY_CLIENT_SECRET,
     }
     response = requests.post(url, data=data)
     return response.json()
 
+@login_required
 def spotify_callback(request):
     code = request.GET.get('code')
     token_data = get_spotify_token(code)
-    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
-    user_profile.access_token = token_data['access_token']
-    user_profile.refresh_token = token_data['refresh_token']
-    user_profile.token_expires_at = timezone.now() + timezone.timedelta(seconds=token_data['expires_in'])
-    user_profile.save()
-    return redirect('home')
+
+    # access_token& refresh_token store at session
+    request.session['access_token'] = token_data['access_token']
+    request.session['refresh_token'] = token_data['refresh_token']
+
+    # move to logic to get wrap data
+    return redirect('fetch_wrap_data')
 
 
 def landing_view(request):
     return render(request, 'register/landing.html')
 
+@login_required
+def spotify_login(request):
+    # Spotify OAuth URL creation
+    spotify_auth_url = f"https://accounts.spotify.com/authorize?client_id={settings.SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri={settings.SPOTIFY_REDIRECT_URI}&scope=user-top-read"
 
+    return redirect(spotify_auth_url)
+
+@login_required
+def fetch_wrap_data(request):
+    access_token = request.session.get('access_token')
+    if not access_token:
+        return redirect('spotify_login') # access_token(X) -> login
+
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    # request wrap data using spotify api
+    response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers)
+    wrap_data = response.json()
+
+    # store wrap data into session storage
+    request.session['wrap_data'] = wrap_data
+
+    # redirect to screen that shows wrap data
+    return redirect('view_wraps')
+
+@login_required
+def view_wraps(request):
+    wrap_data = request.session.get('wrap_data', [])
+    # temporary...
+    return render(request, 'view_wraps.html', {'wrap_data': wrap_data})
