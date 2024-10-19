@@ -6,15 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spotify Home</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .button-container {
+            margin-top: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            background-color: #28a745;
+            border-radius: 5px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #28a745;
+        }
+
+        .btn-primary:hover {
+            background-color: #218838;
+        }
+
+        .btn:hover {
+            background-color: #28a745;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h2>Welcome to Spotify!</h2>
-        <p>You are logged in as {{ user.username }}.</p>
-        <form method="POST" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="btn">Logout</button>
-        </form>
+        <h2>Welcome to Spotify Wrapped!</h2>
+        <p>You are logged in as {{ user.username }}</p>
+
+        <div class="button-container">
+            <!-- Logout form -->
+            <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn">Logout</button>
+            </form>
+
+            <!-- Profile button -->
+            <a href="{% url 'profile' %}" class="btn btn-primary">Go to Profile</a>
+        </div>
     </div>
 </body>
 </html>

@@ -1,0 +1,41 @@
+/* Place your CSS styles in this file */
+
+body {
+ background: white url("images/Spotify Landing BG.png");
+  background-size: cover;
+ text-align: center;
+ color: white;
+ font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.header {
+  color: black;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  text-align: center;
+  background-color: #1DB954;
+  padding: 30px;
+  font-size: 30px;
+}
+
+.button {
+  background-color: rgb(29, 185, 84);
+  border: none;
+  padding: 15px 25px;
+  border-radius: 25px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 17px;
+  font-weight: 1000;
+  margin-bottom: 15px;
+}
+
+h2 {
+  font-size: 18px;
+  padding: 15px 25px;
+}
+
+.text {
+  background-color: rgba(255,255,255, 0.1);
+  padding: 25px;
+  margin: 3% 22%;
+  border-radius: 25px;
+}
