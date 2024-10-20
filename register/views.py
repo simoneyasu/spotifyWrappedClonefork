@@ -57,7 +57,7 @@ def profile(request):
 def home(request):
     return render(request, 'register/home.html')
 
-@login_required
+
 def get_spotify_token(code):
     url = "https://accounts.spotify.com/api/token"
     data = {
@@ -70,7 +70,7 @@ def get_spotify_token(code):
     response = requests.post(url, data=data)
     return response.json()
 
-@login_required
+
 def spotify_callback(request):
     code = request.GET.get('code')
     token_data = get_spotify_token(code)
@@ -86,7 +86,7 @@ def spotify_callback(request):
 def landing_view(request):
     return render(request, 'register/landing.html')
 
-@login_required
+
 def spotify_login(request):
     # Spotify OAuth URL creation
     spotify_auth_url = f"https://accounts.spotify.com/authorize?client_id={settings.SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri={settings.SPOTIFY_REDIRECT_URI}&scope=user-top-read"
@@ -116,10 +116,9 @@ def fetch_wrap_data(request):
 @login_required
 def view_wraps(request):
     wrap_data = request.session.get('wrap_data', [])
-    # temporary...
-    return render(request, 'view_wraps.html', {'wrap_data': wrap_data})
 
-@login_required
+    return render(request, 'register/view_wraps.html', {'wrap_data': wrap_data})
+
 def refresh_spotify_token(user_profile):
     if timezone.now() > user_profile.token_expires_at:
         url = "https://accounts.spotify.com/api/token"
