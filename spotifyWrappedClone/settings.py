@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+from dotenv import load_dotenv
+import os
 from pathlib import Path
 import os
 from dotenv import load_dotenv
@@ -24,6 +25,16 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_FROM_DEFAULT = 'derrickchen0201@gmail.com' # i will create a dedicated email address later for this project
+
+
+load_dotenv()
+client_id = os.getenv("CLIENT_ID")
+client_secret = os.getenv("CLIENT_SECRET")
+redirect_uri = ("http://localhost:8000/")
+token_url = ("https://accounts.spotify.com/api/token")
+api_url = ("https://api.spotify.com/v1/")
+
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

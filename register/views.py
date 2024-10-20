@@ -1,6 +1,10 @@
+from urllib import request
 
+import datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, get_user_model
+
+from spotifyWrappedClone.settings import redirect_uri
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.utils import timezone
 from django.conf import settings
@@ -133,3 +137,39 @@ def refresh_spotify_token(user_profile):
         user_profile.access_token = token_data['access_token']
         user_profile.token_expires_at = timezone.now() + timezone.timedelta(seconds=token_data['expires_in'])
         user_profile.save()
+
+def get_User_Data(access_token):
+    headers = {
+        'Authorization': f'Bearer {access_token}',
+        'Content-Type': 'application/json'
+    }
+    top_tracks_response = requests.get(
+        "https://api.spotify.com/v1/me/top/tracks?limit=5",
+        headers=headers
+    )
+    top_tracks_json = top_tracks_response.json().get('items', [])
+    top_tracks = []
+    for track in top_tracks_json:
+        top_tracks.append(track['name'])
+    top_artists_response = requests.get(
+        "https://api.spotify.com/v1/me/top/artists?limit=5",
+        headers=headers
+    )
+    top_artists_json = top_artists_response.json().get('items', [])
+    top_artists = []
+    for artist in top_artists_json:
+        top_artists.append(artist['name'])
+
+    top_genres = get_top_genres(top_artists_json)
+    total_mins_listened = get_total_minutes_listened(headers)
+    return {"top_tracks":top_tracks,
+            "top_artists":top_artists,
+            "top_genres":top_genres,
+            "total_mins_listened":total_mins_listened}
+
+#TODO - implement
+def get_top_genres(artists):
+    return
+#TODO - implement
+def get_total_minutes_listened(headers):
+    return
