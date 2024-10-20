@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import json
 
 load_dotenv()
 
@@ -143,16 +144,22 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-SPOTIFY_CLIENT_ID = 'c6892d177f764d3995872a1e7261b9da'
-SPOTIFY_CLIENT_SECRET = '2ee7bc3fa0154dfd8cd0c96bb56458a7'
-SPOTIFY_REDIRECT_URI = 'http://localhost:8000/register/callback/'
 
 # session setting
 SESSION_COOKIE_AGE = 1209600  # remain session 2 weeks
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',  # 기본 인증 백엔드
+    'django.contrib.auth.backends.ModelBackend',
 ]
+
+SECRETS_PATH = os.path.join(BASE_DIR, 'spotifyWrappedClone/secrets.json')
+
+with open(SECRETS_PATH) as secrets_file:
+    secrets = json.load(secrets_file)
+
+SPOTIFY_CLIENT_ID = secrets['SPOTIFY_CLIENT_ID']
+SPOTIFY_CLIENT_SECRET = secrets['SPOTIFY_CLIENT_SECRET']
+SPOTIFY_REDIRECT_URI = secrets['SPOTIFY_REDIRECT_URI']
 
 LOGIN_URL = '/register/login/'
