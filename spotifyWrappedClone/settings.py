@@ -145,4 +145,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SPOTIFY_CLIENT_ID = 'c6892d177f764d3995872a1e7261b9da'
 SPOTIFY_CLIENT_SECRET = '2ee7bc3fa0154dfd8cd0c96bb56458a7'
-SPOTIFY_REDIRECT_URI = 'http://localhost:8000/callback/'
+SPOTIFY_REDIRECT_URI = 'http://localhost:8000/register/callback/'
+
+# session setting
+SESSION_COOKIE_AGE = 1209600  # remain session 2 weeks
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # 기본 인증 백엔드
+]
+
+LOGIN_URL = '/register/login/'
