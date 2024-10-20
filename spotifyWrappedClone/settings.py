@@ -141,3 +141,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+SPOTIFY_CLIENT_ID = 'c6892d177f764d3995872a1e7261b9da'
+SPOTIFY_CLIENT_SECRET = '2ee7bc3fa0154dfd8cd0c96bb56458a7'
+SPOTIFY_REDIRECT_URI = 'http://localhost:8000/callback/'
