@@ -22,4 +22,5 @@ urlpatterns = [
     path('', RedirectView.as_view(pattern_name='landing')),
     path('admin/', admin.site.urls),
     path('register/', include('register.urls')),
+    path('wrap/', include('wrap.urls')),
 ]
