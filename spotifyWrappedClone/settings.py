@@ -163,7 +163,7 @@ SESSION_COOKIE_AGE = 1209600  # remain session 2 weeks
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',  # 기본 인증 백엔드
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 LOGIN_URL = '/register/login/'
