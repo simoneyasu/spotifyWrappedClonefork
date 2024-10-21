@@ -10,11 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 from dotenv import load_dotenv
-import os
 from pathlib import Path
 import os
 from dotenv import load_dotenv
 import json
+from decouple import config
 
 load_dotenv()
 
@@ -45,8 +45,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%m0e3q3+z)7i5+22@njs7rt1vfwzta1ijbs5%%j5a7p9mz7s9_'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -164,13 +163,9 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-SECRETS_PATH = os.path.join(BASE_DIR, 'spotifyWrappedClone/secrets.json')
-
-with open(SECRETS_PATH) as secrets_file:
-    secrets = json.load(secrets_file)
-
-SPOTIFY_CLIENT_ID = secrets['SPOTIFY_CLIENT_ID']
-SPOTIFY_CLIENT_SECRET = secrets['SPOTIFY_CLIENT_SECRET']
-SPOTIFY_REDIRECT_URI = secrets['SPOTIFY_REDIRECT_URI']
+SECRET_KEY = config('SECRET_KEY')
+SPOTIFY_CLIENT_ID = config('SPOTIFY_CLIENT_ID')
+SPOTIFY_CLIENT_SECRET = config('SPOTIFY_CLIENT_SECRET')
+SPOTIFY_REDIRECT_URI = config('SPOTIFY_REDIRECT_URI')
 
 LOGIN_URL = '/register/login/'
