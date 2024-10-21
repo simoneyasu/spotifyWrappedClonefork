@@ -1,18 +1,16 @@
 from urllib import request
-
-import datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, get_user_model
-
 from spotifyWrappedClone.settings import redirect_uri
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.utils import timezone
 from django.conf import settings
-from .models import UserProfile
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
+from .models import SpotifyWrap
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -119,9 +117,9 @@ def fetch_wrap_data(request):
 
 @login_required
 def view_wraps(request):
-    wrap_data = request.session.get('wrap_data', [])
+    wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-year')
 
-    return render(request, 'register/view_wraps.html', {'wrap_data': wrap_data})
+    return render(request, 'register/view_wraps.html', {'wraps': wraps})
 
 def refresh_spotify_token(user_profile):
     if timezone.now() > user_profile.token_expires_at:
@@ -214,3 +212,14 @@ def get_total_minutes_listened(headers):
 
     total_minutes = total_ms / (1000 * 60)  # Convert milliseconds to minutes
     return round(total_minutes)
+
+@login_required
+def wrap_detail(request, wrap_id):
+    wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
+    return render(request, 'register/wrap_detail.html', {'wrap': wrap})
+
+@login_required
+def delete_wrap(request, wrap_id):
+    wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
+    wrap.delete()
+    return redirect('view_wraps')
