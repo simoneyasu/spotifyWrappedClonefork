@@ -167,9 +167,40 @@ def get_User_Data(access_token):
             "top_genres":top_genres,
             "total_mins_listened":total_mins_listened}
 
-#TODO - implement
 def get_top_genres(artists):
-    return
-#TODO - implement
+    all_genres = [genre for artist in artists for genre in artist['genres']]
+    genre_counts = Counter(all_genres)
+    top_genres = genre_counts.most_common(5)  # Get top 5 genres
+    return [{"genre": genre, "count": count} for genre, count in top_genres]
+
+
+
 def get_total_minutes_listened(headers):
-    return
+    # Spotify API endpoint for recently played tracks
+    url = "https://api.spotify.com/v1/me/player/recently-played"
+
+    params = {
+        "limit": 50,  # Maximum allowed by Spotify API
+        "after": int((datetime.now() - timedelta(days=365)).timestamp() * 1000)  # 1 year ago
+    }
+
+    total_ms = 0
+    while True:
+        response = requests.get(url, headers=headers, params=params)
+        if response.status_code != 200:
+            return JsonResponse({"error": "Failed to fetch data from Spotify API"}, status=400)
+
+        data = response.json()
+        items = data.get("items", [])
+
+        if not items:
+            break
+
+        for item in items:
+            total_ms += item["track"]["duration_ms"]
+
+        # Update the 'after' parameter for the next request
+        params["after"] = items[-1]["played_at"]
+
+    total_minutes = total_ms / (1000 * 60)  # Convert milliseconds to minutes
+    return round(total_minutes)
