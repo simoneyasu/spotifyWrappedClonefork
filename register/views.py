@@ -1,18 +1,15 @@
 from urllib import request
-
-import datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, get_user_model
-
 from spotifyWrappedClone.settings import redirect_uri
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.utils import timezone
 from django.conf import settings
-from .models import UserProfile
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-
+from .models import SpotifyWrap
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -119,9 +116,9 @@ def fetch_wrap_data(request):
 
 @login_required
 def view_wraps(request):
-    wrap_data = request.session.get('wrap_data', [])
+    wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-year')
 
-    return render(request, 'register/view_wraps.html', {'wrap_data': wrap_data})
+    return render(request, 'register/view_wraps.html', {'wraps': wraps})
 
 def refresh_spotify_token(user_profile):
     if timezone.now() > user_profile.token_expires_at:
@@ -138,69 +135,13 @@ def refresh_spotify_token(user_profile):
         user_profile.token_expires_at = timezone.now() + timezone.timedelta(seconds=token_data['expires_in'])
         user_profile.save()
 
-def get_User_Data(access_token):
-    headers = {
-        'Authorization': f'Bearer {access_token}',
-        'Content-Type': 'application/json'
-    }
-    top_tracks_response = requests.get(
-        "https://api.spotify.com/v1/me/top/tracks?limit=5",
-        headers=headers
-    )
-    top_tracks_json = top_tracks_response.json().get('items', [])
-    top_tracks = []
-    for track in top_tracks_json:
-        top_tracks.append(track['name'])
-    top_artists_response = requests.get(
-        "https://api.spotify.com/v1/me/top/artists?limit=5",
-        headers=headers
-    )
-    top_artists_json = top_artists_response.json().get('items', [])
-    top_artists = []
-    for artist in top_artists_json:
-        top_artists.append(artist['name'])
+@login_required
+def wrap_detail(request, wrap_id):
+    wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
+    return render(request, 'register/wrap_detail.html', {'wrap': wrap})
 
-    top_genres = get_top_genres(top_artists_json)
-    total_mins_listened = get_total_minutes_listened(headers)
-    return {"top_tracks":top_tracks,
-            "top_artists":top_artists,
-            "top_genres":top_genres,
-            "total_mins_listened":total_mins_listened}
-
-def get_top_genres(artists):
-    all_genres = [genre for artist in artists for genre in artist['genres']]
-    genre_counts = Counter(all_genres)
-    top_genres = genre_counts.most_common(5)  # Get top 5 genres
-    return [{"genre": genre, "count": count} for genre, count in top_genres]
-
-
-
-def get_total_minutes_listened(headers):
-    # Spotify API endpoint for recently played tracks
-    url = "https://api.spotify.com/v1/me/player/recently-played"
-
-    params = {
-        "limit": 50,  # Maximum allowed by Spotify API
-        "after": int((datetime.now() - timedelta(days=365)).timestamp() * 1000)  # 1 year ago
-    }
-
-    total_ms = 0
-    while True:
-        response = requests.get(url, headers=headers, params=params)
-        if response.status_code != 200:
-            return JsonResponse({"error": "Failed to fetch data from Spotify API"}, status=400)
-
-        data = response.json()
-        items = data.get("items", [])
-
-        if not items:
-            break
-
-        for item in items:
-            total_ms += item["track"]["duration_ms"]
-
-        # Update the 'after' parameter for the next request
-        params["after"] = items[-1]["played_at"]
-
-    total_minutes = total_ms / (1000 * 60)  # Convert milliseconds to minutes
-    return round(total_minutes)
+@login_required
+def delete_wrap(request, wrap_id):
+    wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
+    wrap.delete()
+    return redirect('view_wraps')
