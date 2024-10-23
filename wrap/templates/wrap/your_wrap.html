@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Wrap</title>
+    <style>
+        .mySlides {
+            display: none; /* Hide all slides by default */
+        }
+
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
+            font-size: 36px;
+            font-weight: 100;
+            margin-top: 25%;
+        }
+
+        .slide-controls {
+            cursor: pointer;
+            font-size: 24px;
+            margin: 20px;
+            color: white;
+        }
+    </style>
+</head>
+<body onclick="plusDivs(1)">
+
+    <div class="mySlides" id="one">You Have Been Apart of Spotify For a Long Time</div>
+    <div class="mySlides" id="two">You have listened to:
+        <p>{{ total_mins_listened }} minutes</p>
+    </div>
+    <div class="mySlides" id="three">Over This Time You Have Listened to a Large Variety</div>
+    <div class="mySlides" id="four">Your Top Genres Are:
+        <ol>
+            {% for genre in top_genres %}
+                <li>{{ genre }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+    <div class="mySlides" id="five">Over All these Genres a Few Artists Have Made Their Impact</div>
+    <div class="mySlides" id="six">Your Favorite Artists Are:
+        <ol>
+            {% for artist in top_artists %}
+                <li>{{ artist }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+
+    <div class="mySlides" id="seven">Now Here Are a Few Songs You Can't Stop Listening to</div>
+    <div class="mySlides" id="eight">Your Top Songs Are:
+        <ol>
+            {% for track in top_tracks %}
+                <li>{{ track }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+
+
+    <!-- JavaScript to control the slideshow -->
+    <script>
+        let slideIndex = 1;
+        showDivs(slideIndex);
+
+        function plusDivs(n) {
+            showDivs(slideIndex += n);
+        }
+
+        function showDivs(n) {
+            let i;
+            const x = document.getElementsByClassName("mySlides");
+            if (n > x.length) { slideIndex = 1; }
+            if (n < 1) { slideIndex = x.length; }
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";  // Hide all slides
+            }
+            x[slideIndex - 1].style.display = "block";  // Show the current slide
+        }
+    </script>
+
+</body>
+</html>
