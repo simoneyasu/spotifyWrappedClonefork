@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect
 from functionality.views import get_user_data
 
 
-
 def dashboard(request):
     return render(request, 'wrap/dashboard.html')
 
