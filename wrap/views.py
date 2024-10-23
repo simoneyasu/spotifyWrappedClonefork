@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from register.views import get_User_Data
+from functionality.views import get_user_data
 
 
 def dashboard(request):
@@ -14,7 +14,7 @@ def your_wrap(request):
         return redirect('login')
 
     # Get user data
-    user_data = get_User_Data(access_token)
+    user_data = get_user_data(access_token)
 
     # Pass user data to the template
     return render(request, 'wrap/your_wrap.html', user_data)
