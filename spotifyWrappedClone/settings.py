@@ -13,8 +13,6 @@ from dotenv import load_dotenv
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-import json
-from decouple import config
 
 load_dotenv()
 
@@ -164,9 +162,9 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-SECRET_KEY = config('SECRET_KEY')
-SPOTIFY_CLIENT_ID = config('SPOTIFY_CLIENT_ID')
-SPOTIFY_CLIENT_SECRET = config('SPOTIFY_CLIENT_SECRET')
-SPOTIFY_REDIRECT_URI = config('SPOTIFY_REDIRECT_URI')
+SECRET_KEY = os.getenv('SECRET_KEY')
+SPOTIFY_CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
+SPOTIFY_CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
+SPOTIFY_REDIRECT_URI = os.getenv('SPOTIFY_REDIRECT_URI')
 
 LOGIN_URL = '/register/login/'
