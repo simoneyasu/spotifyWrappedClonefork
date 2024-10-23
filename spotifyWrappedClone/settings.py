@@ -10,10 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 from dotenv import load_dotenv
-import os
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import json
+from decouple import config
 
 load_dotenv()
 
@@ -44,8 +45,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%m0e3q3+z)7i5+22@njs7rt1vfwzta1ijbs5%%j5a7p9mz7s9_'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -155,16 +155,18 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-SPOTIFY_CLIENT_ID = 'c6892d177f764d3995872a1e7261b9da'
-SPOTIFY_CLIENT_SECRET = '2ee7bc3fa0154dfd8cd0c96bb56458a7'
-SPOTIFY_REDIRECT_URI = 'http://localhost:8000/register/callback/'
 
 # session setting
 SESSION_COOKIE_AGE = 1209600  # remain session 2 weeks
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',  # 기본 인증 백엔드
+    'django.contrib.auth.backends.ModelBackend',
 ]
+
+SECRET_KEY = config('SECRET_KEY')
+SPOTIFY_CLIENT_ID = config('SPOTIFY_CLIENT_ID')
+SPOTIFY_CLIENT_SECRET = config('SPOTIFY_CLIENT_SECRET')
+SPOTIFY_REDIRECT_URI = config('SPOTIFY_REDIRECT_URI')
 
 LOGIN_URL = '/register/login/'
