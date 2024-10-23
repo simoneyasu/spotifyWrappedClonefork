@@ -1,6 +1,9 @@
+from collections import Counter
 from urllib import request
 
-import datetime
+from datetime import datetime, timedelta
+
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, get_user_model
 
@@ -115,7 +118,7 @@ def fetch_wrap_data(request):
     request.session['wrap_data'] = wrap_data
 
     # redirect to screen that shows wrap1 data
-    return redirect('view_wraps')
+    return redirect('dashboard')
 
 @login_required
 def view_wraps(request):
