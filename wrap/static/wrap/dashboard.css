@@ -1,0 +1,72 @@
+/* Place your CSS styles in this file */
+
+body {
+ background-color: #121212;
+ text-align: left;
+ color: white;
+ font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.banner {
+  color: #121212;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  background-color: #1DB954;
+  padding: 40px 30px 75px 30px;
+  font-weight: 1000;
+  display: block;
+}
+
+.banner .dashboard {
+  float: left;
+  font-size: 30px;
+}
+
+.banner .user {
+  padding-top: 5px;
+  font-size: 20px;
+  float: right;
+  background-color: #1DB954;
+}
+
+.Wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+button {
+  background-color: rgb(29, 185, 84);
+  border: none;
+  padding: 15px 25px;
+  border-radius: 25px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 15px;
+  font-weight: 1000;
+  margin: auto;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.WrapTemp {
+  flex: 33%;
+  text-align: center;
+  align-content: center;
+}
+
+
+h1 {
+  padding-left: 30px;
+  padding-bottom: 20px;
+  border-bottom-color: white;
+  border-bottom-style: solid;
+}
+
+h2 {
+  padding-left: 30px;
+}
+
+.createBTN {
+  padding: 25px 35px;
+  border-radius: 35px;
+  font-size: 20px;
+  margin-top: 250px
+}

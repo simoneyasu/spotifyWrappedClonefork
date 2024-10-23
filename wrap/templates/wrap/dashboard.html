@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Wraps Dashboard</title>
+  <link rel='stylesheet' href="{% static 'wrap/dashboard.css' %}" >
+</head>
+
+<div class="banner">
+  <div class="dashboard">
+    Wraps Dashboard
+  </div>
+  <div class="user">
+    User
+  </div>
+</div>
+
+<body>
+  <h1> Your Wraps: </h1>
+  <div class="Wrap">
+    <div class="WrapTemp">
+      <h2>Wrap Name</h2>
+        <a href="{% url 'your_wrap' %}">
+        <button type="button" class="viewBTN"> View </button>
+        </a>
+      <button class="deleteBTN"> Delete </button>
+    </div>
+    <div class="WrapTemp">
+      <h2> Wrap Name </h2>
+        <a href="{% url 'your_wrap' %}">
+        <button type="button" class="viewBTN"> View </button>
+        </a>      <button class="deleteBTN"> Delete </button>
+    </div>
+  </div>
+  <button class="createBTN"> Create </button>
+</body>
+</html>

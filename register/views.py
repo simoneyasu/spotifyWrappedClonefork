@@ -1,4 +1,6 @@
+from collections import Counter
 from urllib import request
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, get_user_model
 from spotifyWrappedClone.settings import redirect_uri
@@ -80,7 +82,7 @@ def spotify_callback(request):
     request.session['access_token'] = token_data['access_token']
     request.session['refresh_token'] = token_data['refresh_token']
 
-    # move to logic to get wrap data
+    # move to logic to get wrap1 data
     return redirect('fetch_wrap_data')
 
 
@@ -104,15 +106,15 @@ def fetch_wrap_data(request):
         'Authorization': f'Bearer {access_token}'
     }
 
-    # request wrap data using spotify api
+    # request wrap1 data using spotify api
     response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers)
     wrap_data = response.json()
 
-    # store wrap data into session storage
+    # store wrap1 data into session storage
     request.session['wrap_data'] = wrap_data
 
-    # redirect to screen that shows wrap data
-    return redirect('view_wraps')
+    # redirect to screen that shows wrap1 data
+    return redirect('dashboard')
 
 @login_required
 def view_wraps(request):
