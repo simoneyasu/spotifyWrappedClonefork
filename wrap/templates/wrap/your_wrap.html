@@ -33,7 +33,7 @@
         }
     </style>
 </head>
-<body onclick="plusDivs(1)">
+<body>
 
     <div class="mySlides" id="one">You Have Been Apart of Spotify For a Long Time</div>
     <div class="mySlides" id="two">You have listened to:
@@ -73,6 +73,8 @@
 
     <!-- JavaScript to control the slideshow -->
     <script>
+        setInterval(() => plusDivs(1), 15000);
+
         let slideIndex = 1;
         showDivs(slideIndex);
 
