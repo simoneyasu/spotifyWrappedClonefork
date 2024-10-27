@@ -1,10 +1,12 @@
-from urllib import request
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, get_user_model
+
+
 from spotifyWrappedClone.settings import redirect_uri
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.utils import timezone
 from django.conf import settings
+from .models import UserProfile
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -112,7 +114,7 @@ def fetch_wrap_data(request):
     request.session['wrap_data'] = wrap_data
 
     # redirect to screen that shows wrap1 data
-    return redirect('view_wraps')
+    return redirect('dashboard')
 
 @login_required
 def view_wraps(request):
@@ -135,6 +137,7 @@ def refresh_spotify_token(user_profile):
         user_profile.token_expires_at = timezone.now() + timezone.timedelta(seconds=token_data['expires_in'])
         user_profile.save()
 
+
 @login_required
 def wrap_detail(request, wrap_id):
     wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
@@ -145,3 +148,4 @@ def delete_wrap(request, wrap_id):
     wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
     wrap.delete()
     return redirect('view_wraps')
+

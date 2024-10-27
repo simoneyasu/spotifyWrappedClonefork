@@ -20,13 +20,16 @@
   <div class="Wrap">
     <div class="WrapTemp">
       <h2>Wrap Name</h2>
-      <button class="viewBTN" onclick="location.href='/register/view_wraps'"> View </button>
+        <a href="{% url 'your_wrap' %}">
+        <button type="button" class="viewBTN"> View </button>
+        </a>
       <button class="deleteBTN"> Delete </button>
     </div>
     <div class="WrapTemp">
       <h2> Wrap Name </h2>
-      <button class="viewBTN" onclick="location.href='/register/view_wraps'"> View </button>
-      <button class="deleteBTN"> Delete </button>
+        <a href="{% url 'your_wrap' %}">
+        <button type="button" class="viewBTN"> View </button>
+        </a>      <button class="deleteBTN"> Delete </button>
     </div>
   </div>
   <button class="createBTN"> Create </button>
