@@ -15,6 +15,7 @@ def get_User_Data(access_token, time_range):
         'Content-Type': 'application/json'
     }
     top_tracks_response = requests.get(
+        #adds time_range to api call
         f"https://api.spotify.com/v1/me/top/tracks?limit=5&time_range={time_range}",
         headers=headers
     )
