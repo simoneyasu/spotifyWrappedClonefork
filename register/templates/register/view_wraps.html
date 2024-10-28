@@ -8,17 +8,18 @@
 <body>
 
     <h1>Your Spotify Wraps</h1>
-
+    {% if no_wraps %}
+        <p>No Wrap data available. Please listen to some music to generate your Spotify Wrap!</p>
+    {% else %}
     <ul>
         {% for wrap in wraps %}
             <li>
                 <a href="{% url 'wrap_detail' wrap.id %}">{{ wrap.year }} Wrap</a>
                 | <a href="{% url 'delete_wrap' wrap.id %}">Delete</a>
+                | <a href="{% url 'analyze_wrap' wrap.id %}">Analyze</a>
             </li>
-        {% empty %}
-            <li>No wraps found.</li>
         {% endfor %}
     </ul>
-
+    {% endif %}
 </body>
 </html>

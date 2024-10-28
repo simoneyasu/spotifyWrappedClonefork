@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, get_user_model
 
 
@@ -11,7 +11,8 @@ import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import SpotifyWrap
-from django.shortcuts import get_object_or_404
+
+import openai
 
 # Create your views here.
 
@@ -119,8 +120,8 @@ def fetch_wrap_data(request):
 @login_required
 def view_wraps(request):
     wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-year')
-
-    return render(request, 'register/view_wraps.html', {'wraps': wraps})
+    no_wraps = not wraps.exists()
+    return render(request, 'register/view_wraps.html', {'wraps': wraps, 'no_wraps': no_wraps})
 
 def refresh_spotify_token(user_profile):
     if timezone.now() > user_profile.token_expires_at:
@@ -149,3 +150,21 @@ def delete_wrap(request, wrap_id):
     wrap.delete()
     return redirect('view_wraps')
 
+openai.api_key = settings.OPENAI_API_KEY
+
+@login_required
+def analyze_wrap(request, wrap_id):
+    wrap = SpotifyWrap.objects.filter(id=wrap_id, user=request.user).first()
+    if not wrap:
+        return render(request, 'register/analyze_wrap.html', {'error': "No Wrap data available for analysis."})
+
+    prompt = f"Describe the characteristics of people who listen to {wrap.year} Wrap."
+
+    response = openai.ChatCompletion.create(
+        model="o1-preview",
+        messages=[{"role": "user", "content": prompt}]
+    )
+
+    description = response.choices[0].message['content'].strip()
+
+    return render(request, 'register/analyze_wrap.html', {'description': description})
