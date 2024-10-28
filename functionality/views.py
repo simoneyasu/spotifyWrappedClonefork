@@ -20,6 +20,7 @@ def get_User_Data(access_token, time_range):
     )
     top_tracks_json = top_tracks_response.json().get('items', [])
     top_tracks = []
+
     for track in top_tracks_json:
         top_tracks.append(track['name'])
     top_artists_response = requests.get(
