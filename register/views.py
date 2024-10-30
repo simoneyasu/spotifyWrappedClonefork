@@ -10,10 +10,6 @@ from .models import UserProfile
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import SpotifyWrap
-
-import openai
-
 # Create your views here.
 
 def register(request):
