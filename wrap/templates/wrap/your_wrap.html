@@ -66,21 +66,40 @@
       left: 50%;
     }
 
+    #last {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: white url({% static 'wrap/images/ReturnBG.png' %});
+        background-size: cover;
+        width: 100vw;
+        height: 100vh;
+        animation: zoomIn 10s infinite;
+    }
+
+    .lastContent {
+        font-family: 'Trebuchet MS', sans-serif;
+        font-weight: bold;
+        position: absolute;
+        top: 10%;
+        color: #ff8b1e;
+    }
+
     @keyframes rotationR {
       from {
-        transform: translateX(-50%) rotate(0deg); /* Keep centering */
+        transform: translateX(-50%) rotate(0deg);
       }
       to {
-        transform: translateX(-50%) rotate(360deg); /* Keep centering */
+        transform: translateX(-50%) rotate(360deg);
       }
     }
 
     @keyframes zoomIn {
       from {
-        background-size: 100%; /* Initial size */
+        background-size: 100%;
       }
       to {
-        background-size: 120%; /* Zoomed size */
+        background-size: 120%;
       }
     }
   </style>
@@ -121,15 +140,17 @@
       {% endfor %}
     </ol>
   </div>
-  <div class="mySlides" id="last">Return to Dashboard:
-    <a href="{% url 'dashboard'%}">
-      <button type="button" class="returnBTN"> Return </button>
-    </a>
+  <div class="mySlides" id="last">
+      <div class="lastContent">
+          Return to Dashboard:
+          <a href="{% url 'dashboard'%}">
+              <button type="button" class="returnBTN"> Return </button>
+          </a>
+      </div>
   </div>
 
-  <!-- JavaScript to control the slideshow -->
   <script>
-    setInterval(() => plusDivs(1), 15000);
+    setInterval(() => plusDivs(1), 1000);
 
     let slideIndex = 1;
     showDivs(slideIndex);
