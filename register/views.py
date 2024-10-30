@@ -117,12 +117,6 @@ def fetch_wrap_data(request):
     # redirect to screen that shows wrap1 data
     return redirect('dashboard')
 
-@login_required
-def view_wraps(request):
-    wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-year')
-    no_wraps = not wraps.exists()
-    return render(request, 'register/view_wraps.html', {'wraps': wraps, 'no_wraps': no_wraps})
-
 def refresh_spotify_token(user_profile):
     if timezone.now() > user_profile.token_expires_at:
         url = "https://accounts.spotify.com/api/token"
@@ -137,34 +131,3 @@ def refresh_spotify_token(user_profile):
         user_profile.access_token = token_data['access_token']
         user_profile.token_expires_at = timezone.now() + timezone.timedelta(seconds=token_data['expires_in'])
         user_profile.save()
-
-
-@login_required
-def wrap_detail(request, wrap_id):
-    wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
-    return render(request, 'register/wrap_detail.html', {'wrap': wrap})
-
-@login_required
-def delete_wrap(request, wrap_id):
-    wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
-    wrap.delete()
-    return redirect('view_wraps')
-
-openai.api_key = settings.OPENAI_API_KEY
-
-@login_required
-def analyze_wrap(request, wrap_id):
-    wrap = SpotifyWrap.objects.filter(id=wrap_id, user=request.user).first()
-    if not wrap:
-        return render(request, 'register/analyze_wrap.html', {'error': "No Wrap data available for analysis."})
-
-    prompt = f"Describe the characteristics of people who listen to {wrap.year} Wrap."
-
-    response = openai.ChatCompletion.create(
-        model="o1-preview",
-        messages=[{"role": "user", "content": prompt}]
-    )
-
-    description = response.choices[0].message['content'].strip()
-
-    return render(request, 'register/analyze_wrap.html', {'description': description})
