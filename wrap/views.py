@@ -18,3 +18,6 @@ def your_wrap(request):
 
     # Pass user data to the template
     return render(request, 'wrap/your_wrap.html', user_data)
+
+def test_wrap(request):
+    return render(request, 'wrap/your_wrap.html')
