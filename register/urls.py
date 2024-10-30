@@ -32,4 +32,5 @@ urlpatterns = [
     path('wraps/', views.view_wraps, name='view_wraps'),
     path('wraps/<int:wrap_id>/', views.wrap_detail, name='wrap_detail'),
     path('wraps/<int:wrap_id>/delete/', views.delete_wrap, name='delete_wrap'),
+    path('wraps/<int:wrap_id>/analyze/', views.analyze_wrap, name='analyze_wrap'),
     ]
