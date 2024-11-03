@@ -1,5 +1,7 @@
 from collections import Counter
 from datetime import datetime, timedelta
+from logging import exception
+
 from django.contrib.sites import requests
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -106,16 +108,24 @@ def contact_form(request):
     if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
-            subject = f'Message from {form.cleaned_data["name"]}'
+            subject = f"Message from {form.cleaned_data['name']}"
             message = form.cleaned_data['message']
-            sender = "spotifyWrappedClone@gmail.com"
-            recipient = ["spotifyWrappedClone@gmail.com"]
-
+            recipient_email = "spotifyWrappedClone@gmail.com"
+            # error checking
+            if recipient_email == None:
+                raise exception('Error! The email is invalid') # invalid email
             try:
-                send_mail(subject, message, sender, recipient, fail_silently=True)
+                send_mail(
+                    subject,
+                    message,
+                    'spotifyWrappedClone@gmail.com', # will send to the dedicated email I created
+                    [recipient_email],
+                    fail_silently=False,
+                )
                 messages.success(request, "Success! Message sent.")
-                form = ContactForm()  # Reset the form to clear the fields
-            except BadHeaderError:
-                return HttpResponse('Invalid header found')
+                form = ContactForm()  # Clear the form after successful submission
+            except Exception as e:
+                messages.error(request, f"Failed to send message: {e}")
 
     return render(request, 'functionality/development_process.html', {'form': form})
+
