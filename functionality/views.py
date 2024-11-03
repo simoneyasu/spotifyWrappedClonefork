@@ -1,5 +1,7 @@
 from collections import Counter
 from datetime import datetime, timedelta
+from logging import exception
+
 from django.contrib.sites import requests
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -109,12 +111,14 @@ def contact_form(request):
             subject = f"Message from {form.cleaned_data['name']}"
             message = form.cleaned_data['message']
             recipient_email = "spotifyWrappedClone@gmail.com"
-
+            # error checking
+            if recipient_email == None:
+                raise exception('Error! The email is invalid') # invalid email
             try:
                 send_mail(
                     subject,
                     message,
-                    'spotifyWrappedClone@gmail.com',
+                    'spotifyWrappedClone@gmail.com', # will send to the dedicated email I created
                     [recipient_email],
                     fail_silently=False,
                 )
