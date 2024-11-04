@@ -1,32 +1,30 @@
 {% load static %}
-{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>{% trans "Wraps Dashboard" %}</title>
+  <title>Wraps Dashboard</title>
   <link rel='stylesheet' href="{% static 'wrap/dashboard.css' %}" >
 </head>
 
 <div class="banner">
   <div class="dashboard">
-    {% trans "Wraps Dashboard" %}
+    Wraps Dashboard
   </div>
   <div class="user">
-    {% trans "User" %}
+    User
   </div>
 </div>
 
 <body>
-  <h1>{% trans "Your Wraps:" %}</h1>
+  <h1> Your Wraps: </h1>
   <div class="Wrap">
     <div class="WrapTemp">
-      <h2>{% trans "Wrap Name" %}</h2>
-      <a href="{% url 'view_wraps' %}">
-        <button type="button" class="viewBTN">{% trans "View" %}</button>
-      </a>
+      <h2>Wrap Name</h2>
+        <a href="{% url 'view_wraps' %}">
+        <button type="button" class="viewBTN"> View </button>
+        </a>
     </div>
   </div>
-  <button class="createBTN">{% trans "Create" %}</button>
+  <button class="createBTN"> Create </button>
 </body>
-
 </html>

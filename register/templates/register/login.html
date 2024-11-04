@@ -1,16 +1,15 @@
 {% load static %}
-{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% trans "Login" %}</title>
+    <title>Login</title>
     <link rel="stylesheet" href="{% static 'register/styles.css' %}">
 </head>
 <body>
     <div class="container">
-        <h2>{% trans "Login" %}</h2>
+        <h2>Login</h2>
 
         <!-- Display form-wide non-field errors (e.g., incorrect username or password) -->
         {% if form.non_field_errors %}
@@ -41,16 +40,16 @@
             </div>
 
             <!-- Submit button for login -->
-            <button type="submit" class="btn btn-primary">{% trans "Login" %}</button>
+            <button type="submit" class="btn btn-primary">Login</button>
         </form>
 
         <!-- Forgot password link -->
-        <p><a href="{% url 'password_reset' %}">{% trans "Forgot my password?" %}</a></p>
+        <p><a href="{% url 'password_reset' %}">Forgot my password?</a></p>
 
         <!-- "Don't have an account" button -->
         <div class="signup-container">
-            <p>{% trans "Don't have an account?" %}</p>
-            <a href="{% url 'register' %}" class="btn btn-secondary">{% trans "Sign up" %}</a>
+            <p>Don't have an account?</p>
+            <a href="{% url 'register' %}" class="btn btn-secondary">Sign up</a>
         </div>
     </div>
 </body>

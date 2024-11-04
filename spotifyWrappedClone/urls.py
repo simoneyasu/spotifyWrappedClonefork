@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
-from django.conf.urls.i18n import set_language
+
 
 urlpatterns = [
     path('', RedirectView.as_view(pattern_name='landing')),
@@ -25,5 +25,4 @@ urlpatterns = [
     path('register/', include('register.urls')),
     path('wrap/', include('wrap.urls')),
     path('functionality/', include('functionality.urls')),
-    path('set_language/', set_language, name='set_language'),
 ]
