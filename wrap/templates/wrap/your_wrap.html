@@ -6,7 +6,7 @@
     <title>Your Wrap</title>
     <style>
     .mySlides {
-      display: none; /* Hide all slides by default */
+      display: none;
     }
 
     body {
@@ -39,7 +39,7 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
-        animation: zoomIn 10s infinite alternate;
+        animation: zoomIn1 10s infinite alternate;
 }
 
     .slideOneStar {
@@ -66,6 +66,71 @@
       left: 50%;
     }
 
+    #seven {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: white url({% static 'wrap/images/MoonriseBG.png' %});
+        background-size: cover;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        color: white;
+    }
+
+    .sevenContent {
+        text-align: center;
+        font-size: 5vh;
+        padding-top: 78vh;
+        font-family: "Droid Sans", serif;
+    }
+
+    #eight {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: white url({% static 'wrap/images/SunsetBG.png' %});
+        background-size: cover;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .eightContent {
+        text-align: center;
+        font-size: 5vh;
+        padding-top: 41vh;
+        font-family: "Droid Sans", serif;
+    }
+
+    .track-list {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }
+
+    .track-item {
+      position: absolute;
+      bottom: 0;
+      width: 100px;
+      text-align: center;
+    }
+
+
+    .track-item:nth-child(1) { left: 50%; transform: translateX(-50%) translateY(-50%); }
+    .track-item:nth-child(2) { left: calc(25%); transform: translateX(-50%) translateY(-75%); }
+    .track-item:nth-child(3) { left: calc(0%); transform: translateX(-50%) translateY(-100%); }
+    .track-item:nth-child(4) { left: calc(-25%); transform: translateX(-50%) translateY(-75%); }
+    .track-item:nth-child(5) { left: calc(-50%); transform: translateX(-50%) translateY(-50%); }
+
+
     #last {
         position: absolute;
         top: 0;
@@ -74,15 +139,30 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
-        animation: zoomIn 10s infinite;
+        animation: zoomInLast 5s infinite alternate;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .lastContent {
         font-family: 'Trebuchet MS', sans-serif;
         font-weight: bold;
-        position: absolute;
-        top: 10%;
         color: #ff8b1e;
+        text-align: center;
+        padding-top: 10%;
+    }
+
+    .returnBTN {
+        background-color: #ff8b1e;
+        color: #121212;
+        border: none;
+        border-radius: 25px;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        font-size: 15px;
+        font-weight: 1000;
+        display: block;
+        margin-top: 10px;
     }
 
     @keyframes rotationR {
@@ -94,7 +174,7 @@
       }
     }
 
-    @keyframes zoomIn {
+    @keyframes zoomIn1 {
       from {
         background-size: 100%;
       }
@@ -102,12 +182,21 @@
         background-size: 120%;
       }
     }
+
+    @keyframes zoomInLast {
+      from {
+        background-size: 100%;
+      }
+      to {
+        background-size: 105%;
+      }
+    }
   </style>
 </head>
-
+<body>
   <div class="mySlides" id="one">
     <div class='slideOneStar'>
-      <img src={% static 'wrap/images/StarS1.png' %} class="star">
+        <img src='{% static 'wrap/images/StarS1.png' %}' class="star" alt="star">
       <div class='StarWord'>You Have Been a Part of Spotify For a Long Time</div>
     </div>
   </div>
@@ -119,7 +208,7 @@
   <div class="mySlides" id="four">Your Top Genres Are:
     <ol>
       {% for genre in top_genres %}
-      <li>{{ genre }}</li>
+          <li>{{ genre }}</li>
       {% endfor %}
     </ol>
   </div>
@@ -132,14 +221,23 @@
     </ol>
   </div>
 
-  <div class="mySlides" id="seven">Now Here Are a Few Songs You Can't Stop Listening to</div>
-  <div class="mySlides" id="eight">Your Top Songs Are:
-    <ol>
-      {% for track in top_tracks %}
-      <li>{{ track }}</li>
-      {% endfor %}
-    </ol>
+  <div class="mySlides" id="seven">
+      <div class="sevenContent">
+          <p>Now Here Are a Few Songs You Can't Stop Listening to:</p>
+      </div>
   </div>
+
+  <div class="mySlides" id="eight">
+    <div class="track-list">
+        {% for track in top_tracks %}
+            <div class="track-item">{{ track }}</div>
+        {% endfor %}
+    </div>
+    <div class="eightContent">
+        <p>Your Top Songs Are:</p>
+    </div>
+  </div>
+
   <div class="mySlides" id="last">
       <div class="lastContent">
           Return to Dashboard:
