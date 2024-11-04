@@ -18,7 +18,9 @@ load_dotenv()
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # sends to terminal (testing purposes)
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # sends real email
-EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend' # this is for "contact developers"
+# EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend' # deleted cause sendgrid sucks
+EMAIL_BACKEND = 'django_mailjet.backends.MailjetBackend'
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -33,8 +35,11 @@ redirect_uri = ("http://localhost:8000/")
 token_url = ("https://accounts.spotify.com/api/token")
 api_url = ("https://api.spotify.com/v1/")
 
-SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
-SENDGRID_SANDBOX_MODE_IN_DEBUG=False
+# SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
+# SENDGRID_SANDBOX_MODE_IN_DEBUG=False
+
+MAILJET_API_KEY = os.getenv("MAILJET_API_KEY")
+MAILJET_API_SECRET = os.getenv("MAILJET_API_SECRET")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -144,7 +149,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'functionality/static',
+
 ]
 
 # Default primary key field type
@@ -168,3 +173,5 @@ SPOTIFY_CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
 SPOTIFY_REDIRECT_URI = os.getenv('SPOTIFY_REDIRECT_URI')
 
 LOGIN_URL = '/register/login/'
+
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')

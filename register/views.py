@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, get_user_model
 
 
@@ -11,7 +11,8 @@ import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import SpotifyWrap
-from django.shortcuts import get_object_or_404
+
+import openai
 
 # Create your views here.
 
@@ -116,12 +117,6 @@ def fetch_wrap_data(request):
     # redirect to screen that shows wrap1 data
     return redirect('dashboard')
 
-@login_required
-def view_wraps(request):
-    wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-year')
-
-    return render(request, 'register/view_wraps.html', {'wraps': wraps})
-
 def refresh_spotify_token(user_profile):
     if timezone.now() > user_profile.token_expires_at:
         url = "https://accounts.spotify.com/api/token"
@@ -136,16 +131,3 @@ def refresh_spotify_token(user_profile):
         user_profile.access_token = token_data['access_token']
         user_profile.token_expires_at = timezone.now() + timezone.timedelta(seconds=token_data['expires_in'])
         user_profile.save()
-
-
-@login_required
-def wrap_detail(request, wrap_id):
-    wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
-    return render(request, 'register/wrap_detail.html', {'wrap': wrap})
-
-@login_required
-def delete_wrap(request, wrap_id):
-    wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
-    wrap.delete()
-    return redirect('view_wraps')
-
