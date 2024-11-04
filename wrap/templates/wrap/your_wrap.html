@@ -198,33 +198,73 @@
     <div class='slideOneStar'>
         <img src='{% static 'wrap/images/StarS1.png' %}' class="star" alt="star">
       <div class='StarWord'>You Have Been a Part of Spotify For a Long Time</div>
+        <iframe src="https://open.spotify.com/embed/track/{{ track_ids.0 }}"
+              width="300" height="80"
+              allowtransparency="true"
+              allow="encrypted-media">
+        </iframe>
+
     </div>
   </div>
 
   <div class="mySlides" id="two">You have listened to:
     <p>{{ total_mins_listened }} minutes</p>
+              <iframe src="https://open.spotify.com/embed/track/{{ track_ids.1 }}"
+              width="300" height="80"
+              allowtransparency="true"
+              allow="encrypted-media">
+        </iframe>
+
   </div>
-  <div class="mySlides" id="three">Over This Time You Have Listened to a Large Variety</div>
+  <div class="mySlides" id="three">Over This Time You Have Listened to a Large Variety
+          <iframe src="https://open.spotify.com/embed/track/{{ track_ids.2 }}"
+              width="300" height="80"
+              allowtransparency="true"
+              allow="encrypted-media">
+        </iframe>
+  </div>
   <div class="mySlides" id="four">Your Top Genres Are:
     <ol>
       {% for genre in top_genres %}
           <li>{{ genre }}</li>
       {% endfor %}
     </ol>
+      <iframe src="https://open.spotify.com/embed/track/{{ track_ids.3 }}"
+              width="300" height="80"
+              allowtransparency="true"
+              allow="encrypted-media">
+        </iframe>
+
   </div>
-  <div class="mySlides" id="five">Overall these Genres a Few Artists Have Made Their Impact</div>
+  <div class="mySlides" id="five">Overall these Genres a Few Artists Have Made Their Impact
+          <iframe src="https://open.spotify.com/embed/track/{{ track_ids.4 }}"
+              width="300" height="80"
+              allowtransparency="true"
+              allow="encrypted-media">
+        </iframe>
+  </div>
   <div class="mySlides" id="six">Your Favorite Artists Are:
     <ol>
       {% for artist in top_artists %}
       <li>{{ artist }}</li>
       {% endfor %}
     </ol>
+          <iframe src="https://open.spotify.com/embed/track/{{ track_ids.5 }}"
+              width="300" height="80"
+              allowtransparency="true"
+              allow="encrypted-media">
+        </iframe>
   </div>
 
   <div class="mySlides" id="seven">
       <div class="sevenContent">
           <p>Now Here Are a Few Songs You Can't Stop Listening to:</p>
       </div>
+              <iframe src="https://open.spotify.com/embed/track/{{ track_ids.6 }}"
+              width="300" height="80"
+              allowtransparency="true"
+              allow="encrypted-media">
+        </iframe>
   </div>
 
   <div class="mySlides" id="eight">
@@ -236,6 +276,11 @@
     <div class="eightContent">
         <p>Your Top Songs Are:</p>
     </div>
+          <iframe src="https://open.spotify.com/embed/track/{{ track_ids.7 }}"
+              width="300" height="80"
+              allowtransparency="true"
+              allow="encrypted-media">
+        </iframe>
   </div>
 
   <div class="mySlides" id="last">
@@ -245,6 +290,11 @@
               <button type="button" class="returnBTN"> Return </button>
           </a>
       </div>
+              <iframe src="https://open.spotify.com/embed/track/{{ track_ids.8 }}"
+              width="300" height="80"
+              allowtransparency="true"
+              allow="encrypted-media">
+        </iframe>
   </div>
 
   <script>
