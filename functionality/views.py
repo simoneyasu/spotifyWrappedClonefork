@@ -1,6 +1,7 @@
 from collections import Counter
 from datetime import datetime, timedelta
 from logging import exception
+import random
 
 from django.contrib.sites import requests
 from django.http import JsonResponse
@@ -129,3 +130,42 @@ def contact_form(request):
 
     return render(request, 'functionality/development_process.html', {'form': form})
 
+
+def get_random_tracks(headers, limit=20, listSize=5):
+
+    url = "https://api.spotify.com/v1/me/player/recently-played"
+    params = {
+        "limit": limit
+    }
+
+    response = requests.get(url, headers=headers, params=params)
+
+    if response.status_code == 200:
+        data = response.json()
+        recent_tracks = [
+            {
+                "name": item["track"]["name"],
+                "artists": [artist["name"] for artist in item["track"]["artists"]],
+                "uri": item["track"]["uri"]
+            }
+            for item in data["items"]
+        ]
+
+        # Choose a random subset of tracks
+        random_tracks = random.sample(recent_tracks, min(listSize, len(recent_tracks)))
+        return random_tracks
+    else:
+        print("Failed to retrieve recently played tracks:", response.status_code, response.text)
+        return []
+def random_track_parse(request):
+    # Assuming random_tracks is a list of song URIs (like "spotify:track:<track_id>")
+    random_tracks = get_random_tracks()  # Replace with your function to fetch random tracks
+
+    # Extract just the track IDs (last part of each URI)
+    track_ids = [track['uri'].split(':')[-1] for track in random_tracks]
+
+    context = {
+        'track_ids': track_ids,
+        # Add any other context data here
+    }
+    return render(request, 'wrap/your_wrap.html', context)

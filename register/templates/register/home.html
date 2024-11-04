@@ -1,10 +1,11 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Home</title>
+    <title>{% trans "Spotify Home" %}</title>
     <link rel="stylesheet" href="{% static 'register/styles.css' %}">
     <style>
         .button-container {
@@ -37,24 +38,24 @@
 </head>
 <body>
     <div class="container">
-        <h2>Welcome to Spotify Wrapped!</h2>
-        <p>You are logged in as {{ user.username }}</p>
+        <h2>{% trans "Welcome to Spotify Wrapped!" %}</h2>
+        <p>{% trans "You are logged in as" %} {{ user.username }}</p>
 
-        <p>To access your Spotify Wrap data, please log in to your Spotify account:</p>
+        <p>{% trans "To access your Spotify Wrap data, please log in to your Spotify account:" %}</p>
 
         <a href="{% url 'spotify_login' %}">
-            <button>Log in with Spotify</button>
+            <button>{% trans "Log in with Spotify" %}</button>
         </a>
 
         <div class="button-container">
             <!-- Logout form -->
             <form method="POST" action="{% url 'logout' %}" style="display: inline;">
                 {% csrf_token %}
-                <button type="submit" class="btn">Logout</button>
+                <button type="submit" class="btn">{% trans "Logout" %}</button>
             </form>
 
             <!-- Profile button -->
-            <a href="{% url 'profile' %}" class="btn btn-primary">Go to Profile</a>
+            <a href="{% url 'profile' %}" class="btn btn-primary">{% trans "Go to Profile" %}</a>
         </div>
     </div>
 </body>

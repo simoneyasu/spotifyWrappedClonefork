@@ -55,4 +55,4 @@ def analyze_wrap(request, wrap_id):
 
     description = response.choices[0].message['content'].strip()
 
-    return render(request, 'analyze_wrap.html', {'description': description})
+    return render(request, 'wrap/analyze_wrap.html', {'description': description})
