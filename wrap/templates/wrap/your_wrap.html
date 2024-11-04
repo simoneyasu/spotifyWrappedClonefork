@@ -5,93 +5,269 @@
     <meta charset="UTF-8">
     <title>Your Wrap</title>
     <style>
-        .mySlides {
-            display: none; /* Hide all slides by default */
-        }
+    .mySlides {
+      display: none;
+    }
 
-        body {
-            background-color: #121212;
-            color: white;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-            text-align: center;
-            font-size: 36px;
-            font-weight: 100;
-            margin-top: 25%;
-        }
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      text-align: center;
+      font-size: 36px;
+      font-weight: 100;
+    }
 
-        button {
-            background-color: rgb(29, 185, 84);
-            border: none;
-            padding: 15px 25px;
-            border-radius: 25px;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-            font-size: 15px;
-            font-weight: 1000;
-            margin: auto;
-            margin-bottom: 10px;
-            display: block;
-        }
-    </style>
+    button {
+      background-color: rgb(29, 185, 84);
+      border: none;
+      padding: 15px 25px;
+      border-radius: 25px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      font-size: 15px;
+      font-weight: 1000;
+      margin: auto;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    #one {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: white url({% static 'wrap/images/B1.png' %});
+        background-size: cover;
+        width: 100vw;
+        height: 100vh;
+        animation: zoomIn1 10s infinite alternate;
+}
+
+    .slideOneStar {
+      position: relative;
+      text-align: center;
+      color: white;
+      top: 25%;
+    }
+
+    .star {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: rotationR 2s infinite linear;
+      pointer-events: none;
+    }
+
+    .StarWord {
+      position: relative;
+      z-index: 1;
+      transform: translate(-50%, 130%);
+      width: 20%;
+      left: 50%;
+    }
+
+    #seven {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: white url({% static 'wrap/images/MoonriseBG.png' %});
+        background-size: cover;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        color: white;
+    }
+
+    .sevenContent {
+        text-align: center;
+        font-size: 5vh;
+        padding-top: 78vh;
+        font-family: "Droid Sans", serif;
+    }
+
+    #eight {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: white url({% static 'wrap/images/SunsetBG.png' %});
+        background-size: cover;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .eightContent {
+        text-align: center;
+        font-size: 5vh;
+        padding-top: 41vh;
+        font-family: "Droid Sans", serif;
+    }
+
+    .track-list {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }
+
+    .track-item {
+      position: absolute;
+      bottom: 0;
+      width: 100px;
+      text-align: center;
+    }
+
+
+    .track-item:nth-child(1) { left: 50%; transform: translateX(-50%) translateY(-50%); }
+    .track-item:nth-child(2) { left: calc(25%); transform: translateX(-50%) translateY(-75%); }
+    .track-item:nth-child(3) { left: calc(0%); transform: translateX(-50%) translateY(-100%); }
+    .track-item:nth-child(4) { left: calc(-25%); transform: translateX(-50%) translateY(-75%); }
+    .track-item:nth-child(5) { left: calc(-50%); transform: translateX(-50%) translateY(-50%); }
+
+
+    #last {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: white url({% static 'wrap/images/ReturnBG.png' %});
+        background-size: cover;
+        width: 100vw;
+        height: 100vh;
+        animation: zoomInLast 5s infinite alternate;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .lastContent {
+        font-family: 'Trebuchet MS', sans-serif;
+        font-weight: bold;
+        color: #ff8b1e;
+        text-align: center;
+        padding-top: 10%;
+    }
+
+    .returnBTN {
+        background-color: #ff8b1e;
+        color: #121212;
+        border: none;
+        border-radius: 25px;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        font-size: 15px;
+        font-weight: 1000;
+        display: block;
+        margin-top: 10px;
+    }
+
+    @keyframes rotationR {
+      from {
+        transform: translateX(-50%) rotate(0deg);
+      }
+      to {
+        transform: translateX(-50%) rotate(360deg);
+      }
+    }
+
+    @keyframes zoomIn1 {
+      from {
+        background-size: 100%;
+      }
+      to {
+        background-size: 120%;
+      }
+    }
+
+    @keyframes zoomInLast {
+      from {
+        background-size: 100%;
+      }
+      to {
+        background-size: 105%;
+      }
+    }
+  </style>
 </head>
-<body onclick="plusDivs(1)">
-
-    <div class="mySlides" id="one">You Have Been Apart of Spotify For a Long Time</div>
-    <div class="mySlides" id="two">You have listened to:
-        <p>{{ total_mins_listened }} minutes</p>
+<body>
+  <div class="mySlides" id="one">
+    <div class='slideOneStar'>
+        <img src='{% static 'wrap/images/StarS1.png' %}' class="star" alt="star">
+      <div class='StarWord'>You Have Been a Part of Spotify For a Long Time</div>
     </div>
-    <div class="mySlides" id="three">Over This Time You Have Listened to a Large Variety</div>
-    <div class="mySlides" id="four">Your Top Genres Are:
-        <ol>
-            {% for genre in top_genres %}
-                <li>{{ genre }}</li>
-            {% endfor %}
-        </ol>
-    </div>
-    <div class="mySlides" id="five">Over All these Genres a Few Artists Have Made Their Impact</div>
-    <div class="mySlides" id="six">Your Favorite Artists Are:
-        <ol>
-            {% for artist in top_artists %}
-                <li>{{ artist }}</li>
-            {% endfor %}
-        </ol>
-    </div>
+  </div>
 
-    <div class="mySlides" id="seven">Now Here Are a Few Songs You Can't Stop Listening to</div>
-    <div class="mySlides" id="eight">Your Top Songs Are:
-        <ol>
-            {% for track in top_tracks %}
-                <li>{{ track }}</li>
-            {% endfor %}
-        </ol>
+  <div class="mySlides" id="two">You have listened to:
+    <p>{{ total_mins_listened }} minutes</p>
+  </div>
+  <div class="mySlides" id="three">Over This Time You Have Listened to a Large Variety</div>
+  <div class="mySlides" id="four">Your Top Genres Are:
+    <ol>
+      {% for genre in top_genres %}
+          <li>{{ genre }}</li>
+      {% endfor %}
+    </ol>
+  </div>
+  <div class="mySlides" id="five">Overall these Genres a Few Artists Have Made Their Impact</div>
+  <div class="mySlides" id="six">Your Favorite Artists Are:
+    <ol>
+      {% for artist in top_artists %}
+      <li>{{ artist }}</li>
+      {% endfor %}
+    </ol>
+  </div>
+
+  <div class="mySlides" id="seven">
+      <div class="sevenContent">
+          <p>Now Here Are a Few Songs You Can't Stop Listening to:</p>
+      </div>
+  </div>
+
+  <div class="mySlides" id="eight">
+    <div class="track-list">
+        {% for track in top_tracks %}
+            <div class="track-item">{{ track }}</div>
+        {% endfor %}
     </div>
-    <div class="mySlides" id="last">Return to Dashboard:
-        <a href="{% url 'dashboard'%}">
-            <button type="button" class="returnBTN"> Return </button>
-        </a>
+    <div class="eightContent">
+        <p>Your Top Songs Are:</p>
     </div>
+  </div>
 
+  <div class="mySlides" id="last">
+      <div class="lastContent">
+          Return to Dashboard:
+          <a href="{% url 'dashboard'%}">
+              <button type="button" class="returnBTN"> Return </button>
+          </a>
+      </div>
+  </div>
 
-    <!-- JavaScript to control the slideshow -->
-    <script>
-        let slideIndex = 1;
-        showDivs(slideIndex);
+  <script>
+    setInterval(() => plusDivs(1), 15000);
 
-        function plusDivs(n) {
-            showDivs(slideIndex += n);
+    let slideIndex = 1;
+    showDivs(slideIndex);
+
+    function plusDivs(n) {
+      showDivs(slideIndex += n);
+    }
+
+    function showDivs(n) {
+      let i;
+      const x = document.getElementsByClassName("mySlides");
+      if (n <= x.length) {
+        for (i = 0; i < x.length; i++) {
+          x[i].style.display = "none";  // Hide all slides
         }
-
-        function showDivs(n) {
-            let i;
-            const x = document.getElementsByClassName("mySlides");
-            if (n <= x.length) {
-                for (i = 0; i < x.length; i++) {
-                x[i].style.display = "none";  // Hide all slides
-                }
-                x[slideIndex - 1].style.display = "block";  // Show the current slide
-            }
-
-        }
-    </script>
+        x[slideIndex - 1].style.display = "block";  // Show the current slide
+      }
+    }
+  </script>
 
 </body>
 </html>
