@@ -15,8 +15,9 @@ def your_wrap(request):
     if not access_token:
         return redirect('login')
 
+
     # Get user data
-    user_data = get_User_Data(access_token)
+    user_data = get_User_Data(access_token, "medium_term")
 
     # Pass user data to the template
     return render(request, 'wrap/your_wrap.html', user_data)
@@ -56,3 +57,6 @@ def analyze_wrap(request, wrap_id):
     description = response.choices[0].message['content'].strip()
 
     return render(request, 'wrap/analyze_wrap.html', {'description': description})
+
+def testwrap(request):
+    return render(request, 'wrap/your_wrap.html')
