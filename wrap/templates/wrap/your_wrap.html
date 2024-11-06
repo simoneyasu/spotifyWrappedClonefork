@@ -66,6 +66,75 @@
       left: 50%;
     }
 
+    #four {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: white url({% static 'wrap/images/purpleToRed.png' %});
+        background-size: cover;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        color: white;
+    }
+
+    #five {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: white url({% static 'wrap/images/marsBG.png' %});
+        background-size: cover;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        color: white;
+    }
+
+    .fiveContent {
+        padding-top: 20vh;
+    }
+
+    .fiveContent span {
+        opacity: 1;
+        animation: twinkle 3s infinite ease-in-out;
+        animation-delay: calc(0.1s * var(--i));
+    }
+
+    .fiveContent span:nth-child(1) { --i: 0;}
+    .fiveContent span:nth-child(2) { --i: 1;}
+    .fiveContent span:nth-child(3) { --i: 2;}
+    .fiveContent span:nth-child(4) { --i: 3;}
+    .fiveContent span:nth-child(5) { --i: 4;}
+    .fiveContent span:nth-child(6) { --i: 5;}
+    .fiveContent span:nth-child(7) { --i: 6;}
+    .fiveContent span:nth-child(8) { --i: 7;}
+    .fiveContent span:nth-child(9) { --i: 8;}
+    .fiveContent span:nth-child(10) { --i: 9;}
+
+
+
+    #six {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: white url({% static 'wrap/images/Mars to Earth.png' %});
+        background-size: cover;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        color: white;
+    }
+
+    .ship {
+      position: absolute;
+      bottom: -10vw;
+      left: -10vw;
+      animation: arcMotion 10s linear infinite;
+    }
+
     #seven {
         position: absolute;
         top: 0;
@@ -165,6 +234,24 @@
         margin-top: 10px;
     }
 
+    @keyframes arcMotion {
+      0% {
+        transform: translateX(0) translateY(0);
+      }
+      25%{
+        transform: translateX(20vw) translateY(-50px);
+      }
+      50% {
+        transform: translateX(40vw) translateY(-100px);
+      }
+      75% {
+        transform:   translateX(60vw) translateY(-50px);
+      }
+      100% {
+        transform: translateX(80vw) translateY(0);
+      }
+    }
+
     @keyframes rotationR {
       from {
         transform: translateX(-50%) rotate(0deg);
@@ -191,6 +278,16 @@
         background-size: 105%;
       }
     }
+
+    @keyframes twinkle {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -224,9 +321,10 @@
         </iframe>
   </div>
   <div class="mySlides" id="four">Your Top Genres Are:
+
     <ol>
       {% for genre in top_genres %}
-          <li>{{ genre }}</li>
+          <li>{{ genre.genre }}</li>
       {% endfor %}
     </ol>
       <iframe src="https://open.spotify.com/embed/track/{{ track_ids.3 }}"
@@ -234,14 +332,30 @@
               allowtransparency="true"
               allow="encrypted-media">
         </iframe>
-
+    <div class="ship">
+        <img src='{% static 'wrap/images/shipSlide.png' %}' alt="ship">
+    </div>
   </div>
-  <div class="mySlides" id="five">Overall these Genres a Few Artists Have Made Their Impact
-          <iframe src="https://open.spotify.com/embed/track/{{ track_ids.4 }}"
-              width="300" height="80"
-              allowtransparency="true"
-              allow="encrypted-media">
-        </iframe>
+
+  <div class="mySlides" id="five">
+      <div class="fiveContent">
+          <span>Throughout </span>
+          <span>these </span>
+          <span>Genres </span>
+          <span>a </span>
+          <span>Few </span>
+          <span>Artists </span>
+          <span>Have </span>
+          <span>Made </span>
+          <span>Their </span>
+          <span>Impact </span>
+      </div>
+      <iframe src="https://open.spotify.com/embed/track/{{ track_ids.4 }}"
+          width="300" height="80"
+          allowtransparency="true"
+          allow="encrypted-media">
+      </iframe>
+
   </div>
   <div class="mySlides" id="six">Your Favorite Artists Are:
     <ol>
@@ -254,6 +368,9 @@
               allowtransparency="true"
               allow="encrypted-media">
         </iframe>
+    <div class="ship">
+        <img src='{% static 'wrap/images/shipSlide.png' %}' alt="ship">
+    </div>
   </div>
 
   <div class="mySlides" id="seven">
@@ -298,7 +415,7 @@
   </div>
 
   <script>
-    setInterval(() => plusDivs(1), 15000);
+    setInterval(() => plusDivs(1), 5000);
 
     let slideIndex = 1;
     showDivs(slideIndex);
@@ -312,9 +429,9 @@
       const x = document.getElementsByClassName("mySlides");
       if (n <= x.length) {
         for (i = 0; i < x.length; i++) {
-          x[i].style.display = "none";  // Hide all slides
+          x[i].style.display = "none";
         }
-        x[slideIndex - 1].style.display = "block";  // Show the current slide
+        x[slideIndex - 1].style.display = "block";
       }
     }
   </script>

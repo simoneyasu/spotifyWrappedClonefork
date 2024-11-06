@@ -2,8 +2,8 @@ from collections import Counter
 from datetime import datetime, timedelta
 from logging import exception
 import random
+import requests
 
-from django.contrib.sites import requests
 from django.http import JsonResponse
 from django.shortcuts import render
 from functionality.forms import ContactForm
@@ -81,11 +81,11 @@ def get_total_minutes_listened(headers, time_range):
     # Convert milliseconds to minutes
     total_minutes = total_duration_ms / (1000 * 60)
 
-    return total_minutes
+    return f"{total_minutes:.0f}"
 
     total_ms = 0
     while True:
-        response = requests.get(url, headers=headers, params=params)
+        response = get(url, headers=headers, params=params)
         if response.status_code != 200:
             return JsonResponse({"error": "Failed to fetch data from Spotify API"}, status=400)
 
