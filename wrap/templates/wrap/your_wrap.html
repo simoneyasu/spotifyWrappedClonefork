@@ -67,6 +67,42 @@
       left: 50%;
     }
 
+    #five {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: white url({% static 'wrap/images/marsBG.png' %});
+        background-size: cover;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        color: white;
+    }
+
+    .fiveContent {
+        padding-top: 20vh;
+    }
+
+    .fiveContent span {
+        opacity: 1;
+        animation: twinkle 3s infinite ease-in-out;
+        animation-delay: calc(0.1s * var(--i));
+    }
+
+    .fiveContent span:nth-child(1) { --i: 0;}
+    .fiveContent span:nth-child(2) { --i: 1;}
+    .fiveContent span:nth-child(3) { --i: 2;}
+    .fiveContent span:nth-child(4) { --i: 3;}
+    .fiveContent span:nth-child(5) { --i: 4;}
+    .fiveContent span:nth-child(6) { --i: 5;}
+    .fiveContent span:nth-child(7) { --i: 6;}
+    .fiveContent span:nth-child(8) { --i: 7;}
+    .fiveContent span:nth-child(9) { --i: 8;}
+    .fiveContent span:nth-child(10) { --i: 9;}
+
+
+
     #six {
         position: absolute;
         top: 0;
@@ -230,6 +266,16 @@
         background-size: 105%;
       }
     }
+
+    @keyframes twinkle {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -277,12 +323,24 @@
         </iframe>
 
   </div>
-  <div class="mySlides" id="five">Overall these Genres a Few Artists Have Made Their Impact
-          <iframe src="https://open.spotify.com/embed/track/{{ track_ids.4 }}"
-              width="300" height="80"
-              allowtransparency="true"
-              allow="encrypted-media">
-        </iframe>
+  <div class="mySlides" id="five">
+      <div class="fiveContent">
+          <span>Throughout </span>
+          <span>these </span>
+          <span>Genres </span>
+          <span>a </span>
+          <span>Few </span>
+          <span>Artists </span>
+          <span>Have </span>
+          <span>Made </span>
+          <span>Their </span>
+          <span>Impact </span>
+      </div>
+      <iframe src="https://open.spotify.com/embed/track/{{ track_ids.4 }}"
+          width="300" height="80"
+          allowtransparency="true"
+          allow="encrypted-media">
+      </iframe>
   </div>
   <div class="mySlides" id="six">Your Favorite Artists Are:
     <ol>
@@ -342,7 +400,7 @@
   </div>
 
   <script>
-    setInterval(() => plusDivs(1), 10000);
+    setInterval(() => plusDivs(1), 5000);
 
     let slideIndex = 1;
     showDivs(slideIndex);
