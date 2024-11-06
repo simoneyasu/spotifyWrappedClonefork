@@ -1,10 +1,9 @@
 {% load static %}
-{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% trans "Your Wrap" %}</title>
+    <title>Your Wrap</title>
     <style>
     .mySlides {
       display: none;
@@ -294,7 +293,6 @@
 <body>
   <div class="mySlides" id="one">
     <div class='slideOneStar'>
-
         <img src='{% static 'wrap/images/StarS1.png' %}' class="star" alt="star">
       <div class='StarWord'>You Have Been a Part of Spotify For a Long Time</div>
         <iframe src="https://open.spotify.com/embed/track/{{ track_ids.0 }}"
@@ -338,6 +336,7 @@
         <img src='{% static 'wrap/images/shipSlide.png' %}' alt="ship">
     </div>
   </div>
+
   <div class="mySlides" id="five">
       <div class="fiveContent">
           <span>Throughout </span>
@@ -356,6 +355,7 @@
           allowtransparency="true"
           allow="encrypted-media">
       </iframe>
+
   </div>
   <div class="mySlides" id="six">Your Favorite Artists Are:
     <ol>
@@ -404,7 +404,7 @@
       <div class="lastContent">
           Return to Dashboard:
           <a href="{% url 'dashboard'%}">
-              <button type="button" class="returnBTN">{% trans "Return" %}</button>
+              <button type="button" class="returnBTN"> Return </button>
           </a>
       </div>
               <iframe src="https://open.spotify.com/embed/track/{{ track_ids.8 }}"

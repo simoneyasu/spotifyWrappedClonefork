@@ -1,28 +1,27 @@
 {% load static %}
-{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% trans "Profile" %}</title>
+    <title>Profile</title>
     <link rel="stylesheet" href="{% static 'register/styles.css' %}">
 </head>
 <body>
     <div class="container">
-        <h2>{% trans "Your Profile" %}</h2>
+        <h2>Your Profile</h2>
 
         <!-- Display user information -->
         <ul class="user-info">
-            <li><strong>{% trans "Username:" %}</strong> {{ user.username }}</li>
-            <li><strong>{% trans "Email:" %}</strong> {{ user.email }}</li>
+            <li><strong>Username:</strong> {{ user.username }}</li>
+            <li><strong>Email:</strong> {{ user.email }}</li>
         </ul>
 
         <!-- Button to Development Process page -->
-        <a href="{% url 'development_process' %}" class="btn btn-primary">{% trans "Development Process" %}</a>
+        <a href="{% url 'development_process' %}" class="btn btn-primary">Development Process</a>
 
         <!-- Link to delete account or other features -->
-        <a href="{% url 'delete_account' %}" class="btn btn-danger">{% trans "Delete My Account" %}</a>
+        <a href="{% url 'delete_account' %}" class="btn btn-danger">Delete My Account</a>
     </div>
 </body>
 </html>

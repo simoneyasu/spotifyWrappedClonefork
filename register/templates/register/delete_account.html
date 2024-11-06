@@ -1,23 +1,22 @@
 {% load static %}
-{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% trans "Delete Account" %}</title>
+    <title>Delete Account</title>
     <link rel="stylesheet" href="{% static 'register/styles.css' %}">
 </head>
 <body>
     <div class="container">
-        <h2>{% trans "Delete Your Account" %}</h2>
-        <p>{% trans "Are you sure you want to delete your account? This action cannot be undone." %}</p>
+        <h2>Delete Your Account</h2>
+        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
 
         <!-- Confirmation form -->
         <form method="POST">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger">{% trans "Delete My Account" %}</button>
-            <a href="{% url 'home' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+            <button type="submit" class="btn btn-danger">Delete My Account</button>
+            <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 </body>
