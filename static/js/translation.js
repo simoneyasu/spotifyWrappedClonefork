@@ -14,9 +14,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 async function translatePage(targetLanguage) {
   console.log(`Translating page to: ${targetLanguage}`);
-  const elementsToTranslate = document.querySelectorAll('#content h2, #content p, #content button, #content a, #content label');
 
-  const textArray = Array.from(elementsToTranslate).map(element => {
+  const elementsToTranslate = Array.from(document.querySelectorAll('#content h1, #content h2, #content h3, #content h4, #content h5, #content p, #content button, #content a, #content label'))
+                                    .filter(el => !el.closest('[data-no-translate]'));
+
+  const textArray = elementsToTranslate.map(element => {
     // Save original text if not already saved
     if (!element.getAttribute('data-original-text')) {
       element.setAttribute('data-original-text', element.innerText);
@@ -40,27 +42,27 @@ async function translatePage(targetLanguage) {
 
     if (data.translatedTexts) {
       elementsToTranslate.forEach((element, index) => {
-        // For <a> tags, only change the inner text, keep href
-        if (element.tagName === 'A') {
-          element.innerText = data.translatedTexts[index];
-        } else {
-          element.innerText = data.translatedTexts[index];
-        }
+        // Apply translated text while keeping links intact
+        element.innerText = data.translatedTexts[index];
       });
     } else {
       console.error("Translation error:", data.error);
-      // Restore original text if translation fails
-      elementsToTranslate.forEach((element) => {
-        element.innerText = element.getAttribute('data-original-text');
-      });
+      restoreOriginalText(elementsToTranslate);
     }
   } catch (error) {
     console.error("Translation failed:", error);
-    // Restore original text on network or translation error
-    elementsToTranslate.forEach((element) => {
-      element.innerText = element.getAttribute('data-original-text');
-    });
+    restoreOriginalText(elementsToTranslate);
   }
+}
+
+// Helper function to restore original text on error
+function restoreOriginalText(elements) {
+  elements.forEach((element) => {
+    const originalText = element.getAttribute('data-original-text');
+    if (originalText) {
+      element.innerText = originalText;
+    }
+  });
 }
 
 function getCookie(name) {
