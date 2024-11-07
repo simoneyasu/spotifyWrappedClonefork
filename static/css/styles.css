@@ -71,3 +71,16 @@ input {
 input::placeholder {
     color: #B3B3B3;
 }
+.btn-link {
+  background: none;
+  border: none;
+  color: #1DB954;  /* Spotify green */
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+  padding: 0;
+}
+
+.btn-link:hover {
+  color: #1ed760;  /* Hover effect for Spotify green */
+}

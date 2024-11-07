@@ -115,7 +115,7 @@ def fetch_wrap_data(request):
     request.session['wrap_data'] = wrap_data
 
     # redirect to screen that shows wrap1 data
-    return redirect('dashboard')
+    return redirect('view_wraps')
 
 def refresh_spotify_token(user_profile):
     if timezone.now() > user_profile.token_expires_at:
