@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="{% static 'register/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/translation.js' %}"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="content">
         <h2>Login</h2>
 
         <!-- Display form-wide non-field errors (e.g., incorrect username or password) -->
@@ -28,13 +29,13 @@
 
             <!-- Display form field errors -->
             <div class="form-group">
-                {{ form.username.label_tag }}
+                <label for="{{ form.username.id_for_label }}">Username</label>
                 {{ form.username }}
                 <small class="error-text">{{ form.username.errors }}</small>
             </div>
 
             <div class="form-group">
-                {{ form.password.label_tag }}
+                <label for="{{ form.password.id_for_label }}">Password</label>
                 {{ form.password }}
                 <small class="error-text">{{ form.password.errors }}</small>
             </div>
@@ -44,7 +45,9 @@
         </form>
 
         <!-- Forgot password link -->
-        <p><a href="{% url 'password_reset' %}">Forgot my password?</a></p>
+        <div class="forgot-password-container">
+          <a href="{% url 'password_reset' %}" class="btn-link">Forgot my password?</a>
+        </div>
 
         <!-- "Don't have an account" button -->
         <div class="signup-container">
