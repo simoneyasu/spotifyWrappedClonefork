@@ -9,10 +9,16 @@
     <script src="{% static 'js/translation.js' %}"></script>
 </head>
 <body>
+    <div class="top-left">
+        <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+    </div>
+
+    <div   class="top-left-below">
+        <a href="{% url 'profile' %}" class="btn btn-primary">Go to Profile</a>
+    </div>
+
     <div class="container" id="content">
-
         <h1>Your Spotify Wraps</h1>
-
         {% if no_wraps %}
             <p>No Wrap data available. Please listen to some music to generate your Spotify Wrap!</p>
         {% else %}
@@ -26,7 +32,6 @@
                 {% endfor %}
             </ul>
         {% endif %}
-
     </div>
 </body>
 </html>
