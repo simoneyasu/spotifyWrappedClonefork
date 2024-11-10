@@ -1,7 +1,13 @@
 from django.http import JsonResponse
 from deep_translator import GoogleTranslator
 import json
+'''
+Uses Google Translate API to translate entire web application
 
+param: HTTPRequest
+
+return: JSONResponse including the translated text
+'''
 def translate_text(request):
     if request.method == 'POST':
         data = json.loads(request.body)
