@@ -16,6 +16,13 @@ import openai
 
 # Create your views here.
 
+'''
+Allows users to register for an account
+
+args: request (HttpRequest): The HTTP request object
+
+returns: HttpResponse: Renders the registration page or redirects to login
+'''
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -31,6 +38,13 @@ def register(request):
 
     return render(request, 'register/register.html', {'form': form})
 
+'''
+Allows users to log into their account
+
+Args: request (HttpRequest): The HTTP request object
+
+Returns: HttpResponse: Renders the login page or redirects to home
+'''
 def login_view(request):
     if request.method == 'POST':
         form = CustomAuthenticationForm(request, data=request.POST)
@@ -42,6 +56,13 @@ def login_view(request):
         form = CustomAuthenticationForm()
     return render(request, 'register/login.html', {'form': form})
 
+'''
+Allows users to log into their account
+
+args: request (HttpRequest): The HTTP request object
+
+returns: HttpResponse: Renders account deletion page or redirects to login
+'''
 @login_required
 def delete_account(request):
     if request.method == 'POST':
@@ -52,16 +73,36 @@ def delete_account(request):
         return redirect('login')  # Redirect to login or homepage after deletion
     return render(request, 'register/delete_account.html')
 
+'''
+Allows users to view their profile. Shows their email and password
+
+args: request (HttpRequest): The HTTP request object
+
+returns: HttpResponse: Renders the profile page
+'''
 @login_required
 def profile(request):
     return render(request, 'register/profile.html', {
         'user': request.user  # Pass the current user to the template
     })
 
+'''
+Brings to home page
+
+args: request (HttpRequest): The HTTP request object
+
+returns: HttpResponse: Renders the home page
+'''
 def home(request):
     return render(request, 'register/home.html')
 
+'''
+gets authorization code for an access token and refreshes token from Spotify
 
+args: code (str): Authorization code from Spotify
+
+returns: dict: Token data including access and refresh tokens
+'''
 def get_spotify_token(code):
     url = "https://accounts.spotify.com/api/token"
     data = {
@@ -74,7 +115,13 @@ def get_spotify_token(code):
     response = requests.post(url, data=data)
     return response.json()
 
+'''
+retrieves and stores Spotify tokens in session
 
+args: request (HttpRequest): The HTTP request object
+
+returns: HttpResponseRedirect: Redirects to fetch_wrap_data view
+'''
 def spotify_callback(request):
     code = request.GET.get('code')
     token_data = get_spotify_token(code)
@@ -86,17 +133,36 @@ def spotify_callback(request):
     # move to logic to get wrap1 data
     return redirect('fetch_wrap_data')
 
+'''
+landing page
 
+args: request (HttpRequest): The HTTP request object
+
+returns: HttpResponse: Renders the landing page
+'''
 def landing_view(request):
     return render(request, 'register/landing.html')
 
+'''
+allows users to log into their Spotify account
 
+args: request (HttpRequest): The HTTP request object.
+
+returns: HttpResponseRedirect: Redirects to Spotify authorization URL.
+'''
 def spotify_login(request):
     # Spotify OAuth URL creation
     spotify_auth_url = f"https://accounts.spotify.com/authorize?client_id={settings.SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri={settings.SPOTIFY_REDIRECT_URI}&scope=user-top-read"
 
     return redirect(spotify_auth_url)
 
+'''
+uses Spotify API to get data
+
+args: request (HttpRequest): The HTTP request object.
+
+returns: HttpResponseRedirect: Redirects to view_wraps page.
+'''
 @login_required
 def fetch_wrap_data(request):
     access_token = request.session.get('access_token')
@@ -117,6 +183,12 @@ def fetch_wrap_data(request):
     # redirect to screen that shows wrap1 data
     return redirect('view_wraps')
 
+
+'''
+Refreshes the Spotify access token if expired.
+
+args: user_profile (UserProfile): The user's profile containing tokens.
+'''
 def refresh_spotify_token(user_profile):
     if timezone.now() > user_profile.token_expires_at:
         url = "https://accounts.spotify.com/api/token"
