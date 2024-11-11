@@ -1,16 +1,15 @@
 {% load static %}
-{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% trans "Register" %}</title>
+    <title>Register</title>
     <link rel="stylesheet" href="{% static 'register/styles.css' %}">
 </head>
 <body>
     <div class="container">
-        <h2>{% trans "Register" %}</h2>
+        <h2>Register</h2>
 
         <!-- message for success or error -->
         {% if messages %}
@@ -51,10 +50,10 @@
             </div>
 
             <!-- Submit button -->
-            <button type="submit" class="btn btn-primary">{% trans "Register" %}</button>
+            <button type="submit" class="btn btn-primary">Register</button>
         </form>
 
-        <p>{% trans "Already have an account?" %} <a href="{% url 'login' %}">{% trans "Log in here" %}</a>.</p>
+        <p>Already have an account? <a href="{% url 'login' %}">Log in here</a>.</p>
     </div>
 </body>
 </html>

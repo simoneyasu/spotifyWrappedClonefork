@@ -4,13 +4,17 @@ from django.contrib.auth import login, get_user_model
 
 from spotifyWrappedClone.settings import redirect_uri
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
-from django.utils import timezone, translation
+from django.utils import timezone
 from django.conf import settings
 from .models import UserProfile
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-import urllib.parse
+from .models import SpotifyWrap
+
+import openai
+
+# Create your views here.
 
 def register(request):
     if request.method == 'POST':
@@ -73,20 +77,13 @@ def get_spotify_token(code):
 
 def spotify_callback(request):
     code = request.GET.get('code')
-
-    # Get the language from the state parameter
-    state = request.GET.get('state', 'en')
-    lang = urllib.parse.unquote_plus(state)
-    translation.activate(lang)
-    request.session['django_language'] = lang
-
     token_data = get_spotify_token(code)
 
-    # Store access_token & refresh_token in session
+    # access_token& refresh_token store at session
     request.session['access_token'] = token_data['access_token']
     request.session['refresh_token'] = token_data['refresh_token']
 
-    # Move to logic to get wrap1 data
+    # move to logic to get wrap1 data
     return redirect('fetch_wrap_data')
 
 
@@ -95,28 +92,13 @@ def landing_view(request):
 
 
 def spotify_login(request):
-    # Get the language preference from the session, default to 'en' if not set
-    lang = request.session.get('django_language', 'en')
-
-    # URL-encode the language to ensure it's safe to include in a URL
-    state = urllib.parse.quote_plus(lang)
-
     # Spotify OAuth URL creation
-    spotify_auth_url = (
-        f"https://accounts.spotify.com/authorize"
-        f"?client_id={settings.SPOTIFY_CLIENT_ID}"
-        f"&response_type=code"
-        f"&redirect_uri={settings.SPOTIFY_REDIRECT_URI}"
-        f"&scope=user-top-read"
-        f"&state={state}"
-    )
+    spotify_auth_url = f"https://accounts.spotify.com/authorize?client_id={settings.SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri={settings.SPOTIFY_REDIRECT_URI}&scope=user-top-read"
+
     return redirect(spotify_auth_url)
 
 @login_required
 def fetch_wrap_data(request):
-    lang = request.session.get('django_language', 'en')
-    translation.activate(lang)
-
     access_token = request.session.get('access_token')
     if not access_token:
         return redirect('spotify_login') # access_token(X) -> login
@@ -149,9 +131,3 @@ def refresh_spotify_token(user_profile):
         user_profile.access_token = token_data['access_token']
         user_profile.token_expires_at = timezone.now() + timezone.timedelta(seconds=token_data['expires_in'])
         user_profile.save()
-
-def set_language(request):
-    lang = request.POST.get('language', 'en')
-    translation.activate(lang)
-    request.session['django_language'] = lang
-    return redirect(request.META.get('HTTP_REFERER', '/'))

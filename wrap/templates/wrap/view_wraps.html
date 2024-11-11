@@ -1,23 +1,22 @@
-{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% trans "Your Spotify Wraps" %}</title>
+    <title>Your Spotify Wraps</title>
 </head>
 <body>
 
-    <h1>{% trans "Your Spotify Wraps" %}</h1>
+    <h1>Your Spotify Wraps</h1>
     {% if no_wraps %}
-        <p>{% trans "No Wrap data available. Please listen to some music to generate your Spotify Wrap!" %}</p>
+        <p>No Wrap data available. Please listen to some music to generate your Spotify Wrap!</p>
     {% else %}
     <ul>
         {% for wrap in wraps %}
             <li>
-                <a href="{% url 'wrap_detail' wrap.id %}">{{ wrap.year }} {% trans "Wrap" %}</a>
-                | <a href="{% url 'delete_wrap' wrap.id %}">{% trans "Delete" %}</a>
-                | <a href="{% url 'analyze_wrap' wrap.id %}">{% trans "Analyze" %}</a>
+                <a href="{% url 'wrap_detail' wrap.id %}">{{ wrap.year }} Wrap</a>
+                | <a href="{% url 'delete_wrap' wrap.id %}">Delete</a>
+                | <a href="{% url 'analyze_wrap' wrap.id %}">Analyze</a>
             </li>
         {% endfor %}
     </ul>
