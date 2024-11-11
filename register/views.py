@@ -184,7 +184,7 @@ def fetch_wrap_data(request):
     request.session['wrap_data'] = wrap_data
 
     # redirect to screen that shows wrap1 data
-    return redirect('view_wraps')
+    return redirect('dashboard')
 
 
 '''
