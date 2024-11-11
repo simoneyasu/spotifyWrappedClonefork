@@ -11,8 +11,9 @@ from register.models import SpotifyWrap
 dashboard of wraps. Shows buttons to create/view wraps
 
 '''
+@login_required
 def dashboard(request):
-    return render(request, 'wrap/dashboard.html')
+    return render(request, 'wrap/dashboard.html', {'user' : request.user})
 
 '''
 
@@ -89,6 +90,10 @@ def analyze_wrap(request, wrap_id):
 
     return render(request, 'wrap/analyze_wrap.html', {'description': description})
 
-def testwrap(request):
-    return render(request, 'wrap/your_wrap.html')
+'''
+
+Loads create wrap page
+
+'''
+
 
