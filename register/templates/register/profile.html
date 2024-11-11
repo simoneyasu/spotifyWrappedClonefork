@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" href="{% static 'register/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/translation.js' %}"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="content">
         <h2>Your Profile</h2>
 
         <!-- Display user information -->
@@ -22,6 +23,12 @@
 
         <!-- Link to delete account or other features -->
         <a href="{% url 'delete_account' %}" class="btn btn-danger">Delete My Account</a>
+
+        <!-- back to home button -->
+         <div class="middle-bottom">
+        <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+    </div>
+
     </div>
 </body>
 </html>

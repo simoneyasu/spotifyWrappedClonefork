@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="{% static 'register/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/translation.js' %}"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="content">
         <h2>Register</h2>
 
         <!-- message for success or error -->
@@ -53,7 +54,8 @@
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
 
-        <p>Already have an account? <a href="{% url 'login' %}">Log in here</a>.</p>
+        <p>Already have an account?</p>
+        <a href="{% url 'login' %}" class="btn-link">Log in here</a>
     </div>
 </body>
 </html>

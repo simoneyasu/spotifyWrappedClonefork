@@ -11,8 +11,14 @@ from django.http import HttpResponse
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib import messages
 
+'''
+gets user data (top tracks, top artist, top genres, and total listened time)
 
-def get_User_Data(access_token, time_range):
+args: access_token (str): Spotify API access token. time_range (str): Time range for data (e.g., short, medium, long-term)
+
+returns: dict: Dictionary containing top tracks, artists, genres, and total minutes listened
+'''
+def get_User_Data(access_token, time_range = 'long_term'):
     headers = {
         'Authorization': f'Bearer {access_token}',
         'Content-Type': 'application/json'
@@ -43,16 +49,30 @@ def get_User_Data(access_token, time_range):
             "top_genres":top_genres,
             "total_mins_listened":total_mins_listened}
 
+'''
+gets top genres from a list of artists
+
+args: artists (list): List of artist data containing genres
+
+returns: list: List of top genres and their counts
+'''
 def get_top_genres(artists):
     all_genres = [genre for artist in artists for genre in artist['genres']]
     genre_counts = Counter(all_genres)
     top_genres = genre_counts.most_common(5)  # Get top 5 genres
     return [{"genre": genre, "count": count} for genre, count in top_genres]
 
+'''
+gets total minutes listened for a user
+
+args: headers (dict): Headers with authorization info for Spotify API
+
+returns: str: Total minutes listened, rounded to the nearest integer
+'''
 
 
 def get_total_minutes_listened(headers, time_range):
-    # Spotify API endpoint for recently played tracks
+    # Spotify API endpoint for top tracks
     url = "https://api.spotify.com/v1/me/top/tracks"
     params = {
         "time_range": time_range,  # Short, medium, or long-term time range
@@ -61,49 +81,34 @@ def get_total_minutes_listened(headers, time_range):
 
     total_duration_ms = 0
     next_url = url
-    request_count = 0  # To track the number of requests made
+    request_count = 0  # Track the number of requests made
     max_requests = 15
 
-    while next_url and request_count < max_requests:  # Failsafe: Stop after max_requests
+    while next_url and request_count < max_requests:
         response = requests.get(next_url, headers=headers, params=params)
         if response.status_code != 200:
             raise Exception(f"Error fetching data from Spotify API: {response.status_code}")
 
         data = response.json()
 
-        # Sum up the durations of tracks (in milliseconds)
-        total_duration_ms += sum(track['duration_ms'] for track in data['items'])
+        # Sum up durations of tracks in milliseconds
+        total_duration_ms += sum(track['duration_ms'] for track in data.get('items', []))
 
-        # If there is more data, continue paginating
-        next_url = data.get('next')  # This provides the URL for the next page of data
+        # Continue paginating if more data is available
+        next_url = data.get('next')
         request_count += 1  # Increment the request counter
 
     # Convert milliseconds to minutes
     total_minutes = total_duration_ms / (1000 * 60)
 
-    return f"{total_minutes:.0f}"
-
-    total_ms = 0
-    while True:
-        response = get(url, headers=headers, params=params)
-        if response.status_code != 200:
-            return JsonResponse({"error": "Failed to fetch data from Spotify API"}, status=400)
-
-        data = response.json()
-        items = data.get("items", [])
-
-        if not items:
-            break
-
-        for item in items:
-            total_ms += item["track"]["duration_ms"]
-
-        # Update the 'after' parameter for the next request
-        params["after"] = items[-1]["played_at"]
-
-    total_minutes = total_ms / (1000 * 60)  # Convert milliseconds to minutes
     return round(total_minutes)
+'''
+contact form to send email (forget my password & contact developers)
 
+args: request (HttpRequest): HTTP request object containing form data
+
+returns: HttpResponse: Renders contact form page with success or error messages
+'''
 def contact_form(request):
     form = ContactForm()
     if request.method == "POST":
@@ -130,7 +135,15 @@ def contact_form(request):
 
     return render(request, 'functionality/development_process.html', {'form': form})
 
+'''
+gets random tracks
 
+args:   headers (dict): Headers with authorization info for Spotify API
+        limit (int): Number of tracks to retrieve (default is 20)
+        listSize (int): Number of random tracks to return (default is 5)
+
+returns: list: List of randomly selected tracks with name, artists, and URI
+'''
 def get_random_tracks(headers, limit=20, listSize=5):
 
     url = "https://api.spotify.com/v1/me/player/recently-played"
@@ -157,6 +170,14 @@ def get_random_tracks(headers, limit=20, listSize=5):
     else:
         print("Failed to retrieve recently played tracks:", response.status_code, response.text)
         return []
+
+'''
+gets random tacks and parses through them
+
+args: request (HttpRequest): HTTP request object
+
+returns: HttpResponse: Renders the wrap page with track IDs
+'''
 def random_track_parse(request):
     # Assuming random_tracks is a list of song URIs (like "spotify:track:<track_id>")
     random_tracks = get_random_tracks()  # Replace with your function to fetch random tracks

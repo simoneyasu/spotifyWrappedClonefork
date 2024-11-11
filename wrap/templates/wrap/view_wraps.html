@@ -1,25 +1,37 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Spotify Wraps</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/translation.js' %}"></script>
 </head>
 <body>
+    <div class="top-left">
+        <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+    </div>
 
-    <h1>Your Spotify Wraps</h1>
-    {% if no_wraps %}
-        <p>No Wrap data available. Please listen to some music to generate your Spotify Wrap!</p>
-    {% else %}
-    <ul>
-        {% for wrap in wraps %}
-            <li>
-                <a href="{% url 'wrap_detail' wrap.id %}">{{ wrap.year }} Wrap</a>
-                | <a href="{% url 'delete_wrap' wrap.id %}">Delete</a>
-                | <a href="{% url 'analyze_wrap' wrap.id %}">Analyze</a>
-            </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+    <div   class="top-left-below">
+        <a href="{% url 'profile' %}" class="btn btn-primary">Go to Profile</a>
+    </div>
+
+    <div class="container" id="content">
+        <h1>Your Spotify Wraps</h1>
+        {% if no_wraps %}
+            <p>No Wrap data available. Please listen to some music to generate your Spotify Wrap!</p>
+        {% else %}
+            <ul>
+                {% for wrap in wraps %}
+                    <li>
+                        <a href="{% url 'wrap_detail' wrap.id %}">{{ wrap.year }} Wrap</a>
+                        | <a href="{% url 'delete_wrap' wrap.id %}">Delete</a>
+                        | <a href="{% url 'analyze_wrap' wrap.id %}">Analyze</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
 </body>
 </html>

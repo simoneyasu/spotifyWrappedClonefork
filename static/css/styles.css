@@ -71,3 +71,37 @@ input {
 input::placeholder {
     color: #B3B3B3;
 }
+.btn-link {
+  background: none;
+  border: none;
+  color: #1DB954;  /* Spotify green */
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+  padding: 0;
+}
+
+.btn-link:hover {
+  color: #1ed760;  /* Hover effect for Spotify green */
+}
+
+/* for the "back to home" button in views_wrap.html */
+.top-left {
+    position: absolute;
+    top: 25px;
+    left: 15px;
+}
+
+/* for the "go to profile" button in views_wrap.html */
+.top-left-below {
+    position: absolute;
+    top: 70px;
+    left: 20px;
+}
+
+/* for back to home in profile.html */
+.middle-bottom {
+    position: absolute;
+    top: 520px;
+    right: 680px;
+}

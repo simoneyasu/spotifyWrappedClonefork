@@ -4,7 +4,8 @@
 
 <head>
   <title>Landing</title>
-  <link rel='stylesheet' href="{% static 'register/landing.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <script src="{% static 'js/translation.js' %}"></script>
 </head>
 
 <template>
@@ -16,15 +17,22 @@
 
 </div>
 <body>
-  <div class="text">
-    <h2> This website allows you to view your past music history through creative slide shows </h2>
-    <h2> If you do not have an account, register with the button below</h2>
-    <button class = "button" onclick="location.href='/register/register'"> Register </button>
-    <h2> If you have an account you can login with your username and password below</h2>
-    <button class = "button" onclick="location.href='/register/login'"> Login </button>
-  </div>
+
+<div class="text" id="content">
+  <h2>This website allows you to view your past music history through creative slide shows</h2>
+  <h2>If you do not have an account, register with the button below</h2>
+  <button class="button" onclick="location.href='/register/register'">Register</button>
+  <h2>If you have an account, you can login with your username and password below</h2>
+  <button class="button" onclick="location.href='/register/login'">Login</button>
+</div>
+
+<div class="language-buttons">
+  <button onclick="setLanguage('en')">English</button>
+  <button onclick="setLanguage('ko')">한국어</button>
+  <button onclick="setLanguage('es')">Español</button>
+  <button onclick="setLanguage('fr')">Français</button>
+  <button onclick="setLanguage('de')">Deutsch</button>
+</div>
 </body>
-
-
 
 </html>

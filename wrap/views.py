@@ -6,10 +6,19 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from register.models import SpotifyWrap
 
+'''
+
+dashboard of wraps. Shows buttons to create/view wraps
+
+'''
 def dashboard(request):
     return render(request, 'wrap/dashboard.html')
 
+'''
 
+view your wrap
+
+'''
 def your_wrap(request):
     access_token = request.session.get('access_token', None)
     if not access_token:
@@ -22,17 +31,32 @@ def your_wrap(request):
     # Pass user data to the template
     return render(request, 'wrap/your_wrap.html', user_data)
 
+'''
+
+view your wrap
+
+'''
 @login_required
 def view_wraps(request):
     wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-year')
     no_wraps = not wraps.exists()
     return render(request, 'wrap/view_wraps.html', {'wraps': wraps, 'no_wraps': no_wraps})
 
+'''
+
+shows the details of a wrap
+
+'''
 @login_required
 def wrap_detail(request, wrap_id):
     wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
     return render(request, 'wrap/wrap_detail.html', {'wrap': wrap})
 
+'''
+
+Gives user ability to delete a wrap
+
+'''
 @login_required
 def delete_wrap(request, wrap_id):
     wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
@@ -41,13 +65,19 @@ def delete_wrap(request, wrap_id):
 
 openai.api_key = settings.OPENAI_API_KEY
 
+
+'''
+
+Uses ChatGPT to analyze 
+
+'''
 @login_required
 def analyze_wrap(request, wrap_id):
     wrap = SpotifyWrap.objects.filter(id=wrap_id, user=request.user).first()
     if not wrap:
         return render(request, 'wrap/analyze_wrap.html', {'error': "No Wrap data available for analysis."})
 
-    prompt = f"Describe the characteristics of people who listen to {wrap.year} Wrap."
+    prompt = f"Based on my music taste from {wrap.year}, describe how someone with similar taste might dress, act, or think."
 
     response = openai.ChatCompletion.create(
         model="o1-preview",

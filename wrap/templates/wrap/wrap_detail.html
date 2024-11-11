@@ -1,4 +1,10 @@
-<h2>{{ wrap.year }} Spotify Wrap</h2>
-<pre>{{ wrap.data|safe }}</pre>
-<a href="{% url 'delete_wrap' wrap.id %}">Delete this wrap</a>
-<a href="{% url 'view_wraps' %}">Back to list</a>
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/translation.js' %}"></script>
+
+<div class="container" id="content">
+    <h2>{{ wrap.year }} Spotify Wrap</h2>
+    <pre>{{ wrap.data|safe }}</pre>
+    <a href="{% url 'delete_wrap' wrap.id %}">Delete this wrap</a>
+    <a href="{% url 'view_wraps' %}">Back to list</a>
+</div>
