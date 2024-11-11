@@ -67,6 +67,36 @@
       left: 50%;
     }
 
+    #two {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: white url({% static 'wrap/images/GalaxyBG.png' %});
+        background-size: cover;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        color: white;
+    }
+
+    .planets {
+      position: relative;
+      text-align: center;
+      font-size: 30px;
+    }
+
+    .planet {
+        animation: rotation 15s infinite linear;
+    }
+
+    .planetsContent {
+      position: absolute;
+      top: 46%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
     #three {
         position: absolute;
         top: 0;
@@ -275,6 +305,15 @@
       }
     }
 
+    @keyframes rotation {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
     @keyframes zoomIn1 {
       from {
         background-size: 100%;
@@ -305,9 +344,9 @@
   </style>
 </head>
 <body>
+
   <div class="mySlides" id="one">
     <div class='slideOneStar'>
-
         <img src='{% static 'wrap/images/StarS1.png' %}' class="star" alt="star">
       <div class='StarWord'>You Have Been a Part of Spotify For a Long Time</div>
         <iframe src="https://open.spotify.com/embed/track/{{ track_ids.0 }}"
@@ -315,19 +354,24 @@
               allowtransparency="true"
               allow="encrypted-media">
         </iframe>
-
     </div>
   </div>
 
-  <div class="mySlides" id="two">You have listened to:
-    <p>{{ total_mins_listened }} minutes</p>
+  <div class="mySlides" id="two">
+    <div class="planets">
+        <img src='{% static 'wrap/images/Planets.png' %}' alt="planets" class="planet">
+        <div class="planetsContent">
+            <p>You have listened to:</p>
+            <p>{{ total_mins_listened }} minutes</p>
               <iframe src="https://open.spotify.com/embed/track/{{ track_ids.1 }}"
               width="300" height="80"
               allowtransparency="true"
               allow="encrypted-media">
         </iframe>
-
+        </div>
+    </div>
   </div>
+
   <div class="mySlides" id="three">Over This Time You Have Listened to a Large Variety
           <iframe src="https://open.spotify.com/embed/track/{{ track_ids.2 }}"
               width="300" height="80"
@@ -335,6 +379,7 @@
               allow="encrypted-media">
         </iframe>
   </div>
+
   <div class="mySlides" id="four">Your Top Genres Are:
 
     <ol>
@@ -351,6 +396,7 @@
         <img src='{% static 'wrap/images/shipSlide.png' %}' alt="ship">
     </div>
   </div>
+
   <div class="mySlides" id="five">
       <div class="fiveContent">
           <span>Throughout </span>
@@ -370,6 +416,7 @@
           allow="encrypted-media">
       </iframe>
   </div>
+
   <div class="mySlides" id="six">Your Favorite Artists Are:
     <ol>
       {% for artist in top_artists %}
