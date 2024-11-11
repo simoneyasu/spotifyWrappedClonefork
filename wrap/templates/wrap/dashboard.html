@@ -12,7 +12,7 @@
     Wraps Dashboard
   </div>
   <div class="user">
-    User
+    {{ user.username }}
   </div>
 </div>
 
@@ -23,6 +23,9 @@
       <h2>Wrap Name</h2>
         <a href="{% url 'view_wraps' %}">
         <button type="button" class="viewBTN"> View </button>
+        </a>
+        <a href="{% url 'analyze_wrap' %}">
+        <button type="button" class="analBTN"> Analyze </button>
         </a>
     </div>
   </div>
