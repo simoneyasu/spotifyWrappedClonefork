@@ -18,7 +18,7 @@ args: access_token (str): Spotify API access token. time_range (str): Time range
 
 returns: dict: Dictionary containing top tracks, artists, genres, and total minutes listened
 '''
-def get_User_Data(access_token, time_range):
+def get_User_Data(access_token, time_range = 'long_term'):
     headers = {
         'Authorization': f'Bearer {access_token}',
         'Content-Type': 'application/json'
@@ -70,8 +70,10 @@ args: headers (dict): Headers with authorization info for Spotify API
 
 returns: str: Total minutes listened, rounded to the nearest integer
 '''
+
+
 def get_total_minutes_listened(headers, time_range):
-    # Spotify API endpoint for recently played tracks
+    # Spotify API endpoint for top tracks
     url = "https://api.spotify.com/v1/me/top/tracks"
     params = {
         "time_range": time_range,  # Short, medium, or long-term time range
@@ -80,47 +82,26 @@ def get_total_minutes_listened(headers, time_range):
 
     total_duration_ms = 0
     next_url = url
-    request_count = 0  # To track the number of requests made
+    request_count = 0  # Track the number of requests made
     max_requests = 15
 
-    while next_url and request_count < max_requests:  # Failsafe: Stop after max_requests
+    while next_url and request_count < max_requests:
         response = requests.get(next_url, headers=headers, params=params)
         if response.status_code != 200:
             raise Exception(f"Error fetching data from Spotify API: {response.status_code}")
 
         data = response.json()
 
-        # Sum up the durations of tracks (in milliseconds)
-        total_duration_ms += sum(track['duration_ms'] for track in data['items'])
+        # Sum up durations of tracks in milliseconds
+        total_duration_ms += sum(track['duration_ms'] for track in data.get('items', []))
 
-        # If there is more data, continue paginating
-        next_url = data.get('next')  # This provides the URL for the next page of data
+        # Continue paginating if more data is available
+        next_url = data.get('next')
         request_count += 1  # Increment the request counter
 
     # Convert milliseconds to minutes
     total_minutes = total_duration_ms / (1000 * 60)
 
-    return f"{total_minutes:.0f}"
-
-    total_ms = 0
-    while True:
-        response = get(url, headers=headers, params=params)
-        if response.status_code != 200:
-            return JsonResponse({"error": "Failed to fetch data from Spotify API"}, status=400)
-
-        data = response.json()
-        items = data.get("items", [])
-
-        if not items:
-            break
-
-        for item in items:
-            total_ms += item["track"]["duration_ms"]
-
-        # Update the 'after' parameter for the next request
-        params["after"] = items[-1]["played_at"]
-
-    total_minutes = total_ms / (1000 * 60)  # Convert milliseconds to minutes
     return round(total_minutes)
 '''
 contact form to send email (forget my password & contact developers)
