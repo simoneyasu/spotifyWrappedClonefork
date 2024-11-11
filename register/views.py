@@ -175,7 +175,10 @@ def fetch_wrap_data(request):
 
     # request wrap1 data using spotify api
     response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers)
+
+
     wrap_data = response.json()
+
 
     # store wrap1 data into session storage
     request.session['wrap_data'] = wrap_data
