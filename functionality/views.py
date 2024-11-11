@@ -62,7 +62,6 @@ def get_top_genres(artists):
     top_genres = genre_counts.most_common(5)  # Get top 5 genres
     return [{"genre": genre, "count": count} for genre, count in top_genres]
 
-
 '''
 gets total minutes listened for a user
 
