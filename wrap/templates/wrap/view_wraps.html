@@ -25,13 +25,17 @@
             <ul>
                 {% for wrap in wraps %}
                     <li>
-                        <a href="{% url 'wrap_detail' wrap.id %}">{{ wrap.year }} Wrap</a>
-                        | <a href="{% url 'delete_wrap' wrap.id %}">Delete</a>
-                        | <a href="{% url 'analyze_wrap' wrap.id %}">Analyze</a>
+                        <a href="{% url 'your_wrap' wrap.wrap_id %}">{{ wrap.name }}</a>
+                        <a href="{% url 'wrap_detail' wrap.wrap_id %}">Details</a>
+                        | <a href="{% url 'delete_wrap' wrap.wrap_id %}">Delete</a>
+                        | <a href="{% url 'analyze_wrap' wrap.wrap_id %}">Analyze</a>
                     </li>
                 {% endfor %}
             </ul>
         {% endif %}
     </div>
+    <a href="{% url 'create_wrap' %}">
+        <button class="createBTN"> Create </button>
+    </a>
 </body>
 </html>
