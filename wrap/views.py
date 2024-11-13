@@ -38,7 +38,6 @@ def your_wrap(request, wrap_id):
 
     term = time_range_mapping.get(spotify_wrap.time_range)
 
-    # Get user data
     user_data = get_User_Data(access_token, term)
 
     context = {
@@ -46,7 +45,6 @@ def your_wrap(request, wrap_id):
         'spotify_wrap': spotify_wrap
     }
 
-    # Pass user data to the template
     return render(request, 'wrap/your_wrap.html', context)
 
 '''
