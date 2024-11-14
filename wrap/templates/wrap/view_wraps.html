@@ -11,9 +11,6 @@
 <body>
     <div class="top-left">
         <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
-    </div>
-
-    <div   class="top-left-below">
         <a href="{% url 'profile' %}" class="btn btn-primary">Go to Profile</a>
     </div>
 
@@ -25,7 +22,7 @@
             <ul>
                 {% for wrap in wraps %}
                     <li>
-                        <a href="{% url 'your_wrap' wrap.wrap_id %}">{{ wrap.name }}</a>
+                        <a href="{% url 'your_wrap' wrap.wrap_id %}">{{ wrap.name }}</a> :
                         <a href="{% url 'wrap_detail' wrap.wrap_id %}">Details</a>
                         | <a href="{% url 'delete_wrap' wrap.wrap_id %}">Delete</a>
                         | <a href="{% url 'analyze_wrap' wrap.wrap_id %}">Analyze</a>
@@ -33,9 +30,10 @@
                 {% endfor %}
             </ul>
         {% endif %}
+        <a href="{% url 'create_wrap' %}">
+            <button class="createBTN"> Create </button>
+        </a>
     </div>
-    <a href="{% url 'create_wrap' %}">
-        <button class="createBTN"> Create </button>
-    </a>
+
 </body>
 </html>
