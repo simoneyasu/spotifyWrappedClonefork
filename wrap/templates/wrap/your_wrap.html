@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Your Wrap</title>
     <script src="{% static 'js/translation.js' %}"></script>
+    <link href='https://fonts.googleapis.com/css?family=Mountains of Christmas' rel='stylesheet'>
     <style>
     .mySlides {
       display: none;
@@ -43,6 +44,10 @@
         padding-top: 40vh;
     }
 
+    a {
+        text-decoration: none;
+    }
+
     #one {
         position: absolute;
         top: 0;
@@ -55,6 +60,7 @@
 }
 
     #oneC {
+        font-family: 'Mountains of Christmas';
         position: absolute;
         top: 0;
         left: 0;
@@ -62,7 +68,12 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        color: #c30022;
     }
+
+    .OneCcontent {
+        padding-top: 50vh;
+      }
 
     #oneH {
         position: absolute;
@@ -112,6 +123,7 @@
     }
 
     #twoC {
+        font-family: 'Mountains of Christmas';
         position: absolute;
         top: 0;
         left: 0;
@@ -120,6 +132,10 @@
         width: 100vw;
         height: 100vh;
     }
+
+    .TwoCcontent {
+        padding-top: 50vh;
+      }
 
     #twoH {
         position: absolute;
@@ -162,6 +178,7 @@
     }
 
     #threeC {
+        font-family: 'Mountains of Christmas';
         position: absolute;
         top: 0;
         left: 0;
@@ -169,6 +186,7 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        color: #036f3e;
     }
 
     #threeH {
@@ -195,6 +213,7 @@
     }
 
     #fourC {
+        font-family: 'Mountains of Christmas';
         position: absolute;
         top: 0;
         left: 0;
@@ -212,6 +231,7 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        color: #c30022
     }
 
     #five {
@@ -238,6 +258,7 @@
     }
 
     #fiveC {
+        font-family: 'Mountains of Christmas';
         position: absolute;
         top: 0;
         left: 0;
@@ -246,6 +267,10 @@
         width: 100vw;
         height: 100vh;
     }
+
+    .FiveCcontent {
+        padding-top: 50vh;
+      }
 
     .fiveContent {
         padding-top: 20vh;
@@ -284,6 +309,7 @@
     }
 
     #sixC {
+        font-family: 'Mountains of Christmas';
         position: absolute;
         top: 0;
         left: 0;
@@ -291,6 +317,22 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        text-align: left;
+    }
+
+    .SixCcontent {
+        padding-top: 30vh;
+        padding-left: 10vw;
+    }
+
+    .SixCcontent ol {
+        list-style-position: inside;
+        list-style-type: decimal;
+        text-align: left;
+    }
+
+    .SixCcontent ol li {
+        text-align: left;
     }
 
     #sixH {
@@ -324,6 +366,7 @@
     }
 
     #sevenC {
+        font-family: 'Mountains of Christmas';
         position: absolute;
         top: 0;
         left: 0;
@@ -331,6 +374,7 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        color: #c30022;
     }
 
     #sevenH {
@@ -364,6 +408,7 @@
     }
 
     #eightC {
+        font-family: 'Mountains of Christmas';
         position: absolute;
         top: 0;
         left: 0;
@@ -371,6 +416,7 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        color: #c30022;
     }
 
     #eightH {
@@ -443,6 +489,7 @@
     }
 
     #lastC {
+        font-family: 'Mountains of Christmas';
         position: absolute;
         top: 0;
         left: 0;
@@ -450,6 +497,7 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        color: #c30022;
     }
 
     #lastH {
@@ -480,6 +528,18 @@
         font-weight: 1000;
         display: block;
         margin-top: 10px;
+    }
+
+    .returnBTN_C {
+        background-color: #036f3e;
+        color: #c30022;
+        border: none;
+        border-radius: 35px;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        font-size: 20px;
+        font-weight: 1000;
+        display: block;
+        margin-top: 30px;
     }
 
     @keyframes arcMotion {
@@ -680,7 +740,9 @@
   </div>
   {% elif spotify_wrap.theme == "christmas" %}
       <div class="mySlides" id="oneC">
-            <p>You Have Been a Part of Spotify For a Long Time</p>
+        <div class="OneCcontent">
+            You Have Been a Part of Spotify For a Long Time
+        </div>
             <iframe src="https://open.spotify.com/embed/track/{{ track_ids.0 }}"
                   width="300" height="80"
                   allowtransparency="true"
@@ -689,8 +751,9 @@
       </div>
 
       <div class="mySlides" id="twoC">
-          <p>You have listened to:</p>
-          <p>{{ user_data.total_mins_listened }} minutes</p>
+        <div class="TwoCcontent">
+            You have listened to: <br>{{ user_data.total_mins_listened }} minutes
+        </div>
           <iframe src="https://open.spotify.com/embed/track/{{ track_ids.1 }}"
               width="300" height="80"
               allowtransparency="true"
@@ -698,7 +761,8 @@
           </iframe>
       </div>
 
-      <div class="mySlides" id="threeC">Over This Time You Have Listened to a Large Variety
+      <div class="mySlides" id="threeC">
+          <p>Over This Time You Have <br>Listened to a Large Variety</p>
               <iframe src="https://open.spotify.com/embed/track/{{ track_ids.2 }}"
                   width="300" height="80"
                   allowtransparency="true"
@@ -721,7 +785,9 @@
       </div>
 
       <div class="mySlides" id="fiveC">
-          <p>Through These Genres a Few Artists Have Made Their Impact</p>
+        <div class="FiveCcontent">
+            Through These Genres a Few Artists <br>Have Made Their Impact
+        </div>
           <iframe src="https://open.spotify.com/embed/track/{{ track_ids.4 }}"
               width="300" height="80"
               allowtransparency="true"
@@ -731,6 +797,19 @@
       </div>
 
       <div class="mySlides" id="sixC">
+        <div class="SixCcontent">
+            Your Favorite Artists Are:
+            <ol>
+              {% for artist in user_data.top_artists %}
+              <li>{{ artist }}</li>
+              {% endfor %}
+            </ol>
+            <iframe src="https://open.spotify.com/embed/track/{{ track_ids.5 }}"
+                  width="300" height="80"
+                  allowtransparency="true"
+                  allow="encrypted-media">
+            </iframe>
+        </div>
           <p>Your Favorite Artists Are: </p>
         <ol>
           {% for artist in user_data.top_artists %}
@@ -745,7 +824,7 @@
       </div>
 
       <div class="mySlides" id="sevenC">
-              <p>Now Here Are a Few Songs You Can't Stop Listening to:</p>
+              <p>Now Here Are a Few Songs <br>You Can't Stop Listening to:</p>
                   <iframe src="https://open.spotify.com/embed/track/{{ track_ids.6 }}"
                   width="300" height="80"
                   allowtransparency="true"
@@ -768,7 +847,7 @@
       <div class="mySlides" id="lastC">
           <p>Return to Dashboard:</p>
               <a href="{% url 'dashboard'%}">
-                  <button type="button" class="returnBTN"> Return </button>
+                  <button type="button" class="returnBTN_C"> Return </button>
               </a>
                   <iframe src="https://open.spotify.com/embed/track/{{ track_ids.8 }}"
                   width="300" height="80"
