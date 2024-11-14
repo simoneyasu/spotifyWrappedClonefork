@@ -6,6 +6,9 @@
     <title>Your Wrap</title>
     <script src="{% static 'js/translation.js' %}"></script>
     <link href='https://fonts.googleapis.com/css?family=Mountains of Christmas' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
     <style>
     .mySlides {
       display: none;
@@ -76,6 +79,7 @@
       }
 
     #oneH {
+        font-family: Creepster;
         position: absolute;
         top: 0;
         left: 0;
@@ -83,6 +87,7 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        color: #ff8b1e;
     }
 
     .slideOneStar {
@@ -138,6 +143,7 @@
       }
 
     #twoH {
+        font-family: Creepster;
         position: absolute;
         top: 0;
         left: 0;
@@ -145,6 +151,11 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        color: #ff8b1e;
+    }
+
+    .TwoHcontent {
+        padding-top: 48vh;
     }
 
     .planets {
@@ -190,6 +201,7 @@
     }
 
     #threeH {
+        font-family: Creepster;
         position: absolute;
         top: 0;
         left: 0;
@@ -197,6 +209,7 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        color: #ff8b1e;
     }
 
     #four {
@@ -224,6 +237,7 @@
     }
 
     #fourH {
+        font-family: Creepster;
         position: absolute;
         top: 0;
         left: 0;
@@ -231,7 +245,10 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
-        color: #c30022
+    }
+
+    .FourHcontent {
+        padding-top: 38vh;
     }
 
     #five {
@@ -248,6 +265,7 @@
     }
 
     #fiveH {
+        font-family: Creepster;
         position: absolute;
         top: 0;
         left: 0;
@@ -255,6 +273,7 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        color: #ff8b1e;
     }
 
     #fiveC {
@@ -336,6 +355,7 @@
     }
 
     #sixH {
+        font-family: Creepster;
         position: absolute;
         top: 0;
         left: 0;
@@ -343,6 +363,7 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        color: #ff8b1e;
     }
 
     .ship {
@@ -378,6 +399,7 @@
     }
 
     #sevenH {
+        font-family: Creepster;
         position: absolute;
         top: 0;
         left: 0;
@@ -385,6 +407,10 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+    }
+
+    .SevenHcontent {
+        padding-top: 50vh;
     }
 
     .sevenContent {
@@ -420,6 +446,7 @@
     }
 
     #eightH {
+        font-family: Creepster;
         position: absolute;
         top: 0;
         left: 0;
@@ -427,6 +454,11 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        color: #ff8b1e;
+    }
+
+    .EightHcontent {
+        padding-top: 38vh;
     }
 
     .eightContent {
@@ -501,6 +533,7 @@
     }
 
     #lastH {
+        font-family: Creepster;
         position: absolute;
         top: 0;
         left: 0;
@@ -508,6 +541,7 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        color: black;
     }
 
     .lastContent {
@@ -857,7 +891,7 @@
       </div>
   {% else %}
         <div class="mySlides" id="oneH">
-            <p>You Have Been a Part of Spotify For a Long Time</p>
+            <p>You Have Been a Part of<br> Spotify For a Long Time</p>
             <iframe src="https://open.spotify.com/embed/track/{{ track_ids.0 }}"
                   width="300" height="80"
                   allowtransparency="true"
@@ -866,7 +900,9 @@
       </div>
 
       <div class="mySlides" id="twoH">
-          <p>You have listened to: {{ user_data.total_mins_listened }} minutes</p>
+        <div class="TwoHcontent">
+            You have listened to:<br> {{ user_data.total_mins_listened }} minutes
+        </div>
           <iframe src="https://open.spotify.com/embed/track/{{ track_ids.1 }}"
               width="300" height="80"
               allowtransparency="true"
@@ -874,7 +910,8 @@
           </iframe>
       </div>
 
-      <div class="mySlides" id="threeH">Over This Time You Have Listened to a Large Variety
+      <div class="mySlides" id="threeH">
+          <p>Over This Time You Have<br> Listened to a Large Variety</p>
               <iframe src="https://open.spotify.com/embed/track/{{ track_ids.2 }}"
                   width="300" height="80"
                   allowtransparency="true"
@@ -883,12 +920,15 @@
       </div>
 
       <div class="mySlides" id="fourH">
-          <p>Top Genres Are:</p>
-        <ol>
-          {% for genre in user_data.top_genres %}
-              <li>{{ genre.genre }}</li>
-          {% endfor %}
-        </ol>
+        <div class="FourHcontent">
+            Top Genres Are:
+            <ol>
+              {% for genre in user_data.top_genres %}
+                  <li>{{ genre.genre }}</li>
+              {% endfor %}
+            </ol>
+        </div>
+
           <iframe src="https://open.spotify.com/embed/track/{{ track_ids.3 }}"
                   width="300" height="80"
                   allowtransparency="true"
@@ -897,7 +937,7 @@
       </div>
 
       <div class="mySlides" id="fiveH">
-          <p>Through These Genres a Few Artists Have Made Their Impact</p>
+          <p>Through These Genres a Few Artists<br> Have Made Their Impact</p>
           <iframe src="https://open.spotify.com/embed/track/{{ track_ids.4 }}"
               width="300" height="80"
               allowtransparency="true"
@@ -921,7 +961,9 @@
       </div>
 
       <div class="mySlides" id="sevenH">
-              <p>Now Here Are a Few Songs You Can't Stop Listening to:</p>
+        <div class="SevenHcontent">
+            Now Here Are a Few Songs You<br> Can't Stop Listening to:
+        </div>
                   <iframe src="https://open.spotify.com/embed/track/{{ track_ids.6 }}"
                   width="300" height="80"
                   allowtransparency="true"
@@ -930,10 +972,12 @@
       </div>
 
       <div class="mySlides" id="eightH">
-            <p>Your Top Songs Are:</p>
+        <div class="EightHcontent">
+            Your Top Songs Are:
             {% for track in user_data.top_tracks %}
                 <li>{{ track }}</li>
             {% endfor %}
+        </div>
               <iframe src="https://open.spotify.com/embed/track/{{ track_ids.7 }}"
                   width="300" height="80"
                   allowtransparency="true"
