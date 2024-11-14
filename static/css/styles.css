@@ -99,9 +99,10 @@ input::placeholder {
     left: 20px;
 }
 
-/* for back to home in profile.html */
 .middle-bottom {
+    display: grid;
+    place-items: center;
     position: absolute;
-    top: 520px;
-    right: 680px;
+    bottom: 20px; /* Optional for bottom positioning */
+    width: 100%;
 }
