@@ -103,6 +103,6 @@ input::placeholder {
     display: grid;
     place-items: center;
     position: absolute;
-    bottom: 20px; /* Optional for bottom positioning */
+    bottom: 20px;
     width: 100%;
 }
