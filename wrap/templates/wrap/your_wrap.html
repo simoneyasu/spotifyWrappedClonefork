@@ -566,7 +566,7 @@
         <img src='{% static 'wrap/images/Planets.png' %}' alt="planets" class="planet">
         <div class="planetsContent">
             You have listened to:
-            {{ total_mins_listened }} minutes
+            {{ user_data.total_mins_listened }} minutes
               <iframe src="https://open.spotify.com/embed/track/{{ track_ids.1 }}"
               width="300" height="80"
               allowtransparency="true"
@@ -587,7 +587,7 @@
   <div class="mySlides" id="four">Your Top Genres Are:
 
     <ol>
-      {% for genre in top_genres %}
+      {% for genre in user_data.top_genres %}
           <li>{{ genre.genre }}</li>
       {% endfor %}
     </ol>
@@ -624,7 +624,7 @@
 
   <div class="mySlides" id="six">Your Favorite Artists Are:
     <ol>
-      {% for artist in top_artists %}
+      {% for artist in user_data.top_artists %}
       <li>{{ artist }}</li>
       {% endfor %}
     </ol>
@@ -651,7 +651,7 @@
 
   <div class="mySlides" id="eight">
     <div class="track-list">
-        {% for track in top_tracks %}
+        {% for track in user_data.top_tracks %}
             <div class="track-item">{{ track }}</div>
         {% endfor %}
     </div>
@@ -690,7 +690,7 @@
 
       <div class="mySlides" id="twoC">
           <p>You have listened to:</p>
-          <p>{{ total_mins_listened }} minutes</p>
+          <p>{{ user_data.total_mins_listened }} minutes</p>
           <iframe src="https://open.spotify.com/embed/track/{{ track_ids.1 }}"
               width="300" height="80"
               allowtransparency="true"
@@ -709,7 +709,7 @@
       <div class="mySlides" id="fourC">
           <p>Top Genres Are:</p>
         <ol>
-          {% for genre in top_genres %}
+          {% for genre in user_data.top_genres %}
               <li>{{ genre.genre }}</li>
           {% endfor %}
         </ol>
@@ -733,7 +733,7 @@
       <div class="mySlides" id="sixC">
           <p>Your Favorite Artists Are: </p>
         <ol>
-          {% for artist in top_artists %}
+          {% for artist in user_data.top_artists %}
           <li>{{ artist }}</li>
           {% endfor %}
         </ol>
@@ -755,7 +755,7 @@
 
       <div class="mySlides" id="eightC">
             <p>Your Top Songs Are:</p>
-            {% for track in top_tracks %}
+            {% for track in user_data.top_tracks %}
                 <li>{{ track }}</li>
             {% endfor %}
               <iframe src="https://open.spotify.com/embed/track/{{ track_ids.7 }}"
@@ -787,7 +787,7 @@
       </div>
 
       <div class="mySlides" id="twoH">
-          <p>You have listened to: {{ total_mins_listened }} minutes</p>
+          <p>You have listened to: {{ user_data.total_mins_listened }} minutes</p>
           <iframe src="https://open.spotify.com/embed/track/{{ track_ids.1 }}"
               width="300" height="80"
               allowtransparency="true"
@@ -806,7 +806,7 @@
       <div class="mySlides" id="fourH">
           <p>Top Genres Are:</p>
         <ol>
-          {% for genre in top_genres %}
+          {% for genre in user_data.top_genres %}
               <li>{{ genre.genre }}</li>
           {% endfor %}
         </ol>
@@ -830,7 +830,7 @@
       <div class="mySlides" id="sixH">
           <p>Your Favorite Artists Are: </p>
         <ol>
-          {% for artist in top_artists %}
+          {% for artist in user_data.top_artists %}
             <li>{{ artist }}</li>
           {% endfor %}
         </ol>
@@ -852,7 +852,7 @@
 
       <div class="mySlides" id="eightH">
             <p>Your Top Songs Are:</p>
-            {% for track in top_tracks %}
+            {% for track in user_data.top_tracks %}
                 <li>{{ track }}</li>
             {% endfor %}
               <iframe src="https://open.spotify.com/embed/track/{{ track_ids.7 }}"
