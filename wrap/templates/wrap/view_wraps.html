@@ -8,8 +8,81 @@
     <title>Your Spotify Wraps</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <script src="{% static 'js/translation.js' %}"></script>
+    <style>
+        /* CSS to position the share buttons in the top-right corner */
+        .share-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .top-left, .top-left-below {
+            position: fixed;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .top-left {
+            top: 20px;
+        }
+
+        .top-left-below {
+            top: 70px; /* Positioned below the "Back to Home" button */
+        }
+    </style>
 </head>
 <body>
+
+    <!-- Share Buttons in Top Right -->
+    <div class="share-buttons">
+        <!-- Twitter Share Button -->
+        <button class="btn btn-primary" onclick="shareToTwitter()">
+            Share on Twitter
+        </button>
+
+        <!-- LinkedIn Share Button -->
+        <button class="btn btn-info" onclick="shareToLinkedIn()">
+            Share on LinkedIn
+        </button>
+    </div>
+
+    <script>
+        // Function to handle Twitter share (Placeholder)
+        function shareToTwitter() {
+            alert("Twitter sharing functionality coming soon!");
+        }
+
+        // Function to handle LinkedIn share (Placeholder)
+        function shareToLinkedIn() {
+            alert("LinkedIn sharing functionality coming soon!");
+        }
+
+        // Slideshow functionality
+        setInterval(() => plusDivs(1), 5000);
+
+        let slideIndex = 1;
+        showDivs(slideIndex);
+
+        function plusDivs(n) {
+            showDivs(slideIndex += n);
+        }
+
+        function showDivs(n) {
+            let i;
+            const x = document.getElementsByClassName("mySlides");
+            if (n <= x.length) {
+                for (i = 0; i < x.length; i++) {
+                    x[i].style.display = "none";
+                }
+                x[slideIndex - 1].style.display = "block";
+            }
+        }
+    </script>
+
+    <!-- Left-side Navigation Buttons -->
     <div class="top-left">
         <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
         <a href="{% url 'profile' %}" class="btn btn-primary">Go to Profile</a>

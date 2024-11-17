@@ -31,19 +31,19 @@
         .developer {
             margin-bottom: 20px;
         }
-        
+
         .developer h4 {
             margin-bottom: 5px;
             font-size: 1.2em;
             color: #1DB954;
         }
-        
+
         .developer p {
             margin: 0;
             color: #a0a0a0;
             font-size: 0.95em;
         }
-        
+
         .form-group input[type="text"],
         .form-group textarea {
             width: 100%;
@@ -54,7 +54,7 @@
             color: inherit;
             background-color: inherit;
         }
-        
+
         .form-actions {
             display: flex;
             justify-content: center;
@@ -91,7 +91,7 @@
 
     <div class="container" id="content">
         <h2>Our Team</h2>
-        
+
         <!-- our bios -->
         <div class="developer">
             <h4>Derrick Chen</h4>
@@ -122,11 +122,11 @@
         <h3>Send Us Your Feedback</h3>
         <form action="" method="POST">
             {% csrf_token %}
-        
+
             {% for hidden in form.hidden_fields %}
                 {{ hidden }}
             {% endfor %}
-        
+
             {% for field in form.visible_fields %}
                 <div class="form-group" data-no-translate>
                     {{ field.errors }}
@@ -134,7 +134,7 @@
                     <p>{{ field }}</p>
                 </div>
             {% endfor %}
-        
+
             <!-- buttons for reset and submit (contact developers) -->
             <div class="form-actions">
                 <button type="reset" class="btn btn-secondary">Reset</button>
