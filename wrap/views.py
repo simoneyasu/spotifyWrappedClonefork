@@ -1,8 +1,6 @@
-import uuid
-
 from django.shortcuts import render, redirect, get_object_or_404
 
-from functionality.views import get_User_Data
+from functionality.views import get_User_Data, get_random_tracks
 import openai
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -30,6 +28,15 @@ def your_wrap(request, wrap_id):
     if not access_token:
         return redirect('login')
 
+    headers = {
+        'Authorization': f'Bearer {access_token}',
+        'Content-Type': 'application/json'
+    }
+    # Get user data
+    user_data = get_User_Data(access_token, "medium_term")
+    random_tracks = get_random_tracks(headers)  # Call the method to get random tracks
+    track_ids = [track['uri'].split(':')[-1] for track in random_tracks]  # Extract track IDs
+
     time_range_mapping = {
         'small': 'short_term',
         'medium': 'medium_term',
@@ -42,7 +49,9 @@ def your_wrap(request, wrap_id):
 
     context = {
         'user_data': user_data,
-        'spotify_wrap': spotify_wrap
+        'spotify_wrap': spotify_wrap,
+        'track_ids': track_ids,
+        'token': access_token
     }
 
     return render(request, 'wrap/your_wrap.html', context)
