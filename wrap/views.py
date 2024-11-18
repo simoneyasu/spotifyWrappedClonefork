@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
-from functionality.views import get_User_Data
+from functionality.views import get_User_Data, get_random_tracks
 import openai
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -25,12 +25,22 @@ def your_wrap(request):
     if not access_token:
         return redirect('login')
 
-
+    headers = {
+        'Authorization': f'Bearer {access_token}',
+        'Content-Type': 'application/json'
+    }
     # Get user data
     user_data = get_User_Data(access_token, "medium_term")
+    random_tracks = get_random_tracks(headers)  # Call the method to get random tracks
+    track_ids = [track['uri'].split(':')[-1] for track in random_tracks]  # Extract track IDs
+
 
     # Pass user data to the template
-    return render(request, 'wrap/your_wrap.html', user_data)
+    return render(
+        request,
+        'wrap/your_wrap.html',
+        {**user_data, 'track_ids': track_ids, 'token': access_token}  # Merge user_data with track_ids directly
+    )
 
 '''
 

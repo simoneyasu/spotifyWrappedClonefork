@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, get_user_model
 
 
-from spotifyWrappedClone.settings import redirect_uri
+from spotifyWrappedClone.settings import redirect_uri, SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.utils import timezone
 from django.conf import settings
@@ -152,8 +152,12 @@ returns: HttpResponseRedirect: Redirects to Spotify authorization URL.
 '''
 def spotify_login(request):
     # Spotify OAuth URL creation
-    spotify_auth_url = f"https://accounts.spotify.com/authorize?client_id={settings.SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri={settings.SPOTIFY_REDIRECT_URI}&scope=user-top-read"
-
+    spotify_auth_url = (
+    f"https://accounts.spotify.com/authorize?response_type=code&"
+    f"client_id={SPOTIFY_CLIENT_ID}&"
+    f"redirect_uri={SPOTIFY_REDIRECT_URI}&"
+    f"scope=user-read-recently-played user-library-read user-top-read"
+)
     return redirect(spotify_auth_url)
 
 '''
