@@ -1,9 +1,12 @@
+import uuid
+
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from functionality.views import get_User_Data, get_random_tracks
+
+from functionality.views import get_User_Data
 import openai
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-
 from register.models import SpotifyWrap
 from django.http import JsonResponse
 import os
@@ -34,15 +37,6 @@ def your_wrap(request, wrap_id):
     if not access_token:
         return redirect('login')
 
-    headers = {
-        'Authorization': f'Bearer {access_token}',
-        'Content-Type': 'application/json'
-    }
-    # Get user data
-    user_data = get_User_Data(access_token, "medium_term")
-    random_tracks = get_random_tracks(headers)  # Call the method to get random tracks
-    track_ids = [track['uri'].split(':')[-1] for track in random_tracks]  # Extract track IDs
-
     time_range_mapping = {
         'small': 'short_term',
         'medium': 'medium_term',
@@ -55,9 +49,7 @@ def your_wrap(request, wrap_id):
 
     context = {
         'user_data': user_data,
-        'spotify_wrap': spotify_wrap,
-        'track_ids': track_ids,
-        'token': access_token
+        'spotify_wrap': spotify_wrap
     }
 
     return render(request, 'wrap/your_wrap.html', context)
@@ -69,7 +61,7 @@ View wrap
 '''
 @login_required
 def view_wraps(request):
-    wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-created_at')[:5]
+    wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-created_at')
     no_wraps = wraps.count() == 0
 
     share_urls = []
@@ -112,6 +104,7 @@ def wrap_detail(request, wrap_id):
 
     return render(request, 'wrap/wrap_detail.html', {'wrap': wrap})
 '''
+
 
 Gives user ability to delete a wrap
 
@@ -376,3 +369,4 @@ def fetch_linkedin_user_id(access_token):
     else:
         print(f"Failed to fetch LinkedIn user ID: {response.json()}")
         return None
+

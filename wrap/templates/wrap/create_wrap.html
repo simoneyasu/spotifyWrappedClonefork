@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <h1>Create Your Wrap</h1>
+    <div class="container">
+        <h1>Create Your Wrap</h1>
     <form method="post" action="{% url 'create_wrap' %}">
         {% csrf_token %}
-        
+
         <label for="wrap_name">What will you Wrap be named:</label>
         <input type="text" name="wrap_name" id="wrap_name" required>
 
@@ -30,5 +31,6 @@
 
         <button type="submit">Create Wrap</button>
     </form>
+    </div>
 </body>
 </html>

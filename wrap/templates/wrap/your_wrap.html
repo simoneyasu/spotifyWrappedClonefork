@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -18,12 +19,15 @@
     }
 
     body {
-      background-color: #121212;
-      color: white;
-      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-      text-align: center;
-      font-size: 36px;
-      font-weight: 100;
+        width: 1366px;
+        height: 768px;
+        overflow: hidden;
+        background-color: #121212;
+        color: white;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        text-align: center;
+        font-size: 36px;
+        font-weight: 100;
     }
 
     button {
@@ -215,6 +219,79 @@
         color: #ff8b1e;
     }
 
+    .arched-text {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 100%;
+        height: 59vh; /* Adjust as needed for the curve */
+        transform-origin: bottom center;
+        color: #6248a8;
+    }
+
+    .arched-text span {
+        display: inline-block;
+        position: absolute;
+        transform-origin: 0 600vh;
+    }
+    /* This took too long */
+    .arched-text span:nth-child(1) { transform: rotate(-6.8deg); }
+    .arched-text span:nth-child(2) { transform: rotate(-6.5deg); }
+    .arched-text span:nth-child(3) { transform: rotate(-6.25deg); }
+    .arched-text span:nth-child(4) { transform: rotate(-6deg); }
+    .arched-text span:nth-child(5) { transform: rotate(-5.75deg); }
+    .arched-text span:nth-child(6) { transform: rotate(-5.5deg); }
+    .arched-text span:nth-child(7) { transform: rotate(-5.25deg); }
+    .arched-text span:nth-child(8) { transform: rotate(-5deg); }
+    .arched-text span:nth-child(9) { transform: rotate(-4.75deg); }
+    .arched-text span:nth-child(10) { transform: rotate(-4.5deg); }
+    .arched-text span:nth-child(11) { transform: rotate(-4.25deg); }
+    .arched-text span:nth-child(12) { transform: rotate(-4deg); }
+    .arched-text span:nth-child(13) { transform: rotate(-3.75deg); }
+    .arched-text span:nth-child(14) { transform: rotate(-3.45deg); }
+    .arched-text span:nth-child(15) { transform: rotate(-3.25deg); }
+    .arched-text span:nth-child(16) { transform: rotate(-3deg); }
+    .arched-text span:nth-child(17) { transform: rotate(-2.75deg); }
+    .arched-text span:nth-child(18) { transform: rotate(-2.5deg); }
+    .arched-text span:nth-child(19) { transform: rotate(-2.25deg); }
+    .arched-text span:nth-child(20) { transform: rotate(-2deg); }
+    .arched-text span:nth-child(21) { transform: rotate(-1.75deg); }
+    .arched-text span:nth-child(22) { transform: rotate(-1.5deg); }
+    .arched-text span:nth-child(23) { transform: rotate(-1.25deg); }
+    .arched-text span:nth-child(24) { transform: rotate(-1deg); }
+    .arched-text span:nth-child(25) { transform: rotate(-0.75deg); }
+    .arched-text span:nth-child(26) { transform: rotate(-0.5deg); }
+    .arched-text span:nth-child(27) { transform: rotate(-0.25deg); }
+    .arched-text span:nth-child(28) { transform: rotate(0deg); }
+    .arched-text span:nth-child(29) { transform: rotate(0.25deg); }
+    .arched-text span:nth-child(30) { transform: rotate(0.5deg); }
+    .arched-text span:nth-child(31) { transform: rotate(0.75deg); }
+    .arched-text span:nth-child(32) { transform: rotate(1deg); }
+    .arched-text span:nth-child(33) { transform: rotate(1.25deg); }
+    .arched-text span:nth-child(34) { transform: rotate(1.5deg); }
+    .arched-text span:nth-child(35) { transform: rotate(1.75deg); }
+    .arched-text span:nth-child(36) { transform: rotate(2deg); }
+    .arched-text span:nth-child(37) { transform: rotate(2.25deg); }
+    .arched-text span:nth-child(38) { transform: rotate(2.5deg); }
+    .arched-text span:nth-child(39) { transform: rotate(2.75deg); }
+    .arched-text span:nth-child(40) { transform: rotate(3deg); }
+    .arched-text span:nth-child(41) { transform: rotate(3.25deg); }
+    .arched-text span:nth-child(42) { transform: rotate(3.5deg); }
+    .arched-text span:nth-child(43) { transform: rotate(3.75deg); }
+    .arched-text span:nth-child(44) { transform: rotate(4deg); }
+    .arched-text span:nth-child(45) { transform: rotate(4.25deg); }
+    .arched-text span:nth-child(46) { transform: rotate(4.5deg); }
+    .arched-text span:nth-child(47) { transform: rotate(4.75deg); }
+    .arched-text span:nth-child(48) { transform: rotate(5deg); }
+    .arched-text span:nth-child(49) { transform: rotate(5.25deg); }
+    .arched-text span:nth-child(50) { transform: rotate(5.5deg); }
+    .arched-text span:nth-child(51) { transform: rotate(5.75deg); }
+    .arched-text span:nth-child(52) { transform: rotate(6deg); }
+    .arched-text span:nth-child(53) { transform: rotate(6.25deg); }
+    .arched-text span:nth-child(54) { transform: rotate(6.5deg); }
+    .arched-text span:nth-child(55) { transform: rotate(6.75deg); }
+
     #four {
         position: absolute;
         top: 0;
@@ -248,6 +325,10 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+    }
+
+    .fourContent {
+        padding-top: 35vh;
     }
 
     .FourHcontent {
@@ -340,6 +421,10 @@
         width: 100vw;
         height: 100vh;
         text-align: left;
+    }
+
+    .sixContent {
+        padding-top: 35vh;
     }
 
     .SixCcontent {
@@ -474,7 +559,7 @@
     .track-list {
         position: relative;
         width: 100%;
-        height: 40vh;
+        height: 34vh;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -493,19 +578,19 @@
 
     /* Position each item along the arc */
     .track-item:nth-child(1) {
-        transform: rotate(-40deg);
+        transform: rotate(-45deg);
     }
     .track-item:nth-child(2) {
-        transform: rotate(-20deg);
+        transform: rotate(-23deg);
     }
     .track-item:nth-child(3) {
         transform: rotate(0deg);
     }
     .track-item:nth-child(4) {
-        transform: rotate(20deg);
+        transform: rotate(23deg);
     }
     .track-item:nth-child(5) {
-        transform: rotate(40deg);
+        transform: rotate(45deg);
     }
 
 
@@ -721,6 +806,7 @@
             <button onclick="uploadToTwitter('five')">Share on Twitter</button>
             <button onclick="uploadToLinkedIn('five')">Share on LinkedIn</button>
         </div>
+
     </div>
 
     <div class="mySlides" id="six">
@@ -768,6 +854,7 @@
             <button onclick="uploadToTwitter('eight')">Share on Twitter</button>
             <button onclick="uploadToLinkedIn('eight')">Share on LinkedIn</button>
         </div>
+
     </div>
 
     <div class="mySlides" id="last">
@@ -797,10 +884,12 @@
         </div>
     </div>
 
+
     <div class="mySlides" id="twoC">
         <div class="TwoCcontent">
             You have listened to: <br>{{ user_data.total_mins_listened }} minutes
         </div>
+
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
             <button onclick="downloadImage('twoC')">Download as Image</button>
@@ -819,9 +908,11 @@
         </div>
     </div>
 
+
     <div class="mySlides" id="fourC">
         <p>Top Genres Are:</p>
         <ol>
+
             {% for genre in user_data.top_genres %}
                 <li>{{ genre.genre }}</li>
             {% endfor %}
@@ -834,10 +925,12 @@
         </div>
     </div>
 
+
     <div class="mySlides" id="fiveC">
         <div class="FiveCcontent">
             Through These Genres a Few Artists <br>Have Made Their Impact
         </div>
+
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
             <button onclick="downloadImage('fiveC')">Download as Image</button>
@@ -845,6 +938,7 @@
             <button onclick="uploadToLinkedIn('fiveC')">Share on LinkedIn</button>
         </div>
     </div>
+
 
     <div class="mySlides" id="sixC">
         <div class="SixCcontent">
@@ -872,6 +966,7 @@
             <button onclick="uploadToLinkedIn('sevenC')">Share on LinkedIn</button>
         </div>
     </div>
+
 
     <div class="mySlides" id="eightC">
         <p>Your Top Songs Are:</p>
@@ -911,10 +1006,12 @@
         </div>
     </div>
 
+
     <div class="mySlides" id="twoH">
         <div class="TwoHcontent">
             You have listened to:<br> {{ user_data.total_mins_listened }} minutes
         </div>
+
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
             <button onclick="downloadImage('twoH')">Download as Image</button>
@@ -933,13 +1030,16 @@
         </div>
     </div>
 
+
     <div class="mySlides" id="fourH">
         <div class="FourHcontent">
             Top Genres Are:
             <ol>
+
                 {% for genre in user_data.top_genres %}
                     <li>{{ genre.genre }}</li>
                 {% endfor %}
+
             </ol>
         </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
@@ -960,6 +1060,7 @@
         </div>
     </div>
 
+
     <div class="mySlides" id="sixH">
         <p>Your Favorite Artists Are:</p>
         <ol>
@@ -975,10 +1076,12 @@
         </div>
     </div>
 
+
     <div class="mySlides" id="sevenH">
         <div class="SevenHcontent">
             Now Here Are a Few Songs You<br> Can't Stop Listening to:
         </div>
+
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
             <button onclick="downloadImage('sevenH')">Download as Image</button>
@@ -986,6 +1089,7 @@
             <button onclick="uploadToLinkedIn('sevenH')">Share on LinkedIn</button>
         </div>
     </div>
+
 
     <div class="mySlides" id="eightH">
         <div class="EightHcontent">
@@ -996,6 +1100,7 @@
                 {% endfor %}
             </ol>
         </div>
+
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
             <button onclick="downloadImage('eightH')">Download as Image</button>
@@ -1020,84 +1125,8 @@
 
 
 
+
   <script>
-      const trackUris = [
-        'spotify:track:TRACK_ID_0', // Slide 1
-        'spotify:track:TRACK_ID_1', // Slide 1
-        'spotify:track:TRACK_ID_2', // Slide 2
-        'spotify:track:TRACK_ID_3', // Slide 3
-        'spotify:track:TRACK_ID_4', // Slide 4
-        'spotify:track:TRACK_ID_5', // Slide 5
-        'spotify:track:TRACK_ID_6', // Slide 6
-        'spotify:track:TRACK_ID_7', // Slide 7
-        'spotify:track:TRACK_ID_8', // Slide 8
-        'spotify:track:TRACK_ID_9'  // Slide 9
-    ];
-    let player; // Global player instance
-
-window.onSpotifyWebPlaybackSDKReady = () => {
-      const token = "{{ token }}";
-    player = new Spotify.Player({
-        name: 'Your Wrap Player',
-        getOAuthToken: cb => { cb(token); },
-        volume: 1
-    });
-    /** @type {Spotify.Player} */
-    const spotifyPlayer = player;
-
-    // Error handling
-    spotifyPlayer.addListener('initialization_error', ({ message }) => console.error(message));
-    spotifyPlayer.addListener('authentication_error', ({ message }) => console.error(message));
-    spotifyPlayer.addListener('account_error', ({ message }) => console.error(message));
-    spotifyPlayer.addListener('playback_error', ({ message }) => console.error(message));
-
-    // Ready event
-
-      spotifyPlayer.addListener('ready', data => {
-          console.log('The Web Playback SDK is ready:', data);
-          sessionStorage.setItem('spotifyDeviceId', device_id); // Save device ID
-
-      });
-
-      spotifyPlayer.addListener('player_state_changed', state => {
-          if (state) {
-              // Get the track name and URI
-              const trackName = state.track_window.current_track.name;
-              const trackUri = state.track_window.current_track.uri;
-
-              // Print the track name and URI to the console
-              console.log(`Now Playing: ${trackName} (URI: ${trackUri})`);
-          }
-      });
-
-      spotifyPlayer.connect(); // Connect to the player
-};
-function playTrack(uri) {
-    console.log('function called');
-    const deviceId = sessionStorage.getItem('spotifyDeviceId'); // Retrieve saved device ID
-    if (!deviceId) {
-        console.error('Spotify Player is not ready.');
-        return;
-    }
-
-    fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
-        method: 'PUT',
-        headers: {
-            'Authorization': "{{ token }}", // Replace with your valid token
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ uris: [uri] })
-    }).then(response => {
-        if (response.ok) {
-            console.log(`Playing track: ${uri}`);
-        } else {
-            console.error('Error starting playback:', response.statusText);
-        }
-    });
-}
-
-
-
     setInterval(() => plusDivs(1), 5000);
 
     let slideIndex = 1;
@@ -1108,22 +1137,14 @@ function playTrack(uri) {
     }
 
     function showDivs(n) {
-        console.log("show divs called");
-        const slides = document.getElementsByClassName("mySlides");
-        if (n > slides.length) slideIndex = 1;
-        if (n < 1) slideIndex = slides.length;
-
-        // Hide all slides
-        for (let i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
+      let i;
+      const x = document.getElementsByClassName("mySlides");
+      if (n <= x.length) {
+        for (i = 0; i < x.length; i++) {
+          x[i].style.display = "none";
         }
-
-        // Show the current slide
-        slides[slideIndex - 1].style.display = "block";
-
-        // Play the corresponding Spotify track
-        const trackUri = trackUris[slideIndex - 1];
-        playTrack(trackUri);
+        x[slideIndex - 1].style.display = "block";
+      }
     }
 
     function downloadImage(slideId) {
