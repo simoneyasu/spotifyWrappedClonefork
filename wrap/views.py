@@ -1,6 +1,4 @@
 import uuid
-
-from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from functionality.views import get_User_Data
@@ -164,6 +162,7 @@ def create(request):
         # Create the SpotifyWrap object
         wrap = SpotifyWrap.objects.create(
             user=user,
+            wrap_id=uuid.uuid4(),
             name=name,
             theme=theme,
             time_range=time_range,
