@@ -149,7 +149,6 @@ def contact_form(request):
                 messages.error(request, f"Failed to send message: {e}")
 
     return render(request, 'functionality/development_process.html', {'form': form})
-
 '''
 gets random tracks
 
