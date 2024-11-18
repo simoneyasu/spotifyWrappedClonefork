@@ -177,7 +177,6 @@ def get_random_tracks(headers, limit=20, listSize=20):
             }
             for item in data["items"]
         ]
-
         # Choose a random subset of tracks
         random_tracks = random.sample(recent_tracks, min(listSize, len(recent_tracks)))
         return random_tracks
