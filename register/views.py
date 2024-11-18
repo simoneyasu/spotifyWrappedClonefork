@@ -1,18 +1,15 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, get_user_model
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
 
 
 from spotifyWrappedClone.settings import redirect_uri, SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.utils import timezone
 from django.conf import settings
-from .models import UserProfile
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import SpotifyWrap
 
-import openai
 
 # Create your views here.
 
@@ -188,7 +185,7 @@ def fetch_wrap_data(request):
     request.session['wrap_data'] = wrap_data
 
     # redirect to screen that shows wrap1 data
-    return redirect('dashboard')
+    return redirect('view_wraps')
 
 
 '''

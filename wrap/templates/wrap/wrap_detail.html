@@ -1,10 +1,133 @@
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ wrap.name }} - Spotify Wrap Details</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <script src="{% static 'js/translation.js' %}"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
 
-<div class="container" id="content">
-    <h2>{{ wrap.year }} Spotify Wrap</h2>
-    <pre>{{ wrap.data|safe }}</pre>
-    <a href="{% url 'delete_wrap' wrap.id %}">Delete this wrap</a>
-    <a href="{% url 'view_wraps' %}">Back to list</a>
-</div>
+        .wrap-detail {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #1E1E1E;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .wrap-detail h1, .wrap-detail h2 {
+            text-align: center;
+            color: #1DB954;
+        }
+
+        .wrap-detail p, .wrap-detail ul {
+            margin: 15px 0;
+        }
+
+        .wrap-detail ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .wrap-detail li {
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .wrap-detail strong {
+            color: #1DB954;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .action-buttons a, .action-buttons form button {
+            text-decoration: none;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-buttons a {
+            background-color: #1DB954;
+        }
+
+        .action-buttons a:hover {
+            background-color: #17a74a;
+        }
+
+        .action-buttons form button {
+            background-color: #E50914;
+        }
+
+        .action-buttons form button:hover {
+            background-color: #c30710;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap-detail">
+        <h1>{{ wrap.name }} - Details</h1>
+        <p><strong>Theme:</strong> {{ wrap.theme }}</p>
+        <p><strong>Year:</strong> {{ wrap.year }}</p>
+        <p><strong>Created At:</strong> {{ wrap.created_at }}</p>
+
+        <h2>Top Tracks</h2>
+        <ul>
+            {% for track in wrap.data.tracks %}
+                <li>
+                    <strong>{{ track.name }}</strong> by {{ track.artist }}
+                    (Album: {{ track.album }}, Duration: {{ track.formatted_duration }})
+                </li>
+            {% empty %}
+                <li>No tracks available for this wrap.</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Top Artists</h2>
+        <ul>
+            {% for artist in wrap.data.artists %}
+                <li>
+                    <strong>{{ artist.name }}</strong> - {{ artist.genres|join:", " }}
+                    (Followers: {{ artist.followers }})
+                </li>
+            {% empty %}
+                <li>No artists available for this wrap.</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Audio Features</h2>
+        {% if wrap.data.audio_features %}
+            <p>Energy: {{ wrap.data.audio_features.energy }}</p>
+            <p>Tempo: {{ wrap.data.audio_features.tempo }} BPM</p>
+        {% else %}
+            <p>No audio features available for this wrap.</p>
+        {% endif %}
+
+        <div class="action-buttons">
+            <a href="{% url 'view_wraps' %}">Back to List</a>
+            <form action="{% url 'delete_wrap' wrap.wrap_id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Delete Wrap</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

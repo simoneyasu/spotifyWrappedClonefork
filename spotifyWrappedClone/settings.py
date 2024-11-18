@@ -31,9 +31,9 @@ EMAIL_FROM_DEFAULT = 'spotifyWrappedClone@gmail.com' # no clue if this works or 
 
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
-redirect_uri = ("http://localhost:8000/")
-token_url = ("https://accounts.spotify.com/api/token")
-api_url = ("https://api.spotify.com/v1/")
+redirect_uri = "http://localhost:8000/"
+token_url = "https://accounts.spotify.com/api/token"
+api_url = "https://api.spotify.com/v1/"
 
 # SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 # SENDGRID_SANDBOX_MODE_IN_DEBUG=False
@@ -176,3 +176,16 @@ SPOTIFY_REDIRECT_URI = os.getenv('SPOTIFY_REDIRECT_URI')
 LOGIN_URL = '/register/login/'
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+LINKEDIN_CLIENT_ID = os.getenv('LINKEDIN_CLIENT_ID')
+LINKEDIN_CLIENT_SECRET = os.getenv('LINKEDIN_CLIENT_SECRET')
+LINKEDIN_REDIRECT_URI = os.getenv('LINKEDIN_REDIRECT_URI')
+
+TWITTER_API_KEY = os.getenv("TWITTER_API_KEY")
+TWITTER_API_SECRET = os.getenv("TWITTER_API_SECRET")
+TWITTER_ACCESS_TOKEN = os.getenv("TWITTER_ACCESS_TOKEN")
+TWITTER_ACCESS_TOKEN_SECRET = os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
+TWITTER_CLIENT_ID = os.getenv("TWITTER_CLIENT_ID")
+TWITTER_CLIENT_SECRET = os.getenv("TWITTER_CLIENT_SECRET")
+TWITTER_REDIRECT_URI = os.getenv('TWITTER_REDIRECT_URI')
+BEARER_TOKEN = os.getenv("TWITTER_BEARER_TOKEN")
