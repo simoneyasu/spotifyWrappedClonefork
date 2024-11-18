@@ -15,12 +15,15 @@
     }
 
     body {
-      background-color: #121212;
-      color: white;
-      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-      text-align: center;
-      font-size: 36px;
-      font-weight: 100;
+        width: 1366px;
+        height: 768px;
+        overflow: hidden;
+        background-color: #121212;
+        color: white;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        text-align: center;
+        font-size: 36px;
+        font-weight: 100;
     }
 
     button {
@@ -247,6 +250,10 @@
         height: 100vh;
     }
 
+    .fourContent {
+        padding-top: 35vh;
+    }
+
     .FourHcontent {
         padding-top: 38vh;
     }
@@ -337,6 +344,10 @@
         width: 100vw;
         height: 100vh;
         text-align: left;
+    }
+
+    .sixContent {
+        padding-top: 35vh;
     }
 
     .SixCcontent {
@@ -471,7 +482,7 @@
     .track-list {
         position: relative;
         width: 100%;
-        height: 40vh;
+        height: 34vh;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -490,19 +501,19 @@
 
     /* Position each item along the arc */
     .track-item:nth-child(1) {
-        transform: rotate(-40deg);
+        transform: rotate(-45deg);
     }
     .track-item:nth-child(2) {
-        transform: rotate(-20deg);
+        transform: rotate(-23deg);
     }
     .track-item:nth-child(3) {
         transform: rotate(0deg);
     }
     .track-item:nth-child(4) {
-        transform: rotate(20deg);
+        transform: rotate(23deg);
     }
     .track-item:nth-child(5) {
-        transform: rotate(40deg);
+        transform: rotate(45deg);
     }
 
 
@@ -659,7 +670,7 @@
     <div class="planets">
         <img src='{% static 'wrap/images/Planets.png' %}' alt="planets" class="planet">
         <div class="planetsContent">
-            You have listened to:
+            You have listened to: <br>
             {{ user_data.total_mins_listened }} minutes
               <iframe src="https://open.spotify.com/embed/track/{{ track_ids.1 }}"
               width="300" height="80"
@@ -678,18 +689,20 @@
         </iframe>
   </div>
 
-  <div class="mySlides" id="four">Your Top Genres Are:
-
-    <ol>
-      {% for genre in user_data.top_genres %}
-          <li>{{ genre.genre }}</li>
-      {% endfor %}
-    </ol>
-      <iframe src="https://open.spotify.com/embed/track/{{ track_ids.3 }}"
-              width="300" height="80"
-              allowtransparency="true"
-              allow="encrypted-media">
-        </iframe>
+  <div class="mySlides" id="four">
+    <div class="fourContent">
+        Your Top Genres Are:
+        <ol>
+          {% for genre in user_data.top_genres %}
+              <li>{{ genre.genre|title }}</li>
+          {% endfor %}
+        </ol>
+          <iframe src="https://open.spotify.com/embed/track/{{ track_ids.3 }}"
+                  width="300" height="80"
+                  allowtransparency="true"
+                  allow="encrypted-media">
+            </iframe>
+    </div>
     <div class="ship">
         <img src='{% static 'wrap/images/shipSlide.png' %}' alt="ship">
     </div>
@@ -716,17 +729,21 @@
 
   </div>
 
-  <div class="mySlides" id="six">Your Favorite Artists Are:
-    <ol>
-      {% for artist in user_data.top_artists %}
-      <li>{{ artist }}</li>
-      {% endfor %}
-    </ol>
-          <iframe src="https://open.spotify.com/embed/track/{{ track_ids.5 }}"
-              width="300" height="80"
-              allowtransparency="true"
-              allow="encrypted-media">
+  <div class="mySlides" id="six">
+    <div class="sixContent">
+        Your Favorite Artists Are:
+        <ol>
+            {% for artist in user_data.top_artists %}
+                <li>{{ artist }}</li>
+            {% endfor %}
+        </ol>
+        <iframe src="https://open.spotify.com/embed/track/{{ track_ids.5 }}"
+                  width="300" height="80"
+                  allowtransparency="true"
+                  allow="encrypted-media">
         </iframe>
+    </div>
+
     <div class="ship">
         <img src='{% static 'wrap/images/shipSlide.png' %}' alt="ship">
     </div>
@@ -734,7 +751,7 @@
 
   <div class="mySlides" id="seven">
       <div class="sevenContent">
-          <p>Now Here Are a Few Songs You Can't Stop Listening to:</p>
+          Now Here Are a Few Songs You Can't Stop Listening to:
       </div>
               <iframe src="https://open.spotify.com/embed/track/{{ track_ids.6 }}"
               width="300" height="80"
@@ -808,7 +825,7 @@
           <p>Top Genres Are:</p>
         <ol>
           {% for genre in user_data.top_genres %}
-              <li>{{ genre.genre }}</li>
+              <li>{{ genre.genre|title }}</li>
           {% endfor %}
         </ol>
           <iframe src="https://open.spotify.com/embed/track/{{ track_ids.3 }}"
@@ -924,7 +941,7 @@
             Top Genres Are:
             <ol>
               {% for genre in user_data.top_genres %}
-                  <li>{{ genre.genre }}</li>
+                  <li>{{ genre.genre|title }}</li>
               {% endfor %}
             </ol>
         </div>
