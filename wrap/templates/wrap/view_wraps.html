@@ -7,15 +7,11 @@
     <title>Your Spotify Wraps</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <script src="{% static 'js/translation.js' %}"></script>
-    <style>
+        <style>
         /* CSS to position the share buttons in the top-right corner */
         .share-buttons {
-            position: fixed;
-            top: 20px;
-            right: 20px;
             display: flex;
             gap: 10px;
-            z-index: 1000;
         }
 
         .top-left, .top-left-below {
@@ -31,31 +27,34 @@
         .top-left-below {
             top: 70px; /* Positioned below the "Back to Home" button */
         }
+
+        .wrap-item {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .wrap-item button {
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
 
     <script>
-
-        // Slideshow functionality
-        setInterval(() => plusDivs(1), 5000);
-
-        let slideIndex = 1;
-        showDivs(slideIndex);
-
-        function plusDivs(n) {
-            showDivs(slideIndex += n);
+        // Function to handle Twitter share
+        function shareToTwitter(wrapName, url) {
+            const text = encodeURIComponent(`Check out my Spotify Wrap: ${wrapName}!`);
+            const encodedUrl = encodeURIComponent(window.location.origin + url);
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${text}&url=${encodedUrl}`;
+            window.open(twitterUrl, '_blank');
         }
 
-        function showDivs(n) {
-            let i;
-            const x = document.getElementsByClassName("mySlides");
-            if (n <= x.length) {
-                for (i = 0; i < x.length; i++) {
-                    x[i].style.display = "none";
-                }
-                x[slideIndex - 1].style.display = "block";
-            }
+        // Function to handle LinkedIn share
+        function shareToLinkedIn(url) {
+            const encodedUrl = encodeURIComponent(window.location.origin + url);
+            const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+            window.open(linkedInUrl, '_blank');
         }
     </script>
 
@@ -72,11 +71,21 @@
         {% else %}
             <ul>
                 {% for wrap in wraps %}
-                    <li>
-                        <a href="{% url 'your_wrap' wrap.wrap_id %}">{{ wrap.name }}</a> :
-                        <a href="{% url 'wrap_detail' wrap.wrap_id %}">Details</a>
-                        | <a href="{% url 'delete_wrap' wrap.wrap_id %}">Delete</a>
-                        | <a href="{% url 'analyze_wrap' wrap.wrap_id %}">Analyze</a>
+                    <li class="wrap-item">
+                        <span>
+                            <a href="{% url 'your_wrap' wrap.wrap_id %}">{{ wrap.name }}</a> :
+                            <a href="{% url 'wrap_detail' wrap.wrap_id %}">Details</a>
+                            | <a href="{% url 'delete_wrap' wrap.wrap_id %}">Delete</a>
+                            | <a href="{% url 'analyze_wrap' wrap.wrap_id %}">Analyze</a>
+                        </span>
+                        <div class="share-buttons">
+                            <button onclick="shareToTwitter('{{ wrap.name }}', '{% url 'your_wrap' wrap.wrap_id %}')">
+                                Share on Twitter
+                            </button>
+                            <button onclick="shareToLinkedIn('{% url 'your_wrap' wrap.wrap_id %}')">
+                                Share on LinkedIn
+                            </button>
+                        </div>
                     </li>
                 {% endfor %}
             </ul>
