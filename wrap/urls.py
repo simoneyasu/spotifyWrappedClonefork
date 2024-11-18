@@ -4,7 +4,7 @@ from wrap import views
 from register import views as register_views
 
 urlpatterns = [
-    path('dashboard/', views.view_wraps, name='dashboard'),
+    path('wraps/', views.view_wraps, name='view_wraps'),
     path('wrap/<uuid:wrap_id>/', views.your_wrap, name='your_wrap'),
     path('wrap_detail/<uuid:wrap_id>/', views.wrap_detail, name='wrap_detail'),
     path('wrap/<uuid:wrap_id>/delete/', views.delete_wrap, name='delete_wrap'),

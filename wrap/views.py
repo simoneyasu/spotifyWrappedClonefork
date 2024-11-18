@@ -85,7 +85,15 @@ def view_wraps(request):
         except Exception as e:
             print(f"Error building URL for wrap {wrap.name}: {e}")
 
+    if no_wraps:
+        return render(request, 'wrap/view_wraps.html', {
+            'wraps': wraps,
+            'no_wraps': no_wraps,
+            'message': 'You do not have any Spotify Wraps yet. Please listen to music to generate your wraps.'
+        })
+
     return render(request, 'wrap/view_wraps.html', {'wraps': wraps, 'no_wraps': no_wraps, 'share_urls': share_urls})
+
 
 '''
 
@@ -94,9 +102,15 @@ shows the details of a wrap
 '''
 @login_required
 def wrap_detail(request, wrap_id):
-    wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
-    return render(request, 'wrap/wrap_detail.html', {'wrap': wrap})
+    wrap = get_object_or_404(SpotifyWrap, wrap_id=wrap_id, user=request.user)
 
+    # Convert track durations from milliseconds to "minutes:seconds"
+    for track in wrap.data.get('tracks', []):
+        duration_ms = track.get('duration', 0)
+        minutes, seconds = divmod(duration_ms // 1000, 60)
+        track['formatted_duration'] = f"{minutes}:{seconds:02}"
+
+    return render(request, 'wrap/wrap_detail.html', {'wrap': wrap})
 '''
 
 Gives user ability to delete a wrap
@@ -104,11 +118,16 @@ Gives user ability to delete a wrap
 '''
 @login_required
 def delete_wrap(request, wrap_id):
-    wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
-    wrap.delete()
-    return redirect('view_wraps')
-
-openai.api_key = settings.OPENAI_API_KEY
+    if request.method == "POST":
+        try:
+            wrap = get_object_or_404(SpotifyWrap, wrap_id=wrap_id, user=request.user)
+            wrap.delete()
+            return redirect('view_wraps')
+        except Exception as e:
+            print(f"Error deleting wrap: {e}")
+            return redirect('view_wraps')
+    else:
+        return JsonResponse({"error": "Invalid request method"}, status=405)
 
 
 '''
@@ -116,6 +135,7 @@ openai.api_key = settings.OPENAI_API_KEY
 Uses ChatGPT to analyze 
 
 '''
+openai.api_key = settings.OPENAI_API_KEY
 @login_required
 def analyze_wrap(request, wrap_id):
     wrap = SpotifyWrap.objects.filter(id=wrap_id, user=request.user).first()
@@ -159,7 +179,7 @@ def create(request):
         )
 
         # Redirect to a page that shows the created wrap
-        return redirect('dashboard')
+        return redirect('view_wraps')
 
     return render(request, 'wrap/create_wrap.html')
 
@@ -248,11 +268,9 @@ def upload_to_twitter(request):
             return JsonResponse({"error": "No image data provided"}, status=400)
 
         try:
-            # Decode Base64 image
             header, encoded = image_data.split(",", 1)
             image_binary = base64.b64decode(encoded)
 
-            # OAuth1 인증
             auth = OAuth1(
                 os.getenv("TWITTER_API_KEY"),
                 os.getenv("TWITTER_API_SECRET"),
@@ -260,7 +278,6 @@ def upload_to_twitter(request):
                 os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
             )
 
-            # Step 1: Upload Media
             upload_url = "https://upload.twitter.com/1.1/media/upload.json"
             files = {"media": image_binary}
             upload_response = requests.post(upload_url, auth=auth, files=files)
@@ -268,7 +285,6 @@ def upload_to_twitter(request):
             if upload_response.status_code == 200:
                 media_id = upload_response.json().get("media_id_string")
 
-                # Step 2: Post Tweet
                 post_url = "https://api.twitter.com/1.1/statuses/update.json"
                 payload = {"status": text, "media_ids": media_id}
                 post_response = requests.post(post_url, auth=auth, data=payload)
@@ -299,17 +315,14 @@ def upload_to_linkedin(request):
         if not linkedin_access_token:
             return JsonResponse({"error": "LinkedIn access token is missing"}, status=401)
 
-        # LinkedIn 사용자 ID 가져오기
         user_id = fetch_linkedin_user_id(linkedin_access_token)
         if not user_id:
             return JsonResponse({"error": "Failed to fetch LinkedIn user ID"}, status=400)
 
         try:
-            # Decode Base64 image
             header, encoded = image_data.split(",", 1)
             image_binary = base64.b64decode(encoded)
 
-            # Step 1: Initialize Upload
             initialize_url = "https://api.linkedin.com/v2/assets?action=registerUpload"
             headers = {
                 "Authorization": f"Bearer {linkedin_access_token}",
@@ -329,13 +342,11 @@ def upload_to_linkedin(request):
             upload_url = init_response.json()["value"]["uploadUrl"]
             asset = init_response.json()["value"]["asset"]
 
-            # Step 2: Upload Image
             upload_response = requests.put(upload_url, headers=headers, data=image_binary)
 
             if upload_response.status_code != 201:
                 return JsonResponse({"error": "Failed to upload image"}, status=400)
 
-            # Step 3: Create Post
             post_url = "https://api.linkedin.com/v2/shares"
             post_payload = {
                 "content": {
