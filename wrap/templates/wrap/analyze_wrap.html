@@ -20,20 +20,45 @@
         </div>
     {% else %}
         <div>
-            <p>Sorry! Currently there is no analyze for this wrap</p>
+            <p>Sorry! Currently there is no analysis for this wrap.</p>
         </div>
     {% endif %}
 
     <div>
         <h3>Wrap Details</h3>
         <ul>
-
             <li><strong>Top Songs:</strong> {{ wrap.top_songs }}</li>
             <li><strong>Top Artist:</strong> {{ wrap.top_artists }}</li>
-
         </ul>
     </div>
 
+    <!-- social media -->
+    <div class="social-share">
+        <h3>Share Your Wrap</h3>
+
+        <!-- twitter share button -->
+        <a href="https://twitter.com/intent/tweet?text=Check out my Spotify Wrap!&url={{ request.build_absolute_uri }}" target="_blank" class="btn btn-primary">Share on Twitter</a>
+
+        <!-- LinkedIn -->
+         <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}" target="_blank" class="btn btn-secondary">Share on LinkedIn</a>
+    </div>
+
+    <script>
+    function copyLink() {
+        const wrapLink = document.getElementById("wrapLink").value;
+
+        // uses clipboard API to copy the text
+        navigator.clipboard.writeText(wrapLink).then(() => {
+            // shows confirmation message
+            const message = document.getElementById("copyMessage");
+            message.style.display = "block";
+        }).catch((err) => {
+            // error checking
+            console.error("Failed to copy: ", err);
+            alert("Your browser does not support automatic copying. Please copy manually.");
+        });
+    }
+</script>
 
 </div>
 
