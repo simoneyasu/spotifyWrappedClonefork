@@ -49,7 +49,9 @@ def your_wrap(request, wrap_id):
 
     context = {
         'user_data': user_data,
-        'spotify_wrap': spotify_wrap
+        'spotify_wrap': spotify_wrap,
+        'track_ids': track_ids,
+        'token': access_token
     }
 
     return render(request, 'wrap/your_wrap.html', context)

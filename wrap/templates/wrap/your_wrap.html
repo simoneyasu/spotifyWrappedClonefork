@@ -649,11 +649,8 @@
     <div class='slideOneStar'>
         <img src='{% static 'wrap/images/StarS1.png' %}' class="star" alt="star">
       <div class='StarWord'>You Have Been a Part of Spotify For a Long Time</div>
-        <iframe src="https://open.spotify.com/embed/track/{{ track_ids.0 }}"
-              width="300" height="80"
-              allowtransparency="true"
-              allow="encrypted-media">
-        </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
     </div>
   </div>
 
@@ -663,11 +660,8 @@
         <div class="planetsContent">
             You have listened to:
             {{ user_data.total_mins_listened }} minutes
-              <iframe src="https://open.spotify.com/embed/track/{{ track_ids.1 }}"
-              width="300" height="80"
-              allowtransparency="true"
-              allow="encrypted-media">
-        </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
         </div>
     </div>
   </div>
@@ -758,31 +752,22 @@
         <div class="OneCcontent">
             You Have Been a Part of Spotify For a Long Time
         </div>
-            <iframe src="https://open.spotify.com/embed/track/{{ track_ids.0 }}"
-                  width="300" height="80"
-                  allowtransparency="true"
-                  allow="encrypted-media">
-            </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
       </div>
 
       <div class="mySlides" id="twoC">
         <div class="TwoCcontent">
             You have listened to: <br>{{ user_data.total_mins_listened }} minutes
         </div>
-          <iframe src="https://open.spotify.com/embed/track/{{ track_ids.1 }}"
-              width="300" height="80"
-              allowtransparency="true"
-              allow="encrypted-media">
-          </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
       </div>
 
       <div class="mySlides" id="threeC">
           <p>Over This Time You Have <br>Listened to a Large Variety</p>
-              <iframe src="https://open.spotify.com/embed/track/{{ track_ids.2 }}"
-                  width="300" height="80"
-                  allowtransparency="true"
-                  allow="encrypted-media">
-            </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
       </div>
 
       <div class="mySlides" id="fourC">
@@ -792,22 +777,16 @@
               <li>{{ genre.genre }}</li>
           {% endfor %}
         </ol>
-          <iframe src="https://open.spotify.com/embed/track/{{ track_ids.3 }}"
-                  width="300" height="80"
-                  allowtransparency="true"
-                  allow="encrypted-media">
-            </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
       </div>
 
       <div class="mySlides" id="fiveC">
         <div class="FiveCcontent">
             Through These Genres a Few Artists <br>Have Made Their Impact
         </div>
-          <iframe src="https://open.spotify.com/embed/track/{{ track_ids.4 }}"
-              width="300" height="80"
-              allowtransparency="true"
-              allow="encrypted-media">
-          </iframe>
+   <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
 
       </div>
 
@@ -819,11 +798,8 @@
               <li>{{ artist }}</li>
               {% endfor %}
             </ol>
-            <iframe src="https://open.spotify.com/embed/track/{{ track_ids.5 }}"
-                  width="300" height="80"
-                  allowtransparency="true"
-                  allow="encrypted-media">
-            </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
         </div>
           <p>Your Favorite Artists Are: </p>
         <ol>
@@ -831,20 +807,14 @@
           <li>{{ artist }}</li>
           {% endfor %}
         </ol>
-              <iframe src="https://open.spotify.com/embed/track/{{ track_ids.5 }}"
-                  width="300" height="80"
-                  allowtransparency="true"
-                  allow="encrypted-media">
-            </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
       </div>
 
       <div class="mySlides" id="sevenC">
               <p>Now Here Are a Few Songs <br>You Can't Stop Listening to:</p>
-                  <iframe src="https://open.spotify.com/embed/track/{{ track_ids.6 }}"
-                  width="300" height="80"
-                  allowtransparency="true"
-                  allow="encrypted-media">
-            </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
       </div>
 
       <div class="mySlides" id="eightC">
@@ -852,11 +822,8 @@
             {% for track in user_data.top_tracks %}
                 <li>{{ track }}</li>
             {% endfor %}
-              <iframe src="https://open.spotify.com/embed/track/{{ track_ids.7 }}"
-                  width="300" height="80"
-                  allowtransparency="true"
-                  allow="encrypted-media">
-            </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
       </div>
 
       <div class="mySlides" id="lastC">
@@ -864,40 +831,28 @@
               <a href="{% url 'dashboard'%}">
                   <button type="button" class="returnBTN_C"> Return </button>
               </a>
-                  <iframe src="https://open.spotify.com/embed/track/{{ track_ids.8 }}"
-                  width="300" height="80"
-                  allowtransparency="true"
-                  allow="encrypted-media">
-            </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
       </div>
   {% else %}
         <div class="mySlides" id="oneH">
             <p>You Have Been a Part of<br> Spotify For a Long Time</p>
-            <iframe src="https://open.spotify.com/embed/track/{{ track_ids.0 }}"
-                  width="300" height="80"
-                  allowtransparency="true"
-                  allow="encrypted-media">
-            </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
       </div>
 
       <div class="mySlides" id="twoH">
         <div class="TwoHcontent">
             You have listened to:<br> {{ user_data.total_mins_listened }} minutes
         </div>
-          <iframe src="https://open.spotify.com/embed/track/{{ track_ids.1 }}"
-              width="300" height="80"
-              allowtransparency="true"
-              allow="encrypted-media">
-          </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
       </div>
 
       <div class="mySlides" id="threeH">
           <p>Over This Time You Have<br> Listened to a Large Variety</p>
-              <iframe src="https://open.spotify.com/embed/track/{{ track_ids.2 }}"
-                  width="300" height="80"
-                  allowtransparency="true"
-                  allow="encrypted-media">
-            </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
       </div>
 
       <div class="mySlides" id="fourH">
@@ -910,20 +865,14 @@
             </ol>
         </div>
 
-          <iframe src="https://open.spotify.com/embed/track/{{ track_ids.3 }}"
-                  width="300" height="80"
-                  allowtransparency="true"
-                  allow="encrypted-media">
-            </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
       </div>
 
       <div class="mySlides" id="fiveH">
           <p>Through These Genres a Few Artists<br> Have Made Their Impact</p>
-          <iframe src="https://open.spotify.com/embed/track/{{ track_ids.4 }}"
-              width="300" height="80"
-              allowtransparency="true"
-              allow="encrypted-media">
-          </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
 
       </div>
 
@@ -934,22 +883,16 @@
             <li>{{ artist }}</li>
           {% endfor %}
         </ol>
-              <iframe src="https://open.spotify.com/embed/track/{{ track_ids.5 }}"
-                  width="300" height="80"
-                  allowtransparency="true"
-                  allow="encrypted-media">
-            </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
       </div>
 
       <div class="mySlides" id="sevenH">
         <div class="SevenHcontent">
             Now Here Are a Few Songs You<br> Can't Stop Listening to:
         </div>
-                  <iframe src="https://open.spotify.com/embed/track/{{ track_ids.6 }}"
-                  width="300" height="80"
-                  allowtransparency="true"
-                  allow="encrypted-media">
-            </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
       </div>
 
       <div class="mySlides" id="eightH">
@@ -959,11 +902,8 @@
                 <li>{{ track }}</li>
             {% endfor %}
         </div>
-              <iframe src="https://open.spotify.com/embed/track/{{ track_ids.7 }}"
-                  width="300" height="80"
-                  allowtransparency="true"
-                  allow="encrypted-media">
-            </iframe>
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
       </div>
 
       <div class="mySlides" id="lastH">
@@ -971,10 +911,8 @@
               <a href="{% url 'dashboard'%}">
                   <button type="button" class="returnBTN"> Return </button>
               </a>
-                  <iframe src="https://open.spotify.com/embed/track/{{ track_ids.8 }}"
-                  width="300" height="80"
-                  allowtransparency="true"
-                  allow="encrypted-media">
+<div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+
             </iframe>
       </div>
   {% endif %}
