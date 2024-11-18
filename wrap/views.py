@@ -10,10 +10,8 @@ import os
 import requests
 import base64
 from django.views.decorators.csrf import csrf_exempt
-from io import BytesIO
-from PIL import Image
 from django.urls import reverse
-
+from requests_oauthlib import OAuth1
 '''
 
 dashboard of wraps. Shows buttons to create/view wraps
@@ -254,17 +252,26 @@ def upload_to_twitter(request):
             header, encoded = image_data.split(",", 1)
             image_binary = base64.b64decode(encoded)
 
-            # Upload image to Twitter
+            # OAuth1 인증
+            auth = OAuth1(
+                os.getenv("TWITTER_API_KEY"),
+                os.getenv("TWITTER_API_SECRET"),
+                os.getenv("TWITTER_ACCESS_TOKEN"),
+                os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
+            )
+
+            # Step 1: Upload Media
             upload_url = "https://upload.twitter.com/1.1/media/upload.json"
-            headers = {"Authorization": f"Bearer {settings.TWITTER_BEARER_TOKEN}"}
             files = {"media": image_binary}
-            upload_response = requests.post(upload_url, headers=headers, files=files)
+            upload_response = requests.post(upload_url, auth=auth, files=files)
 
             if upload_response.status_code == 200:
                 media_id = upload_response.json().get("media_id_string")
+
+                # Step 2: Post Tweet
                 post_url = "https://api.twitter.com/1.1/statuses/update.json"
                 payload = {"status": text, "media_ids": media_id}
-                post_response = requests.post(post_url, headers=headers, data=payload)
+                post_response = requests.post(post_url, auth=auth, data=payload)
 
                 if post_response.status_code == 200:
                     return JsonResponse({"message": "Tweet posted successfully!"})
@@ -292,6 +299,11 @@ def upload_to_linkedin(request):
         if not linkedin_access_token:
             return JsonResponse({"error": "LinkedIn access token is missing"}, status=401)
 
+        # LinkedIn 사용자 ID 가져오기
+        user_id = fetch_linkedin_user_id(linkedin_access_token)
+        if not user_id:
+            return JsonResponse({"error": "Failed to fetch LinkedIn user ID"}, status=400)
+
         try:
             # Decode Base64 image
             header, encoded = image_data.split(",", 1)
@@ -306,7 +318,7 @@ def upload_to_linkedin(request):
             payload = {
                 "registerUploadRequest": {
                     "recipes": ["urn:li:digitalmediaRecipe:feedshare-image"],
-                    "owner": "urn:li:person:YOUR_USER_ID",
+                    "owner": f"urn:li:person:{user_id}",
                 }
             }
             init_response = requests.post(initialize_url, headers=headers, json=payload)
@@ -330,7 +342,7 @@ def upload_to_linkedin(request):
                     "contentEntities": [{"entityLocation": asset, "thumbnails": []}],
                     "title": text,
                 },
-                "owner": "urn:li:person:YOUR_USER_ID",
+                "owner": f"urn:li:person:{user_id}",
                 "text": {"text": text},
             }
             post_response = requests.post(post_url, headers=headers, json=post_payload)
@@ -343,3 +355,13 @@ def upload_to_linkedin(request):
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Invalid request method"}, status=400)
+
+def fetch_linkedin_user_id(access_token):
+    url = "https://api.linkedin.com/v2/me"
+    headers = {"Authorization": f"Bearer {access_token}"}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json().get("id")
+    else:
+        print(f"Failed to fetch LinkedIn user ID: {response.json()}")
+        return None

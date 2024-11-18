@@ -31,9 +31,9 @@ EMAIL_FROM_DEFAULT = 'spotifyWrappedClone@gmail.com' # no clue if this works or 
 
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
-REDIRECT_URI = os.getenv("REDIRECT_URI")
-TOKEN_URL = os.getenv("TOKEN_URL")
-API_URL = os.getenv("API_URL")
+redirect_uri = "http://localhost:8000/"
+token_url = "https://accounts.spotify.com/api/token"
+api_url = "https://api.spotify.com/v1/"
 
 # SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 # SENDGRID_SANDBOX_MODE_IN_DEBUG=False
