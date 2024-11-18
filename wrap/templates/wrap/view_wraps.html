@@ -129,9 +129,7 @@
     <h1>Your Spotify Wraps</h1>
     {% if no_wraps %}
         <p>No Wrap data available. Please listen to some music to generate your Spotify Wrap!</p>
-        <a href="{% url 'create_wrap' %}">
-            <button class="btn btn-primary">Create New Wrap</button>
-        </a>
+
 
     {% else %}
         <ul>
@@ -159,6 +157,9 @@
             {% endfor %}
         </ul>
     {% endif %}
+    <a href="{% url 'create_wrap' %}">
+        <button class="btn btn-primary">Create New Wrap</button>
+    </a>
 </div>
 </body>
 
