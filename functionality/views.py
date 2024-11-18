@@ -11,6 +11,8 @@ from django.http import HttpResponse
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib import messages
 
+from register.views import refresh_spotify_token
+
 '''
 gets user data (top tracks, top artist, top genres, and total listened time)
 
@@ -18,37 +20,50 @@ args: access_token (str): Spotify API access token. time_range (str): Time range
 
 returns: dict: Dictionary containing top tracks, artists, genres, and total minutes listened
 '''
-def get_User_Data(access_token, time_range = 'long_term'):
+
+
+def get_User_Data(access_token, user_profile, time_range='long_term'):
     headers = {
         'Authorization': f'Bearer {access_token}',
         'Content-Type': 'application/json'
     }
-    top_tracks_response = requests.get(
-        #adds time_range to api call
-        f"https://api.spotify.com/v1/me/top/tracks?limit=5&time_range={time_range}",
-        headers=headers
-    )
+
+    # Fetch top tracks
+    top_tracks_url = f"https://api.spotify.com/v1/me/top/tracks?limit=5&time_range={time_range}"
+    top_tracks_response = requests.get(top_tracks_url, headers=headers)
+
+    if top_tracks_response.status_code == 401:  # Unauthorized, refresh token once
+        new_token = refresh_spotify_token(user_profile)
+        headers['Authorization'] = f'Bearer {new_token}'
+        top_tracks_response = requests.get(top_tracks_url, headers=headers)  # Retry with new token
+
+    # Check for successful response or raise an error
+    if top_tracks_response.status_code != 200:
+        raise Exception(f"Error fetching top tracks from Spotify API: {top_tracks_response.status_code}")
+
     top_tracks_json = top_tracks_response.json().get('items', [])
-    top_tracks = []
+    top_tracks = [track['name'] for track in top_tracks_json]
 
-    for track in top_tracks_json:
-        top_tracks.append(track['name'])
-    top_artists_response = requests.get(
-        f"https://api.spotify.com/v1/me/top/artists?limit=5&time_range={time_range}",
-        headers=headers
-    )
+    # Fetch top artists with the (possibly refreshed) token
+    top_artists_url = f"https://api.spotify.com/v1/me/top/artists?limit=5&time_range={time_range}"
+    top_artists_response = requests.get(top_artists_url, headers=headers)
+
+    if top_artists_response.status_code != 200:
+        raise Exception(f"Error fetching top artists from Spotify API: {top_artists_response.status_code}")
+
     top_artists_json = top_artists_response.json().get('items', [])
-    top_artists = []
-    for artist in top_artists_json:
-        top_artists.append(artist['name'])
+    top_artists = [artist['name'] for artist in top_artists_json]
 
+    # Process top genres and total listening minutes
     top_genres = get_top_genres(top_artists_json)
     total_mins_listened = get_total_minutes_listened(headers, time_range)
-    return {"top_tracks":top_tracks,
-            "top_artists":top_artists,
-            "top_genres":top_genres,
-            "total_mins_listened":total_mins_listened}
 
+    return {
+        "top_tracks": top_tracks,
+        "top_artists": top_artists,
+        "top_genres": top_genres,
+        "total_mins_listened": total_mins_listened
+    }
 '''
 gets top genres from a list of artists
 
@@ -134,7 +149,6 @@ def contact_form(request):
                 messages.error(request, f"Failed to send message: {e}")
 
     return render(request, 'functionality/development_process.html', {'form': form})
-
 '''
 gets random tracks
 
@@ -144,7 +158,7 @@ args:   headers (dict): Headers with authorization info for Spotify API
 
 returns: list: List of randomly selected tracks with name, artists, and URI
 '''
-def get_random_tracks(headers, limit=20, listSize=5):
+def get_random_tracks(headers, limit=20, listSize=20):
 
     url = "https://api.spotify.com/v1/me/player/recently-played"
     params = {

@@ -132,4 +132,3 @@ def delete_wrap(request, wrap_id):
             print(f"Error: {e}")
             return JsonResponse({'status': 'error', 'message': 'Error deleting wrap.'}, status=500)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
-
