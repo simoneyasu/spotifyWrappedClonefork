@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, get_user_model
 
 
-from spotifyWrappedClone.settings import redirect_uri, SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI
+from spotifyWrappedClone.settings import REDIRECT_URI, SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.utils import timezone
 from django.conf import settings
@@ -12,7 +12,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import SpotifyWrap
 
-import openai
 
 # Create your views here.
 

@@ -10,9 +10,9 @@ import os
 import requests
 import base64
 from django.views.decorators.csrf import csrf_exempt
-import tweepy
 from io import BytesIO
 from PIL import Image
+from django.urls import reverse
 
 '''
 
@@ -66,7 +66,7 @@ def your_wrap(request, wrap_id):
 
 '''
 
-view your wrap
+View wrap
 
 '''
 @login_required
@@ -74,20 +74,21 @@ def view_wraps(request):
     wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-created_at')[:5]
     no_wraps = wraps.count() == 0
 
-    share_urls = [
-        {
-            "name": wrap.name,
-            "twitter_url": f"https://twitter.com/intent/tweet?text=Check out my Spotify Wrap: {wrap.name}&url={request.build_absolute_uri('your_wrap', kwargs={'wrap_id': wrap.wrap_id})}",
-            "linkedin_url": f"https://www.linkedin.com/sharing/share-offsite/?url={request.build_absolute_uri('your_wrap', kwargs={'wrap_id': wrap.wrap_id})}",
-        }
-        for wrap in wraps
-    ]
+    share_urls = []
+    for wrap in wraps:
+        try:
+            twitter_url = f"https://twitter.com/intent/tweet?text=Check out my Spotify Wrap: {wrap.name}&url={request.build_absolute_uri(reverse('your_wrap', kwargs={'wrap_id': wrap.wrap_id}))}"
+            linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url={request.build_absolute_uri(reverse('your_wrap', kwargs={'wrap_id': wrap.wrap_id}))}"
+            share_urls.append({
+                "name": wrap.name,
+                "twitter_url": twitter_url,
+                "linkedin_url": linkedin_url,
+            })
+        except Exception as e:
+            print(f"Error building URL for wrap {wrap.name}: {e}")
 
-    return render(
-        request,
-        'wrap/view_wraps.html',
-        {'wraps': wraps, 'user': request.user, 'no_wraps': no_wraps, 'share_urls': share_urls},
-    )
+    return render(request, 'wrap/view_wraps.html', {'wraps': wraps, 'no_wraps': no_wraps, 'share_urls': share_urls})
+
 '''
 
 shows the details of a wrap
@@ -197,14 +198,6 @@ def linkedin_callback(request):
     else:
         return JsonResponse({'error': 'Failed to fetch access token'}, status=response.status_code)
 
-auth = tweepy.OAuth1UserHandler(
-    settings.TWITTER_API_KEY,
-    settings.TWITTER_API_SECRET,
-    settings.TWITTER_ACCESS_TOKEN,
-    settings.TWITTER_ACCESS_TOKEN_SECRET,
-)
-twitter_api = tweepy.API(auth)
-
 def twitter_login(request):
     base_url = "https://twitter.com/i/oauth2/authorize"
     params = {
@@ -242,28 +235,53 @@ def twitter_callback(request):
     else:
         return JsonResponse({"error": "Failed to fetch access token"}, status=response.status_code)
 
+'''
+
+Upload to Twitter
+
+'''
 @csrf_exempt
 def upload_to_twitter(request):
     if request.method == "POST":
         image_data = request.POST.get("image")
         text = request.POST.get("text", "Check out my Spotify Wrapped!")
 
-        header, encoded = image_data.split(",", 1)
-        image = Image.open(BytesIO(base64.b64decode(encoded)))
-
-        buffer = BytesIO()
-        image.save(buffer, format="PNG")
-        buffer.seek(0)
+        if not image_data:
+            return JsonResponse({"error": "No image data provided"}, status=400)
 
         try:
-            media = twitter_api.media_upload(filename="spotify_wrap.png", file=buffer)
-            twitter_api.update_status(status=text, media_ids=[media.media_id])
-            return JsonResponse({"message": "Image shared successfully on Twitter!"})
+            # Decode Base64 image
+            header, encoded = image_data.split(",", 1)
+            image_binary = base64.b64decode(encoded)
+
+            # Upload image to Twitter
+            upload_url = "https://upload.twitter.com/1.1/media/upload.json"
+            headers = {"Authorization": f"Bearer {settings.TWITTER_BEARER_TOKEN}"}
+            files = {"media": image_binary}
+            upload_response = requests.post(upload_url, headers=headers, files=files)
+
+            if upload_response.status_code == 200:
+                media_id = upload_response.json().get("media_id_string")
+                post_url = "https://api.twitter.com/1.1/statuses/update.json"
+                payload = {"status": text, "media_ids": media_id}
+                post_response = requests.post(post_url, headers=headers, data=payload)
+
+                if post_response.status_code == 200:
+                    return JsonResponse({"message": "Tweet posted successfully!"})
+                else:
+                    return JsonResponse({"error": "Failed to post tweet"}, status=500)
+            else:
+                return JsonResponse({"error": "Failed to upload media"}, status=500)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Invalid request method"}, status=400)
 
+'''
+
+Upload to LinkedIn
+
+'''
 @csrf_exempt
 def upload_to_linkedin(request):
     if request.method == "POST":
@@ -274,51 +292,54 @@ def upload_to_linkedin(request):
         if not linkedin_access_token:
             return JsonResponse({"error": "LinkedIn access token is missing"}, status=401)
 
-        # Decode Base64 image
-        header, encoded = image_data.split(",", 1)
-        image_binary = base64.b64decode(encoded)
+        try:
+            # Decode Base64 image
+            header, encoded = image_data.split(",", 1)
+            image_binary = base64.b64decode(encoded)
 
-        # Step 1: Initialize Upload
-        initialize_url = "https://api.linkedin.com/rest/images?action=initializeUpload"
-        headers = {
-            "Authorization": f"Bearer {linkedin_access_token}",
-            "Content-Type": "application/json",
-            "X-Restli-Protocol-Version": "2.0.0"
-        }
-        payload = {"initializeUploadRequest": {"owner": "urn:li:person:YOUR_USER_ID"}}
-        response = requests.post(initialize_url, headers=headers, json=payload)
-
-        if response.status_code != 200:
-            return JsonResponse({"error": "Failed to initialize upload"}, status=400)
-
-        upload_url = response.json()["value"]["uploadUrl"]
-        asset_urn = response.json()["value"]["asset"]
-
-        # Step 2: Upload Image
-        upload_response = requests.put(upload_url, headers={"Authorization": f"Bearer {linkedin_access_token}"}, data=image_binary)
-
-        if upload_response.status_code != 201:
-            return JsonResponse({"error": "Failed to upload image"}, status=400)
-
-        # Step 3: Create Post
-        post_url = "https://api.linkedin.com/rest/posts"
-        post_payload = {
-            "author": "urn:li:person:YOUR_USER_ID",
-            "lifecycleState": "PUBLISHED",
-            "specificContent": {
-                "com.linkedin.ugc.ShareContent": {
-                    "shareCommentary": {"text": text},
-                    "shareMediaCategory": "IMAGE",
-                    "media": [{"status": "READY", "media": asset_urn}]
+            # Step 1: Initialize Upload
+            initialize_url = "https://api.linkedin.com/v2/assets?action=registerUpload"
+            headers = {
+                "Authorization": f"Bearer {linkedin_access_token}",
+                "Content-Type": "application/json",
+            }
+            payload = {
+                "registerUploadRequest": {
+                    "recipes": ["urn:li:digitalmediaRecipe:feedshare-image"],
+                    "owner": "urn:li:person:YOUR_USER_ID",
                 }
-            },
-            "visibility": {"com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"}
-        }
-        post_response = requests.post(post_url, headers=headers, json=post_payload)
+            }
+            init_response = requests.post(initialize_url, headers=headers, json=payload)
 
-        if post_response.status_code == 201:
-            return JsonResponse({"message": "Post shared successfully on LinkedIn"})
-        else:
-            return JsonResponse({"error": "Failed to post on LinkedIn"}, status=400)
+            if init_response.status_code != 201:
+                return JsonResponse({"error": "Failed to initialize upload"}, status=400)
+
+            upload_url = init_response.json()["value"]["uploadUrl"]
+            asset = init_response.json()["value"]["asset"]
+
+            # Step 2: Upload Image
+            upload_response = requests.put(upload_url, headers=headers, data=image_binary)
+
+            if upload_response.status_code != 201:
+                return JsonResponse({"error": "Failed to upload image"}, status=400)
+
+            # Step 3: Create Post
+            post_url = "https://api.linkedin.com/v2/shares"
+            post_payload = {
+                "content": {
+                    "contentEntities": [{"entityLocation": asset, "thumbnails": []}],
+                    "title": text,
+                },
+                "owner": "urn:li:person:YOUR_USER_ID",
+                "text": {"text": text},
+            }
+            post_response = requests.post(post_url, headers=headers, json=post_payload)
+
+            if post_response.status_code == 201:
+                return JsonResponse({"message": "Post shared successfully on LinkedIn!"})
+            else:
+                return JsonResponse({"error": "Failed to post on LinkedIn"}, status=500)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Invalid request method"}, status=400)
