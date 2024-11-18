@@ -21,4 +21,6 @@ urlpatterns = [
     # Twitter OAuth
     path('auth/twitter/login/', views.twitter_login, name='twitter_login'),
     path('auth/twitter/callback/', views.twitter_callback, name='twitter_callback'),
+    path('upload-to-linkedin/', views.upload_to_linkedin, name='upload_to_linkedin'),
+    path('upload-to-twitter/', views.upload_to_twitter, name='upload_to_twitter'),
 ]
