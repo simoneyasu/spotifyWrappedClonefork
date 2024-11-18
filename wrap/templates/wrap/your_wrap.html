@@ -26,7 +26,7 @@
         color: white;
         font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         text-align: center;
-        font-size: 36px;
+        font-size: 8vh;
         font-weight: 100;
     }
 
@@ -41,6 +41,39 @@
       margin: auto;
       margin-bottom: 10px;
       display: block;
+    }
+
+    .share-buttons {
+        position: absolute;
+        top: 1vh;
+        right: 1vw;
+    }
+
+    .downloadBTN {
+        height: 4vh;
+        width: 4vh;
+        background: white url({% static 'wrap/images/download png.png'%});
+        background-size: cover;
+        padding: 0;
+        border-radius: 2vh;
+    }
+
+    .twitterBTN {
+        height: 4vh;
+        width: 4vh;
+        background: black url({% static 'wrap/images/twitter-x-logo-42554.png' %});
+        background-size: cover;
+        padding: 0;
+        border-radius: 1vh;
+    }
+
+    .linkedinBTN {
+        height: 4vh;
+        width: 4vh;
+        background: lightblue url({% static 'wrap/images/512px-LinkedIn_logo_initials.png' %});
+        background-size: cover;
+        padding: 0;
+        border-radius: 1vh;
     }
 
     ol {
@@ -83,6 +116,7 @@
 
     .OneCcontent {
         padding-top: 50vh;
+        font-size: 7.5vh;
       }
 
     #oneH {
@@ -219,13 +253,17 @@
         color: #ff8b1e;
     }
 
+    .threeCcontent {
+        padding-top: 38vh;
+    }
+
     .arched-text {
         display: flex;
         justify-content: center;
         align-items: center;
         position: relative;
         width: 100%;
-        height: 59vh; /* Adjust as needed for the curve */
+        height: 59vh;
         transform-origin: bottom center;
         color: #6248a8;
     }
@@ -331,6 +369,11 @@
         padding-top: 35vh;
     }
 
+    .fourCcontent {
+        font-size: 5vh;
+        padding-top: 40vh;
+    }
+
     .FourHcontent {
         padding-top: 38vh;
     }
@@ -373,6 +416,7 @@
 
     .FiveCcontent {
         padding-top: 50vh;
+        font-size: 7vh;
       }
 
     .fiveContent {
@@ -428,7 +472,7 @@
     }
 
     .SixCcontent {
-        padding-top: 30vh;
+        padding-top: 15vh;
         padding-left: 10vw;
     }
 
@@ -504,7 +548,7 @@
     .sevenContent {
         text-align: center;
         font-size: 5vh;
-        padding-top: 78vh;
+        padding-top: 40vh;
         font-family: "Droid Sans", serif;
     }
 
@@ -543,6 +587,10 @@
         width: 100vw;
         height: 100vh;
         color: #ff8b1e;
+    }
+
+    .eightCcontent {
+        padding-top: 10vh;
     }
 
     .EightHcontent {
@@ -738,9 +786,9 @@
             <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         </div>
         <div class="share-buttons">
-            <button onclick="downloadImage('one')">Download as Image</button>
-            <button onclick="uploadToTwitter('one')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('one')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('one')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('one')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('one')"></button>
         </div>
     </div>
 
@@ -748,42 +796,55 @@
         <div class="planets">
             <img src='{% static "wrap/images/Planets.png" %}' alt="planets" class="planet">
             <div class="planetsContent">
-                You have listened to: {{ user_data.total_mins_listened }} minutes
+                You have listened to:<br> {{ user_data.total_mins_listened }} minutes
             </div>
             <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         </div>
         <div class="share-buttons">
-            <button onclick="downloadImage('two')">Download as Image</button>
-            <button onclick="uploadToTwitter('two')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('two')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('two')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('two')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('two')"></button>
         </div>
     </div>
 
     <div class="mySlides" id="three">
-        Over This Time You Have Listened to a Large Variety
+        <div class="arched-text">
+          <span>O</span><span>v</span><span>e</span><span>r</span><span> </span>
+          <span>T</span><span>h</span><span>i</span><span>s</span><span> </span>
+          <span>T</span><span>i</span><span>m</span><span>e</span><span> </span>
+          <span>Y</span><span>o</span><span>u</span><span> </span>
+          <span>H</span><span>a</span><span>v</span><span>e</span><span> </span>
+          <span>L</span><span>i</span><span>s</span><span>t</span><span>e</span><span>n</span><span>e</span><span>d</span><span> </span>
+          <span>t</span><span>o</span><span> </span>
+          <span>a</span><span> </span>
+          <span>L</span><span>a</span><span>r</span><span>g</span><span>e</span><span> </span>
+          <span>V</span><span>a</span><span>r</span><span>i</span><span>e</span><span>t</span><span>y</span>
+      </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('three')">Download as Image</button>
-            <button onclick="uploadToTwitter('three')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('three')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('three')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('three')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('three')"></button>
         </div>
     </div>
 
     <div class="mySlides" id="four">
-        Your Top Genres Are:
-        <ol>
-            {% for genre in user_data.top_genres %}
-                <li>{{ genre.genre }}</li>
-            {% endfor %}
-        </ol>
-        <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
-        <div class="ship">
-            <img src='{% static "wrap/images/shipSlide.png" %}' alt="ship">
-        </div>
-        <div class="share-buttons">
-            <button onclick="downloadImage('four')">Download as Image</button>
-            <button onclick="uploadToTwitter('four')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('four')">Share on LinkedIn</button>
+        <div class="fourContent">
+            Your Top Genres Are:
+            <ol>
+                {% for genre in user_data.top_genres %}
+                    <li>{{ genre.genre|title }}</li>
+                {% endfor %}
+            </ol>
+            <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+            <div class="ship">
+                <img src='{% static "wrap/images/shipSlide.png" %}' alt="ship">
+            </div>
+            <div class="share-buttons">
+                <button class="downloadBTN" onclick="downloadImage('four')"></button>
+                <button class="twitterBTN" onclick="uploadToTwitter('four')"></button>
+                <button class="linkedinBTN" onclick="uploadToLinkedIn('four')"></button>
+            </div>
         </div>
     </div>
 
@@ -802,29 +863,31 @@
         </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('five')">Download as Image</button>
-            <button onclick="uploadToTwitter('five')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('five')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('five')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('five')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('five')"></button>
         </div>
-
     </div>
 
     <div class="mySlides" id="six">
-        Your Favorite Artists Are:
-        <ol>
-            {% for artist in user_data.top_artists %}
-                <li>{{ artist }}</li>
-            {% endfor %}
-        </ol>
-        <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
-        <div class="ship">
-            <img src='{% static "wrap/images/shipSlide.png" %}' alt="ship">
+        <div class="sixContent">
+            Your Favorite Artists Are:
+            <ol>
+                {% for artist in user_data.top_artists %}
+                    <li>{{ artist }}</li>
+                {% endfor %}
+            </ol>
+            <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+            <div class="ship">
+                <img src='{% static "wrap/images/shipSlide.png" %}' alt="ship">
+            </div>
+            <div class="share-buttons">
+                <button class="downloadBTN" onclick="downloadImage('six')"></button>
+                <button class="twitterBTN" onclick="uploadToTwitter('six')"></button>
+                <button class="linkedinBTN" onclick="uploadToLinkedIn('six')"></button>
+            </div>
         </div>
-        <div class="share-buttons">
-            <button onclick="downloadImage('six')">Download as Image</button>
-            <button onclick="uploadToTwitter('six')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('six')">Share on LinkedIn</button>
-        </div>
+
     </div>
 
     <div class="mySlides" id="seven">
@@ -833,9 +896,9 @@
         </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('seven')">Download as Image</button>
-            <button onclick="uploadToTwitter('seven')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('seven')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('seven')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('seven')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('seven')"></button>
         </div>
     </div>
 
@@ -850,11 +913,10 @@
         </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('eight')">Download as Image</button>
-            <button onclick="uploadToTwitter('eight')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('eight')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('eight')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('eight')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('eight')"></button>
         </div>
-
     </div>
 
     <div class="mySlides" id="last">
@@ -866,9 +928,9 @@
         </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('last')">Download as Image</button>
-            <button onclick="uploadToTwitter('last')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('last')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('last')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('last')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('last')"></button>
         </div>
     </div>
 {% elif spotify_wrap.theme == "christmas" %}
@@ -878,9 +940,9 @@
         </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('oneC')">Download as Image</button>
-            <button onclick="uploadToTwitter('oneC')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('oneC')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('oneC')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('oneC')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('oneC')"></button>
         </div>
     </div>
 
@@ -889,39 +951,42 @@
         <div class="TwoCcontent">
             You have listened to: <br>{{ user_data.total_mins_listened }} minutes
         </div>
-
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('twoC')">Download as Image</button>
-            <button onclick="uploadToTwitter('twoC')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('twoC')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('twoC')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('twoC')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('twoC')"></button>
         </div>
     </div>
 
     <div class="mySlides" id="threeC">
-        <p>Over This Time You Have <br>Listened to a Large Variety</p>
+        <div class="threeCcontent">
+            Over This Time You Have <br>Listened to a Large Variety
+        </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('threeC')">Download as Image</button>
-            <button onclick="uploadToTwitter('threeC')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('threeC')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('threeC')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('threeC')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('threeC')"></button>
         </div>
     </div>
 
 
     <div class="mySlides" id="fourC">
-        <p>Top Genres Are:</p>
-        <ol>
+        <div class="fourCcontent">
+            Top Genres Are:
+            <ol>
+                {% for genre in user_data.top_genres %}
+                    <li>{{ genre.genre|title }}</li>
+                {% endfor %}
+            </ol>
+        </div>
 
-            {% for genre in user_data.top_genres %}
-                <li>{{ genre.genre }}</li>
-            {% endfor %}
-        </ol>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('fourC')">Download as Image</button>
-            <button onclick="uploadToTwitter('fourC')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('fourC')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('fourC')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('fourC')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('fourC')"></button>
         </div>
     </div>
 
@@ -930,12 +995,11 @@
         <div class="FiveCcontent">
             Through These Genres a Few Artists <br>Have Made Their Impact
         </div>
-
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('fiveC')">Download as Image</button>
-            <button onclick="uploadToTwitter('fiveC')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('fiveC')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('fiveC')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('fiveC')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('fiveC')"></button>
         </div>
     </div>
 
@@ -951,9 +1015,9 @@
         </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('sixC')">Download as Image</button>
-            <button onclick="uploadToTwitter('sixC')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('sixC')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('sixC')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('sixC')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('sixC')"></button>
         </div>
     </div>
 
@@ -961,25 +1025,27 @@
         <p>Now Here Are a Few Songs <br>You Can't Stop Listening to:</p>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('sevenC')">Download as Image</button>
-            <button onclick="uploadToTwitter('sevenC')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('sevenC')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('sevenC')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('sevenC')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('sevenC')"></button>
         </div>
     </div>
 
 
     <div class="mySlides" id="eightC">
-        <p>Your Top Songs Are:</p>
-        <ol>
-            {% for track in user_data.top_tracks %}
-                <li>{{ track }}</li>
-            {% endfor %}
-        </ol>
+        <div class="eightCcontent">
+            Your Top Songs Are:
+            <ol>
+                {% for track in user_data.top_tracks %}
+                    <li>{{ track }}</li>
+                {% endfor %}
+            </ol>
+        </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('eightC')">Download as Image</button>
-            <button onclick="uploadToTwitter('eightC')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('eightC')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('eightC')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('eightC')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('eightC')"></button>
         </div>
     </div>
 
@@ -990,9 +1056,9 @@
         </a>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('lastC')">Download as Image</button>
-            <button onclick="uploadToTwitter('lastC')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('lastC')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('lastC')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('lastC')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('lastC')"></button>
         </div>
     </div>
 {% else %}
@@ -1000,9 +1066,9 @@
         <p>You Have Been a Part of<br> Spotify For a Long Time</p>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('oneH')">Download as Image</button>
-            <button onclick="uploadToTwitter('oneH')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('oneH')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('oneH')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('oneH')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('oneH')"></button>
         </div>
     </div>
 
@@ -1014,9 +1080,9 @@
 
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('twoH')">Download as Image</button>
-            <button onclick="uploadToTwitter('twoH')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('twoH')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('twoH')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('twoH')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('twoH')"></button>
         </div>
     </div>
 
@@ -1024,9 +1090,9 @@
         <p>Over This Time You Have<br> Listened to a Large Variety</p>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('threeH')">Download as Image</button>
-            <button onclick="uploadToTwitter('threeH')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('threeH')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('threeH')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('threeH')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('threeH')"></button>
         </div>
     </div>
 
@@ -1037,16 +1103,16 @@
             <ol>
 
                 {% for genre in user_data.top_genres %}
-                    <li>{{ genre.genre }}</li>
+                    <li>{{ genre.genre|title }}</li>
                 {% endfor %}
 
             </ol>
         </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('fourH')">Download as Image</button>
-            <button onclick="uploadToTwitter('fourH')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('fourH')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('fourH')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('fourH')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('fourH')"></button>
         </div>
     </div>
 
@@ -1054,9 +1120,9 @@
         <p>Through These Genres a Few Artists<br> Have Made Their Impact</p>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('fiveH')">Download as Image</button>
-            <button onclick="uploadToTwitter('fiveH')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('fiveH')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('fiveH')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('fiveH')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('fiveH')"></button>
         </div>
     </div>
 
@@ -1070,9 +1136,9 @@
         </ol>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('sixH')">Download as Image</button>
-            <button onclick="uploadToTwitter('sixH')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('sixH')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('sixH')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('sixH')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('sixH')"></button>
         </div>
     </div>
 
@@ -1084,9 +1150,9 @@
 
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('sevenH')">Download as Image</button>
-            <button onclick="uploadToTwitter('sevenH')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('sevenH')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('sevenH')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('sevenH')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('sevenH')"></button>
         </div>
     </div>
 
@@ -1103,9 +1169,9 @@
 
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('eightH')">Download as Image</button>
-            <button onclick="uploadToTwitter('eightH')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('eightH')">Share on LinkedIn</button>
+            <button class="downloadBTN" onclick="downloadImage('eightH')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('eightH')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('eightH')"></button>
         </div>
     </div>
 
@@ -1116,15 +1182,13 @@
         </a>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-            <button onclick="downloadImage('lastH')">Download as Image</button>
-            <button onclick="uploadToTwitter('lastH')">Share on Twitter</button>
-            <button onclick="uploadToLinkedIn('lastH')">Share on LinkedIn</button>
+        <div class="share-buttons">
+            <button class="downloadBTN" onclick="downloadImage('lastH')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('lastH')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('lastH')"></button>
         </div>
     </div>
 {% endif %}
-
-
-
 
   <script>
     setInterval(() => plusDivs(1), 5000);
