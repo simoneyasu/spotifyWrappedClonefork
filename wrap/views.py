@@ -1,9 +1,12 @@
+import uuid
+
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from functionality.views import get_User_Data, get_random_tracks
+
+from functionality.views import get_User_Data
 import openai
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-
 from register.models import SpotifyWrap
 
 '''
@@ -28,15 +31,6 @@ def your_wrap(request, wrap_id):
     if not access_token:
         return redirect('login')
 
-    headers = {
-        'Authorization': f'Bearer {access_token}',
-        'Content-Type': 'application/json'
-    }
-    # Get user data
-    user_data = get_User_Data(access_token, "medium_term")
-    random_tracks = get_random_tracks(headers)  # Call the method to get random tracks
-    track_ids = [track['uri'].split(':')[-1] for track in random_tracks]  # Extract track IDs
-
     time_range_mapping = {
         'small': 'short_term',
         'medium': 'medium_term',
@@ -49,9 +43,7 @@ def your_wrap(request, wrap_id):
 
     context = {
         'user_data': user_data,
-        'spotify_wrap': spotify_wrap,
-        'track_ids': track_ids,
-        'token': access_token
+        'spotify_wrap': spotify_wrap
     }
 
     return render(request, 'wrap/your_wrap.html', context)
@@ -63,7 +55,7 @@ view your wrap
 '''
 @login_required
 def view_wraps(request):
-    wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-created_at')[:5]
+    wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-created_at')
     no_wraps = wraps.count() == 0
     return render(request, 'wrap/view_wraps.html', {'wraps': wraps, 'user': request.user, 'no_wraps' : no_wraps})
 
@@ -76,20 +68,6 @@ shows the details of a wrap
 def wrap_detail(request, wrap_id):
     wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
     return render(request, 'wrap/wrap_detail.html', {'wrap': wrap})
-
-'''
-
-Gives user ability to delete a wrap
-
-'''
-@login_required
-def delete_wrap(request, wrap_id):
-    wrap = get_object_or_404(SpotifyWrap, id=wrap_id, user=request.user)
-    wrap.delete()
-    return redirect('view_wraps')
-
-openai.api_key = settings.OPENAI_API_KEY
-
 
 '''
 
@@ -143,3 +121,14 @@ def create(request):
 
     return render(request, 'wrap/create_wrap.html')
 
+def delete_wrap(request, wrap_id):
+    print(f"Received wrap_id: {wrap_id}")
+    if request.method == 'POST':
+        try:
+            wrap = get_object_or_404(SpotifyWrap, wrap_id=wrap_id)
+            wrap.delete()
+            return JsonResponse({'status': 'success', 'message': 'Wrap deleted successfully!'})
+        except Exception as e:
+            print(f"Error: {e}")
+            return JsonResponse({'status': 'error', 'message': 'Error deleting wrap.'}, status=500)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
