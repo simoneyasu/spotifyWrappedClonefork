@@ -1,8 +1,17 @@
+/**
+ * Sets the selected language in local storage and translates the page.
+ *
+ * @param {string} language - The target language code (e.g., "en" for English, "fr" for French).
+ */
 function setLanguage(language) {
   localStorage.setItem('selectedLanguage', language);
   translatePage(language);
 }
 
+/**
+ * Event listener for the DOMContentLoaded event.
+ * Initializes the page translation process by checking the stored language in local storage.
+ */
 document.addEventListener("DOMContentLoaded", function() {
   let selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
   console.log("Page loaded. Current language from localStorage:", selectedLanguage);
@@ -12,6 +21,12 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
+/**
+ * Translates the text content of specified elements on the page to the target language.
+ *
+ * @async
+ * @param {string} targetLanguage - The target language code (e.g., "en", "fr", "es").
+ */
 async function translatePage(targetLanguage) {
   console.log(`Translating page to: ${targetLanguage}`);
 
@@ -55,7 +70,11 @@ async function translatePage(targetLanguage) {
   }
 }
 
-// Helper function to restore original text on error
+/**
+ * Restores the original text content of elements if the translation fails.
+ *
+ * @param {HTMLElement[]} elements - The list of elements whose text needs to be restored.
+ */
 function restoreOriginalText(elements) {
   elements.forEach((element) => {
     const originalText = element.getAttribute('data-original-text');
@@ -65,6 +84,12 @@ function restoreOriginalText(elements) {
   });
 }
 
+/**
+ * Retrieves the value of a specific cookie by name.
+ *
+ * @param {string} name - The name of the cookie to retrieve.
+ * @returns {string|null} The value of the cookie if found, otherwise `null`.
+ */
 function getCookie(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== '') {
