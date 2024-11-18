@@ -13,14 +13,17 @@ dashboard of wraps. Shows buttons to create/view wraps
 '''
 @login_required
 def dashboard(request):
-    return render(request, 'wrap/dashboard.html', {'user' : request.user})
+    recent_wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-created_at')[:5]
+    return render(request, 'wrap/dashboard.html', {'user' : request.user, 'recent_wraps': recent_wraps})
 
 '''
 
 view your wrap
 
 '''
-def your_wrap(request):
+def your_wrap(request, wrap_id):
+    spotify_wrap = get_object_or_404(SpotifyWrap, wrap_id=wrap_id)
+
     access_token = request.session.get('access_token', None)
     if not access_token:
         return redirect('login')
@@ -34,13 +37,22 @@ def your_wrap(request):
     random_tracks = get_random_tracks(headers)  # Call the method to get random tracks
     track_ids = [track['uri'].split(':')[-1] for track in random_tracks]  # Extract track IDs
 
+    time_range_mapping = {
+        'small': 'short_term',
+        'medium': 'medium_term',
+        'large': 'long_term'
+    }
 
-    # Pass user data to the template
-    return render(
-        request,
-        'wrap/your_wrap.html',
-        {**user_data, 'track_ids': track_ids, 'token': access_token}  # Merge user_data with track_ids directly
-    )
+    term = time_range_mapping.get(spotify_wrap.time_range)
+
+    user_data = get_User_Data(access_token, term)
+
+    context = {
+        'user_data': user_data,
+        'spotify_wrap': spotify_wrap
+    }
+
+    return render(request, 'wrap/your_wrap.html', context)
 
 '''
 
@@ -49,9 +61,9 @@ view your wrap
 '''
 @login_required
 def view_wraps(request):
-    wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-year')
-    no_wraps = not wraps.exists()
-    return render(request, 'wrap/view_wraps.html', {'wraps': wraps, 'no_wraps': no_wraps})
+    wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-created_at')[:5]
+    no_wraps = wraps.count() == 0
+    return render(request, 'wrap/view_wraps.html', {'wraps': wraps, 'user': request.user, 'no_wraps' : no_wraps})
 
 '''
 
@@ -105,5 +117,27 @@ def analyze_wrap(request, wrap_id):
 Loads create wrap page
 
 '''
+def create(request):
+    if request.method == 'POST':
+        name = request.POST.get('wrap_name')
+        theme = request.POST.get('theme')
+        time_range = request.POST.get('time')
 
+        # Ensure valid user is logged in
+        user = request.user
+
+        # Create the SpotifyWrap object
+        wrap = SpotifyWrap.objects.create(
+            user=user,
+            name=name,
+            theme=theme,
+            time_range=time_range,
+            year=2024,  # Example year, update accordingly
+            data={},  # Assuming you're adding data here later
+        )
+
+        # Redirect to a page that shows the created wrap
+        return redirect('dashboard')
+
+    return render(request, 'wrap/create_wrap.html')
 

@@ -3,28 +3,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <script src="{% static 'js/translation.js' %}"></script>
+    <title>Spotify Wrap Analysis</title>
 </head>
 <body>
-    <h2>Analysis of Your Spotify Wrap</h2>
 
-    {% if wrap %}
-    <h3>Wrap Details:</h3>
-    <p>Year: {{ wrap.year }}</p>
-    <ul>
-      {% for track in wrap.data.tracks %}
-        <li>{{ track.name }} by {{ track.artists.0.name }}</li>
-      {% endfor %}
-    </ul>
+<div>
+    <h1>Spotify Wrap AI Analysis For {{ wrap.year }}</h1>
 
-    <h3>Listener Personality Analysis:</h3>
-    <p>{{ description }}</p>
+    {% if description %}
+        <div>
+            <h2>Analysis</h2>
+            <p>{{ description }}</p>
+        </div>
     {% else %}
-        <p>No Wrap data available for analysis. Please listen to more music to generate a Spotify Wrap!</p>
+        <div>
+            <p>Sorry! Currently there is no analyze for this wrap</p>
+        </div>
     {% endif %}
 
-    <a href="{% url 'view_wraps' %}">Back to Your Wraps</a>
+    <div>
+        <h3>Wrap Details</h3>
+        <ul>
+
+            <li><strong>Top Songs:</strong> {{ wrap.top_songs }}</li>
+            <li><strong>Top Artist:</strong> {{ wrap.top_artists }}</li>
+
+        </ul>
+    </div>
+
+
+</div>
+
 </body>
 </html>

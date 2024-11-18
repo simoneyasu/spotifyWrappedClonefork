@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Wrap</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Create Your Wrap</h1>
+    <form method="post" action="{% url 'create_wrap' %}">
+        {% csrf_token %}
+        
+        <label for="wrap_name">What will you Wrap be named:</label>
+        <input type="text" name="wrap_name" id="wrap_name" required>
+
+        <label for="theme">Will your Wrap have a special theme:</label>
+        <select name="theme" id="theme">
+            <option value="none">None</option>
+            <option value="christmas">Christmas</option>
+            <option value="halloween">Halloween</option>
+        </select>
+
+        <label for="time">How far back will your wrap go:</label>
+        <select name="time" id="time">
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+        </select>
+
+        <button type="submit">Create Wrap</button>
+    </form>
+</body>
+</html>
