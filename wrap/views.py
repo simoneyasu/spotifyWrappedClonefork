@@ -16,10 +16,15 @@ from requests_oauthlib import OAuth1
 
 from register.views import check_token_scopes
 
+from openai import OpenAI
+from django.core.exceptions import ObjectDoesNotExist
+
+
 '''
+Displays the dashboard showing recent Spotify Wraps for the logged-in user.
 
-dashboard of wraps. Shows buttons to create/view wraps
-
+@param request: The HTTP request object.
+@return: Rendered HTML page with the user's dashboard.
 '''
 @login_required
 def dashboard(request):
@@ -27,9 +32,11 @@ def dashboard(request):
     return render(request, 'wrap/dashboard.html', {'user' : request.user, 'recent_wraps': recent_wraps})
 
 '''
+Displays the details of a specific Spotify Wrap.
 
-view your wrap
-
+@param request: The HTTP request object.
+@param wrap_id: The unique identifier of the Spotify Wrap.
+@return: Rendered HTML page with the wrap's details and user data.
 '''
 def your_wrap(request, wrap_id):
     spotify_wrap = get_object_or_404(SpotifyWrap, wrap_id=wrap_id)
@@ -57,9 +64,10 @@ def your_wrap(request, wrap_id):
     return render(request, 'wrap/your_wrap.html', context)
 
 '''
+Displays a list of all Spotify Wraps for the logged-in user.
 
-View wrap
-
+@param request: The HTTP request object.
+@return: Rendered HTML page with a list of wraps and shareable URLs.
 '''
 @login_required
 def view_wraps(request):
@@ -90,9 +98,11 @@ def view_wraps(request):
 
 
 '''
+Displays detailed information about a specific Spotify Wrap.
 
-shows the details of a wrap
-
+@param request: The HTTP request object.
+@param wrap_id: The unique identifier of the Spotify Wrap.
+@return: Rendered HTML page with detailed wrap information.
 '''
 @login_required
 def wrap_detail(request, wrap_id):
@@ -105,11 +115,13 @@ def wrap_detail(request, wrap_id):
         track['formatted_duration'] = f"{minutes}:{seconds:02}"
 
     return render(request, 'wrap/wrap_detail.html', {'wrap': wrap})
+
 '''
+Deletes a specific Spotify Wrap for the logged-in user.
 
-
-Gives user ability to delete a wrap
-
+@param request: The HTTP request object.
+@param wrap_id: The unique identifier of the Spotify Wrap.
+@return: Redirect to the wraps list page or an error response.
 '''
 @login_required
 def delete_wrap(request, wrap_id):
@@ -126,33 +138,65 @@ def delete_wrap(request, wrap_id):
 
 
 '''
+Uses ChatGPT to analyze a Spotify Wrap and generate a description based on the music taste.
 
-Uses ChatGPT to analyze 
-
+@param request: The HTTP request object.
+@param wrap_id: The unique identifier of the Spotify Wrap.
+@return: Rendered HTML page with analysis results.
 '''
 openai.api_key = settings.OPENAI_API_KEY
+
 @login_required
 def analyze_wrap(request, wrap_id):
-    wrap = SpotifyWrap.objects.filter(id=wrap_id, user=request.user).first()
-    if not wrap:
-        return render(request, 'wrap/analyze_wrap.html', {'error': "No Wrap data available for analysis."})
+    try:
+        wrap = SpotifyWrap.objects.get(wrap_id=wrap_id, user=request.user)
+    except ObjectDoesNotExist:
+        return render(request, 'wrap/analyze_wrap.html', {
+            'error': "No valid Wrap data available for analysis."
+        })
 
     prompt = f"Based on my music taste from {wrap.year}, describe how someone with similar taste might dress, act, or think."
 
-    response = openai.ChatCompletion.create(
-        model="o1-preview",
-        messages=[{"role": "user", "content": prompt}]
-    )
+    friend_wrap_id = request.GET.get('friend_wrap_id')
+    friend_wrap = None
+    comparison_description = None
 
-    description = response.choices[0].message['content'].strip()
+    if friend_wrap_id:
+        try:
+            friend_wrap = SpotifyWrap.objects.get(wrap_id=friend_wrap_id)
+            comparison_description = f"Compared your wrap ({wrap.year}) with your friend's wrap ({friend_wrap.year})."
+            prompt += f" Compare this with someone who listens to music like {friend_wrap.year}."
+        except ObjectDoesNotExist:
+            return render(request, 'wrap/analyze_wrap.html', {
+                'error': "Invalid friend's Wrap ID provided."
+            })
 
+    try:
+        client = OpenAI()
 
-    return render(request, 'wrap/analyze_wrap.html', {'description': description})
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo-0125",
+            messages=[
+                {"role": "user", "content": prompt}
+            ]
+        )
+        description = response.choices[0].message.content.strip()
+    except Exception as e:
+        description = f"Error generating analysis: {str(e)}"
+
+    return render(request, 'wrap/analyze_wrap.html', {
+        'description': description,
+        'comparison_description': comparison_description,
+        'wrap': wrap,
+        'friend_wrap': friend_wrap
+    })
+
 
 '''
+Creates a new Spotify Wrap for the logged-in user.
 
-Loads create wrap page
-
+@param request: The HTTP request object.
+@return: Redirect to the wraps list page or rendered HTML page for creating a wrap.
 '''
 def create(request):
     if request.method == 'POST':
@@ -178,198 +222,3 @@ def create(request):
         return redirect('view_wraps')
 
     return render(request, 'wrap/create_wrap.html')
-
-# LinkedIn Login View
-def linkedin_login(request):
-    auth_url = (
-        f"https://www.linkedin.com/oauth/v2/authorization?"
-        f"response_type=code&client_id={os.getenv('LINKEDIN_CLIENT_ID')}&"
-        f"redirect_uri={os.getenv('LINKEDIN_REDIRECT_URI')}&"
-        f"scope=w_member_social"
-    )
-    return redirect(auth_url)
-
-# LinkedIn Callback View
-def linkedin_callback(request):
-    code = request.GET.get('code')
-    if not code:
-        return JsonResponse({'error': 'Authorization code not found'}, status=400)
-
-    token_url = "https://www.linkedin.com/oauth/v2/accessToken"
-    data = {
-        "grant_type": "authorization_code",
-        "code": code,
-        "redirect_uri": os.getenv('LINKEDIN_REDIRECT_URI'),
-        "client_id": os.getenv('LINKEDIN_CLIENT_ID'),
-        "client_secret": os.getenv('LINKEDIN_CLIENT_SECRET'),
-    }
-
-    response = requests.post(token_url, data=data)
-    if response.status_code == 200:
-        access_token = response.json().get('access_token')
-        request.session['linkedin_access_token'] = access_token  # Save the token in the session
-        return JsonResponse({'access_token': access_token})
-    else:
-        return JsonResponse({'error': 'Failed to fetch access token'}, status=response.status_code)
-
-def twitter_login(request):
-    base_url = "https://twitter.com/i/oauth2/authorize"
-    params = {
-        "response_type": "code",
-        "client_id": os.getenv("TWITTER_CLIENT_ID"),
-        "redirect_uri": os.getenv("TWITTER_REDIRECT_URI"),
-        "scope": "tweet.read tweet.write users.read offline.access",
-        "state": "random_string_for_csrf_protection",
-        "code_challenge": "challenge_value",  # PKCE 값
-        "code_challenge_method": "plain",
-    }
-    request_url = f"{base_url}?{'&'.join([f'{key}={value}' for key, value in params.items()])}"
-    return redirect(request_url)
-
-def twitter_callback(request):
-    code = request.GET.get("code")
-    if not code:
-        return JsonResponse({"error": "No authorization code provided"}, status=400)
-
-    token_url = "https://api.twitter.com/2/oauth2/token"
-    data = {
-        "grant_type": "authorization_code",
-        "code": code,
-        "redirect_uri": os.getenv("TWITTER_REDIRECT_URI"),
-        "client_id": os.getenv("TWITTER_CLIENT_ID"),
-        "client_secret": os.getenv("TWITTER_CLIENT_SECRET"),
-    }
-
-    response = requests.post(token_url, data=data)
-    if response.status_code == 200:
-        tokens = response.json()
-        request.session["twitter_access_token"] = tokens.get("access_token")
-        request.session["twitter_refresh_token"] = tokens.get("refresh_token")
-        return JsonResponse({"message": "Twitter authorization successful"})
-    else:
-        return JsonResponse({"error": "Failed to fetch access token"}, status=response.status_code)
-
-'''
-
-Upload to Twitter
-
-'''
-@csrf_exempt
-def upload_to_twitter(request):
-    if request.method == "POST":
-        image_data = request.POST.get("image")
-        text = request.POST.get("text", "Check out my Spotify Wrapped!")
-
-        if not image_data:
-            return JsonResponse({"error": "No image data provided"}, status=400)
-
-        try:
-            header, encoded = image_data.split(",", 1)
-            image_binary = base64.b64decode(encoded)
-
-            auth = OAuth1(
-                os.getenv("TWITTER_API_KEY"),
-                os.getenv("TWITTER_API_SECRET"),
-                os.getenv("TWITTER_ACCESS_TOKEN"),
-                os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
-            )
-
-            upload_url = "https://upload.twitter.com/1.1/media/upload.json"
-            files = {"media": image_binary}
-            upload_response = requests.post(upload_url, auth=auth, files=files)
-
-            if upload_response.status_code == 200:
-                media_id = upload_response.json().get("media_id_string")
-
-                post_url = "https://api.twitter.com/1.1/statuses/update.json"
-                payload = {"status": text, "media_ids": media_id}
-                post_response = requests.post(post_url, auth=auth, data=payload)
-
-                if post_response.status_code == 200:
-                    return JsonResponse({"message": "Tweet posted successfully!"})
-                else:
-                    return JsonResponse({"error": "Failed to post tweet"}, status=500)
-            else:
-                return JsonResponse({"error": "Failed to upload media"}, status=500)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-
-    return JsonResponse({"error": "Invalid request method"}, status=400)
-
-'''
-
-Upload to LinkedIn
-
-'''
-@csrf_exempt
-def upload_to_linkedin(request):
-    if request.method == "POST":
-        image_data = request.POST.get("image")
-        text = request.POST.get("text", "Check out my Spotify Wrapped!")
-        linkedin_access_token = request.session.get("linkedin_access_token")
-
-        if not linkedin_access_token:
-            return JsonResponse({"error": "LinkedIn access token is missing"}, status=401)
-
-        user_id = fetch_linkedin_user_id(linkedin_access_token)
-        if not user_id:
-            return JsonResponse({"error": "Failed to fetch LinkedIn user ID"}, status=400)
-
-        try:
-            header, encoded = image_data.split(",", 1)
-            image_binary = base64.b64decode(encoded)
-
-            initialize_url = "https://api.linkedin.com/v2/assets?action=registerUpload"
-            headers = {
-                "Authorization": f"Bearer {linkedin_access_token}",
-                "Content-Type": "application/json",
-            }
-            payload = {
-                "registerUploadRequest": {
-                    "recipes": ["urn:li:digitalmediaRecipe:feedshare-image"],
-                    "owner": f"urn:li:person:{user_id}",
-                }
-            }
-            init_response = requests.post(initialize_url, headers=headers, json=payload)
-
-            if init_response.status_code != 201:
-                return JsonResponse({"error": "Failed to initialize upload"}, status=400)
-
-            upload_url = init_response.json()["value"]["uploadUrl"]
-            asset = init_response.json()["value"]["asset"]
-
-            upload_response = requests.put(upload_url, headers=headers, data=image_binary)
-
-            if upload_response.status_code != 201:
-                return JsonResponse({"error": "Failed to upload image"}, status=400)
-
-            post_url = "https://api.linkedin.com/v2/shares"
-            post_payload = {
-                "content": {
-                    "contentEntities": [{"entityLocation": asset, "thumbnails": []}],
-                    "title": text,
-                },
-                "owner": f"urn:li:person:{user_id}",
-                "text": {"text": text},
-            }
-            post_response = requests.post(post_url, headers=headers, json=post_payload)
-
-            if post_response.status_code == 201:
-                return JsonResponse({"message": "Post shared successfully on LinkedIn!"})
-            else:
-                return JsonResponse({"error": "Failed to post on LinkedIn"}, status=500)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-
-    return JsonResponse({"error": "Invalid request method"}, status=400)
-
-def fetch_linkedin_user_id(access_token):
-    url = "https://api.linkedin.com/v2/me"
-    headers = {"Authorization": f"Bearer {access_token}"}
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        return response.json().get("id")
-    else:
-        print(f"Failed to fetch LinkedIn user ID: {response.json()}")
-        return None
-

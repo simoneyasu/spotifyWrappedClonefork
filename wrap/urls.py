@@ -14,7 +14,6 @@ urlpatterns = [
 
     # Spotify OAuth
     path('auth/spotify/callback/', register_views.spotify_callback, name='spotify_callback'),
-
     # LinkedIn OAuth
     path('auth/linkedin/', views.linkedin_login, name='linkedin_login'),
     path('auth/linkedin/callback/', views.linkedin_callback, name='linkedin_callback'),
@@ -25,5 +24,4 @@ urlpatterns = [
     path('upload-to-linkedin/', views.upload_to_linkedin, name='upload_to_linkedin'),
     path('upload-to-twitter/', views.upload_to_twitter, name='upload_to_twitter'),
     path('callback/', register_views.spotify_callback, name='spotify_callback'),
-
 ]
