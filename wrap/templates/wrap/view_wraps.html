@@ -106,19 +106,6 @@
 </head>
 <body>
 
-<script>
-    function shareToTwitter(wrapName, url) {
-        const text = `Check out my Spotify Wrap: ${wrapName}!`;
-        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
-        window.open(twitterUrl, '_blank');
-    }
-
-    function shareToLinkedIn(url) {
-        const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
-        window.open(linkedInUrl, '_blank');
-    }
-</script>
-
 <!-- Navigation Buttons -->
 <div class="top-left">
     <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
@@ -146,9 +133,7 @@
                         <button onclick="shareToTwitter('{{ wrap.name }}', '{% url 'your_wrap' wrap.wrap_id %}')">
                             Share on Twitter
                         </button>
-                        <button onclick="shareToLinkedIn('{% url 'your_wrap' wrap.wrap_id %}')">
-                            Share on LinkedIn
-                        </button>
+
                     </div>
                     <form action="{% url 'delete_wrap' wrap.wrap_id %}" method="post">
                         {% csrf_token %}
