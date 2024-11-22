@@ -129,9 +129,7 @@
     <h1>Your Spotify Wraps</h1>
     {% if no_wraps %}
         <p>No Wrap data available. Please listen to some music to generate your Spotify Wrap!</p>
-        <a href="{% url 'create_wrap' %}">
-            <button class="btn btn-primary">Create New Wrap</button>
-        </a>
+
 
     {% else %}
         <ul>
@@ -139,9 +137,10 @@
                 <li class="wrap-item">
                     <span>
                         <strong><a href="{% url 'your_wrap' wrap.wrap_id %}">{{ wrap.name }}</a></strong><br>
-                        <small>Year: {{ wrap.year }} | Theme: {{ wrap.theme|default:"N/A"|title }}</small>
+                        <small>Year: {{ wrap.year }} | Theme: {{ wrap.theme|default:"N/A" }}</small>
                         <br>
                         <a href="{% url 'wrap_detail' wrap.wrap_id %}">View Details</a>
+                        <a href="{% url 'analyze_wrap' wrap.wrap_id %}">Analyze Wrap</a>
                     </span>
                     <div class="share-buttons">
                         <button onclick="shareToTwitter('{{ wrap.name }}', '{% url 'your_wrap' wrap.wrap_id %}')">
@@ -160,7 +159,7 @@
         </ul>
     {% endif %}
     <a href="{% url 'create_wrap' %}">
-        <button class="createBTN"> Create </button>
+        <button class="btn btn-primary">Create New Wrap</button>
     </a>
 </div>
 </body>

@@ -13,6 +13,10 @@ import base64
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from requests_oauthlib import OAuth1
+from openai import OpenAI
+from django.core.exceptions import ObjectDoesNotExist
+import uuid
+
 '''
 
 dashboard of wraps. Shows buttons to create/view wraps
@@ -127,23 +131,52 @@ Uses ChatGPT to analyze
 
 '''
 openai.api_key = settings.OPENAI_API_KEY
+
 @login_required
 def analyze_wrap(request, wrap_id):
-    wrap = SpotifyWrap.objects.filter(id=wrap_id, user=request.user).first()
-    if not wrap:
-        return render(request, 'wrap/analyze_wrap.html', {'error': "No Wrap data available for analysis."})
+    try:
+        wrap = SpotifyWrap.objects.get(wrap_id=wrap_id, user=request.user)
+    except ObjectDoesNotExist:
+        return render(request, 'wrap/analyze_wrap.html', {
+            'error': "No valid Wrap data available for analysis."
+        })
 
     prompt = f"Based on my music taste from {wrap.year}, describe how someone with similar taste might dress, act, or think."
 
-    response = openai.ChatCompletion.create(
-        model="o1-preview",
-        messages=[{"role": "user", "content": prompt}]
-    )
+    friend_wrap_id = request.GET.get('friend_wrap_id')
+    friend_wrap = None
+    comparison_description = None
 
-    description = response.choices[0].message['content'].strip()
+    if friend_wrap_id:
+        try:
+            friend_wrap = SpotifyWrap.objects.get(wrap_id=friend_wrap_id)
+            comparison_description = f"Compared your wrap ({wrap.year}) with your friend's wrap ({friend_wrap.year})."
+            prompt += f" Compare this with someone who listens to music like {friend_wrap.year}."
+        except ObjectDoesNotExist:
+            return render(request, 'wrap/analyze_wrap.html', {
+                'error': "Invalid friend's Wrap ID provided."
+            })
 
+    try:
+        client = OpenAI()
 
-    return render(request, 'wrap/analyze_wrap.html', {'description': description})
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo-0125",
+            messages=[
+                {"role": "user", "content": prompt}
+            ]
+        )
+        description = response.choices[0].message.content.strip()
+    except Exception as e:
+        description = f"Error generating analysis: {str(e)}"
+
+    return render(request, 'wrap/analyze_wrap.html', {
+        'description': description,
+        'comparison_description': comparison_description,
+        'wrap': wrap,
+        'friend_wrap': friend_wrap
+    })
+
 
 '''
 
