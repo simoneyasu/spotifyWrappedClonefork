@@ -7,12 +7,77 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <script src="{% static 'js/translation.js' %}"></script>
     <title>Spotify Wrap Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h1, h2, h3 {
+            color: #1DB954;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #1DB954;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #17a74a;
+        }
+
+        .btn-secondary {
+            background-color: #2a2a2a;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #3c3c3c;
+        }
+
+        .error {
+            color: #f44336;
+        }
+
+        .social-share {
+            margin-top: 20px;
+        }
+
+        .action-buttons {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
 
-<div>
+<div class="container">
     <h1>Spotify Wrap AI Analysis For {{ wrap.year }}</h1>
 
+    <!-- Analysis Section -->
     {% if description %}
         <div>
             <h2>Analysis</h2>
@@ -20,46 +85,30 @@
         </div>
     {% else %}
         <div>
-            <p>Sorry! Currently there is no analysis for this wrap.</p>
+            <p class="error">Sorry! Currently, there is no analysis for this wrap.</p>
         </div>
     {% endif %}
 
-    <div>
-        <h3>Wrap Details</h3>
-        <ul>
-            <li><strong>Top Songs:</strong> {{ wrap.top_songs }}</li>
-            <li><strong>Top Artist:</strong> {{ wrap.top_artists }}</li>
-        </ul>
+    <!-- Friend Comparison Section -->
+    {% if comparison_description %}
+        <div>
+            <h2>Comparison with Friend</h2>
+            <p>{{ comparison_description }}</p>
+        </div>
+    {% else %}
+        <div>
+            <form method="get" action="{% url 'analyze_wrap' wrap.wrap_id %}">
+                <label for="friend_wrap_id">Compare with a friend's wrap:</label>
+                <input type="text" id="friend_wrap_id" name="friend_wrap_id" placeholder="Enter friend's Wrap ID">
+                <button type="submit" class="btn btn-primary">Compare</button>
+            </form>
+        </div>
+    {% endif %}
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <a href="{% url 'view_wraps' %}" class="btn btn-secondary">Back to List</a>
     </div>
-
-    <!-- social media -->
-    <div class="social-share">
-        <h3>Share Your Wrap</h3>
-
-        <!-- twitter share button -->
-        <a href="https://twitter.com/intent/tweet?text=Check out my Spotify Wrap!&url={{ request.build_absolute_uri }}" target="_blank" class="btn btn-primary">Share on Twitter</a>
-
-        <!-- LinkedIn -->
-         <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}" target="_blank" class="btn btn-secondary">Share on LinkedIn</a>
-    </div>
-
-    <script>
-    function copyLink() {
-        const wrapLink = document.getElementById("wrapLink").value;
-
-        // uses clipboard API to copy the text
-        navigator.clipboard.writeText(wrapLink).then(() => {
-            // shows confirmation message
-            const message = document.getElementById("copyMessage");
-            message.style.display = "block";
-        }).catch((err) => {
-            // error checking
-            console.error("Failed to copy: ", err);
-            alert("Your browser does not support automatic copying. Please copy manually.");
-        });
-    }
-</script>
-
 </div>
 
 </body>
