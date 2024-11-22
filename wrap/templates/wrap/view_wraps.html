@@ -47,77 +47,58 @@
             font-weight: bold;
         }
 
-        .share-buttons, form {
-            margin-left: 10px;
-        }
-
-        .wrap-item a {
-            color: #1DB954;
-            text-decoration: none;
-            font-weight: bold;
-            margin-right: 15px;
-        }
-
-        .wrap-item a:hover {
-            text-decoration: underline;
-        }
-
-        .share-buttons button,
-        form button {
+        .btn {
             background-color: #1DB954;
-            border: none;
             color: white;
+            border: none;
             padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
-            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .share-buttons button:hover,
-        form button:hover {
+        .btn:hover {
             background-color: #17a74a;
+            color: white; /* hover effect */
         }
+
 
         .btn-danger {
             background-color: #f44336;
+            color: white;
         }
 
         .btn-danger:hover {
             background-color: #d32f2f;
         }
 
-        .top-left a {
-            display: block;
+        .social-share h3 {
             margin-bottom: 10px;
-            padding: 10px 15px;
-            background-color: #1DB954;
-            color: white;
-            text-decoration: none;
-            text-align: center;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
+            color: #1DB954;
         }
 
-        .top-left a:hover {
-            background-color: #17a74a;
+        .copy-message {
+            display: none;
+            color: #1DB954;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
 
-<!-- Navigation Buttons -->
+<!-- navigation -->
 <div class="top-left">
-    <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
-    <a href="{% url 'profile' %}" class="btn btn-primary">Go to Profile</a>
+    <a href="{% url 'home' %}" class="btn btn">Back to Home</a>
+    <a href="{% url 'profile' %}" class="btn btn">Go to Profile</a>
 </div>
 
 <div class="container" id="content">
     <h1>Your Spotify Wraps</h1>
     {% if no_wraps %}
         <p>No Wrap data available. Please listen to some music to generate your Spotify Wrap!</p>
-
-
     {% else %}
         <ul>
             {% for wrap in wraps %}
@@ -126,14 +107,24 @@
                         <strong><a href="{% url 'your_wrap' wrap.wrap_id %}">{{ wrap.name }}</a></strong><br>
                         <small>Year: {{ wrap.year }} | Theme: {{ wrap.theme|default:"N/A" }}</small>
                         <br>
-                        <a href="{% url 'wrap_detail' wrap.wrap_id %}">View Details</a>
-                        <a href="{% url 'analyze_wrap' wrap.wrap_id %}">Analyze Wrap</a>
+                        <a href="{% url 'wrap_detail' wrap.wrap_id %}">View Details </a>
+                        <a href="{% url 'analyze_wrap' wrap.wrap_id %}">| Analyze Wrap</a>
                     </span>
                     <div class="share-buttons">
-                        <button onclick="shareToTwitter('{{ wrap.name }}', '{% url 'your_wrap' wrap.wrap_id %}')">
-                            Share on Twitter
-                        </button>
+                        <!-- Social media sharing -->
+                        <div class="social-share">
 
+                            <h3>Share Your Wrap</h3>
+
+                            <!-- twitter/x shareing button -->
+                            <a href="https://twitter.com/intent/tweet?text=Check out my Spotify Wrap!&url={{ request.scheme }}://{{ request.get_host }}{% url 'your_wrap' wrap.wrap_id %}" target="_blank" class="btn btn">Share on Twitter</a>
+
+                            <!-- copy link button -->
+                            <input type="hidden" id="wrapLink-{{ wrap.wrap_id }}" value="{{ request.scheme }}://{{ request.get_host }}{% url 'your_wrap' wrap.wrap_id %}">
+
+                            <button onclick="copyLink('{{ wrap.wrap_id }}')" class="btn">Copy Link</button>
+                            <div id="copyMessage-{{ wrap.wrap_id }}" class="copy-message">Link copied to clipboard!</div>
+                        </div>
                     </div>
                     <form action="{% url 'delete_wrap' wrap.wrap_id %}" method="post">
                         {% csrf_token %}
@@ -144,9 +135,30 @@
         </ul>
     {% endif %}
     <a href="{% url 'create_wrap' %}">
-        <button class="btn btn-primary">Create New Wrap</button>
+        <button class="btn btn">Create New Wrap</button>
     </a>
 </div>
-</body>
 
+<!-- copy link function -->
+<script>
+function copyLink(wrapId) {
+    const wrapLink = document.getElementById("wrapLink-" + wrapId).value;
+
+    navigator.clipboard.writeText(wrapLink).then(() => {
+
+        const message = document.getElementById("copyMessage-" + wrapId);
+        message.style.display = "block";
+
+        setTimeout(() => {
+            message.style.display = "none";
+        }, 3000);
+    }).catch((err) => {
+        // Error handling
+        console.error("Failed to copy: ", err);
+        alert("Your browser does not support automatic copying. Please copy manually.");
+    });
+}
+</script>
+
+</body>
 </html>
