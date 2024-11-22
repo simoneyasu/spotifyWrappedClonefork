@@ -140,6 +140,7 @@
                         <small>Year: {{ wrap.year }} | Theme: {{ wrap.theme|default:"N/A" }}</small>
                         <br>
                         <a href="{% url 'wrap_detail' wrap.wrap_id %}">View Details</a>
+                        <a href="{% url 'analyze_wrap' wrap.wrap_id %}">Analyze Wrap</a>
                     </span>
                     <div class="share-buttons">
                         <button onclick="shareToTwitter('{{ wrap.name }}', '{% url 'your_wrap' wrap.wrap_id %}')">
