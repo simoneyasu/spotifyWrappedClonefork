@@ -1146,6 +1146,10 @@
     function showDivs(n) {
         let i;
         const x = document.getElementsByClassName("mySlides");
+        if (n > x.length) {
+            console.log("Reached the last slide. Stopping slideshow.");
+            return;  // Stop the function if it goes beyond the last slide
+        }
         if (n > x.length) slideIndex = 1;
         if (n < 1) slideIndex = x.length;
         if (!tracksFetched) {
