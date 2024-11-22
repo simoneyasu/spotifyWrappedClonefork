@@ -13,9 +13,12 @@ import base64
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from requests_oauthlib import OAuth1
+
+from register.views import check_token_scopes
+
 from openai import OpenAI
 from django.core.exceptions import ObjectDoesNotExist
-import uuid
+
 
 '''
 Displays the dashboard showing recent Spotify Wraps for the logged-in user.
@@ -54,7 +57,8 @@ def your_wrap(request, wrap_id):
 
     context = {
         'user_data': user_data,
-        'spotify_wrap': spotify_wrap
+        'spotify_wrap': spotify_wrap,
+        'token': access_token
     }
 
     return render(request, 'wrap/your_wrap.html', context)
