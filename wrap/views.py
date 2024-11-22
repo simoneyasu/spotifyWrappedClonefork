@@ -18,9 +18,10 @@ from django.core.exceptions import ObjectDoesNotExist
 import uuid
 
 '''
+Displays the dashboard showing recent Spotify Wraps for the logged-in user.
 
-dashboard of wraps. Shows buttons to create/view wraps
-
+@param request: The HTTP request object.
+@return: Rendered HTML page with the user's dashboard.
 '''
 @login_required
 def dashboard(request):
@@ -28,9 +29,11 @@ def dashboard(request):
     return render(request, 'wrap/dashboard.html', {'user' : request.user, 'recent_wraps': recent_wraps})
 
 '''
+Displays the details of a specific Spotify Wrap.
 
-view your wrap
-
+@param request: The HTTP request object.
+@param wrap_id: The unique identifier of the Spotify Wrap.
+@return: Rendered HTML page with the wrap's details and user data.
 '''
 def your_wrap(request, wrap_id):
     spotify_wrap = get_object_or_404(SpotifyWrap, wrap_id=wrap_id)
@@ -57,9 +60,10 @@ def your_wrap(request, wrap_id):
     return render(request, 'wrap/your_wrap.html', context)
 
 '''
+Displays a list of all Spotify Wraps for the logged-in user.
 
-View wrap
-
+@param request: The HTTP request object.
+@return: Rendered HTML page with a list of wraps and shareable URLs.
 '''
 @login_required
 def view_wraps(request):
@@ -90,9 +94,11 @@ def view_wraps(request):
 
 
 '''
+Displays detailed information about a specific Spotify Wrap.
 
-shows the details of a wrap
-
+@param request: The HTTP request object.
+@param wrap_id: The unique identifier of the Spotify Wrap.
+@return: Rendered HTML page with detailed wrap information.
 '''
 @login_required
 def wrap_detail(request, wrap_id):
@@ -105,11 +111,13 @@ def wrap_detail(request, wrap_id):
         track['formatted_duration'] = f"{minutes}:{seconds:02}"
 
     return render(request, 'wrap/wrap_detail.html', {'wrap': wrap})
+
 '''
+Deletes a specific Spotify Wrap for the logged-in user.
 
-
-Gives user ability to delete a wrap
-
+@param request: The HTTP request object.
+@param wrap_id: The unique identifier of the Spotify Wrap.
+@return: Redirect to the wraps list page or an error response.
 '''
 @login_required
 def delete_wrap(request, wrap_id):
@@ -126,9 +134,11 @@ def delete_wrap(request, wrap_id):
 
 
 '''
+Uses ChatGPT to analyze a Spotify Wrap and generate a description based on the music taste.
 
-Uses ChatGPT to analyze 
-
+@param request: The HTTP request object.
+@param wrap_id: The unique identifier of the Spotify Wrap.
+@return: Rendered HTML page with analysis results.
 '''
 openai.api_key = settings.OPENAI_API_KEY
 
@@ -179,9 +189,10 @@ def analyze_wrap(request, wrap_id):
 
 
 '''
+Creates a new Spotify Wrap for the logged-in user.
 
-Loads create wrap page
-
+@param request: The HTTP request object.
+@return: Redirect to the wraps list page or rendered HTML page for creating a wrap.
 '''
 def create(request):
     if request.method == 'POST':

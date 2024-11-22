@@ -141,6 +141,17 @@
 
 <!-- copy link function -->
 <script>
+
+/**
+ * copies wrap link to the computer and shows a confirmation message
+ *
+ * @param {string} wrapId - The unique ID of the wrap to copy the link for
+ *
+ * @description Retrieves the wrap URL, copies it to the clipboard, and displays
+ * a confirmation message for 3 seconds. Logs an error and alerts the user if
+ * copying fails.
+ *
+ */
 function copyLink(wrapId) {
     const wrapLink = document.getElementById("wrapLink-" + wrapId).value;
 
