@@ -1,5 +1,6 @@
 from django.urls import path
 
+from register.views import check_token_scopes
 from wrap import views
 from register import views as register_views
 
@@ -23,4 +24,6 @@ urlpatterns = [
     path('auth/twitter/callback/', views.twitter_callback, name='twitter_callback'),
     path('upload-to-linkedin/', views.upload_to_linkedin, name='upload_to_linkedin'),
     path('upload-to-twitter/', views.upload_to_twitter, name='upload_to_twitter'),
+    path('callback/', register_views.spotify_callback, name='spotify_callback'),
+
 ]
