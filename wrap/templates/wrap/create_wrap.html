@@ -20,6 +20,7 @@
             <option value="none">None</option>
             <option value="christmas">Christmas</option>
             <option value="halloween">Halloween</option>
+            <option value="duo">Duo-Wrap</option>
         </select>
 
         <label for="time">How far back will your wrap go:</label>
@@ -29,8 +30,29 @@
             <option value="large">Large</option>
         </select>
 
+
+        <div id="username-field" style="display: none; margin-top: 10px;">
+            <label for="username">Enter the username for Duo-Wrap:</label>
+            <input type="text" name="username" id="username">
+        </div>
+
         <button type="submit">Create Wrap</button>
     </form>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function (){
+            const themeDropdown = document.getElementById('theme');
+            const duoUsernameDiv = document.getElementById('username-field');
+
+            themeDropdown.addEventListener('change', function () {
+                if (themeDropdown.value === 'duo') {
+                    duoUsernameDiv.style.display = 'block';
+                } else {
+                    duoUsernameDiv.style.display = 'none';
+                }
+            });
+        })
+
+    </script>
 </body>
 </html>
