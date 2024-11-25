@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+
+    <style>
+        :root {
+            --bg-color-light: #ffffff;
+            --text-color-light: #000000;
+            --bg-color-dark: #121212;
+            --text-color-dark: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color-light);
+            color: var(--text-color-light);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: var(--bg-color-dark);
+            color: var(--text-color-dark);
+        }
+
+        .mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #1DB954;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .mode-toggle:hover {
+            background-color: #1aa34a;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <button id="mode-toggle" class="mode-toggle">
+        Toggle Dark/Light Mode
+    </button>
+
+    {% block content %}{% endblock %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const modeToggle = document.getElementById('mode-toggle');
+            const body = document.body;
+
+            // Check for saved mode preference
+            const savedMode = localStorage.getItem('mode');
+            if (savedMode) {
+                body.classList.toggle('dark-mode', savedMode === 'dark');
+            }
+
+            modeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+
+                // Save preference
+                const mode = body.classList.contains('dark-mode') ? 'dark' : 'light';
+                localStorage.setItem('mode', mode);
+            });
+        });
+    </script>
+</body>
+</html>

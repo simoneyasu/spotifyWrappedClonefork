@@ -1,62 +1,80 @@
+{% extends 'register/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Home</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <script src="{% static 'js/translation.js' %}"></script>
-    <style>
-        .button-container {
-            margin-top: 20px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            color: white;
-            background-color: #28a745;
-            border-radius: 5px;
-            margin-right: 10px;
-            cursor: pointer;
-        }
 
-        .btn-primary {
-            background-color: #28a745;
-        }
+{% block title %}Spotify Home{% endblock %}
 
-        .btn-primary:hover {
-            background-color: #218838;
-        }
+{% block extra_css %}
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+    }
 
-        .btn:hover {
-            background-color: #28a745;
-        }
-    </style>
-</head>
-<body>
-    <div class="container" id="content">
-        <h2>Welcome to Spotify Wrapped!</h2>
-        <p>You are logged in as {{ user.username }}</p>
+    .container {
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+        padding: 20px;
+    }
 
-        <p>To access your Spotify Wrap data, please log in to your Spotify account:</p>
+    .button-container {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
 
-        <a href="{% url 'spotify_login' %}">
-            <button>Log in with Spotify</button>
-        </a>
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
 
-        <div class="button-container">
-            <!-- Logout form -->
-            <form method="POST" action="{% url 'logout' %}" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn">Logout</button>
-            </form>
+    .btn-primary {
+        background-color: #1DB954;
+    }
 
-            <!-- Profile button -->
-            <a href="{% url 'profile' %}" class="btn btn-primary">Go to Profile</a>
-        </div>
+    .btn-primary:hover {
+        background-color: #1aa34a;
+    }
+
+    .btn-secondary {
+        background-color: #666666;
+    }
+
+    .btn-secondary:hover {
+        background-color: #555555;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" id="content">
+    <h2>Welcome to Spotify Wrapped!</h2>
+    <p>You are logged in as {{ user.username }}</p>
+
+    <p>To access your Spotify Wrap data, please log in to your Spotify account:</p>
+
+    <div class="button-container">
+        <a href="{% url 'spotify_login' %}" class="btn btn-primary">Log in with Spotify</a>
+
+        <!-- Logout form -->
+        <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-secondary">Logout</button>
+        </form>
+
+        <!-- Profile button -->
+        <a href="{% url 'profile' %}" class="btn btn-primary">Go to Profile</a>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}
