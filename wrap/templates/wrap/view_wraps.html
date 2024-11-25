@@ -35,7 +35,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 15px;
+            padding: 5px 15px;
             margin-bottom: 10px;
             background-color: #2a2a2a;
             border-radius: 5px;
@@ -85,6 +85,15 @@
             color: #1DB954;
             margin-top: 5px;
         }
+
+        a {
+            font-size: 20px;
+        }
+
+        small {
+            font-size: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -124,18 +133,18 @@
 
                             <button onclick="copyLink('{{ wrap.wrap_id }}')" class="btn">Copy Link</button>
                             <div id="copyMessage-{{ wrap.wrap_id }}" class="copy-message">Link copied to clipboard!</div>
+                            <form action="{% url 'delete_wrap' wrap.wrap_id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
                         </div>
                     </div>
-                    <form action="{% url 'delete_wrap' wrap.wrap_id %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
                 </li>
             {% endfor %}
         </ul>
     {% endif %}
     <a href="{% url 'create_wrap' %}">
-        <button class="btn btn">Create New Wrap</button>
+        <button class="btn btn"><strong>Create New Wrap</strong></button>
     </a>
 </div>
 
