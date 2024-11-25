@@ -11,6 +11,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
 
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script>
+        const token = "{{ token }}";
+    </script>
+
     <script src="{% static 'js/html2canvas.js' %}"></script>
 
     <style>
@@ -1357,6 +1361,9 @@
 {% endif %}
 
   <script>
+
+    let trackUris = [];
+    let tracksFetched = false;  // Flag to check if tracks have been fetched
     setInterval(() => plusDivs(1), 5000);
 
     let slideIndex = 1;
@@ -1367,14 +1374,51 @@
     }
 
     function showDivs(n) {
-      let i;
-      const x = document.getElementsByClassName("mySlides");
-      if (n <= x.length) {
+        let i;
+        const x = document.getElementsByClassName("mySlides");
+        if (n > x.length) {
+            console.log("Reached the last slide. Stopping slideshow.");
+            return;  // Stop the function if it goes beyond the last slide
+        }
+        if (n > x.length) slideIndex = 1;
+        if (n < 1) slideIndex = x.length;
+        if (!tracksFetched) {
+            getRandomTracks();  // Fetch tracks synchronously
+        }
+        setTimeout(() => {
+
         for (i = 0; i < x.length; i++) {
-          x[i].style.display = "none";
+            x[i].style.display = "none";
         }
         x[slideIndex - 1].style.display = "block";
-      }
+
+        // Play the corresponding track
+
+        const randomNumber = Math.floor(Math.random() * trackUris.length);
+        console.log("len:" + trackUris.length)
+        const trackUri = String(trackUris[randomNumber]);
+        const device_id = sessionStorage.getItem('spotifyDeviceId');
+        playTrack(token,device_id,trackUri);
+        }, 800);
+    }
+    function getRandomTracks() {
+        fetch('https://api.spotify.com/v1/me/top/tracks?limit=50', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        })
+        .then(response => response.json())  // Get JSON response
+        .then(data => {
+            const tracks = data.items;
+            trackUris = tracks.filter(track => track.duration_ms > 90000)
+                          .map(track => track.uri);
+            tracksFetched = true;  // Set the flag to true once tracks are fetched
+
+        })
+        .catch(error => {
+            console.error('Error fetching top tracks:', error);
+        });
     }
 
     function downloadImage(slideId) {
@@ -1459,23 +1503,51 @@
         });
     }
 
-
-
-    window.onSpotifyWebPlaybackSDKReady = () => {
-        const token = 'your-spotify-access-token';
+ window.onSpotifyWebPlaybackSDKReady = () => {
+        const token = "{{ token }}";  // Pass the access token from Django template
         const player = new Spotify.Player({
             name: 'Web Playback SDK',
             getOAuthToken: cb => { cb(token); },
             volume: 0.5
         });
+
+        // Listen for the 'ready' event when the player is ready
         player.addListener('ready', ({ device_id }) => {
-            console.log('Ready with Device ID', device_id);
+            // Save the device ID for later playback
+            sessionStorage.setItem('spotifyDeviceId', device_id);
         });
+
+        // Listen for the 'not_ready' event when the player is disconnected
         player.addListener('not_ready', ({ device_id }) => {
             console.log('Device ID has gone offline', device_id);
         });
+
+        // Connect the player
         player.connect();
     };
+
+    // Play a track using the Web API
+function playTrack(token, device_id, trackUri) {
+    const startPosition = 55000;  // Start at 55 seconds (55,000 ms)
+    fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            uris: [trackUri],
+            position_ms: startPosition  // Set the position to start at 55 seconds
+        }),
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to play track');
+        }
+    })
+    .catch(error => console.error(error));
+}
+
   </script>
 
 </body>

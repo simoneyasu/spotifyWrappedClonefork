@@ -110,6 +110,9 @@ def get_spotify_token(code):
         'client_secret': settings.SPOTIFY_CLIENT_SECRET,
     }
     response = requests.post(url, data=data)
+    response_data = response.json()
+    print("Access Token Scopes get_token:", response_data.get("scope"))
+
     return response.json()
 
 '''
@@ -126,7 +129,6 @@ def spotify_callback(request):
     # access_token& refresh_token store at session
     request.session['access_token'] = token_data['access_token']
     request.session['refresh_token'] = token_data['refresh_token']
-
     # move to logic to get wrap1 data
     return redirect('fetch_wrap_data')
 
@@ -150,13 +152,25 @@ returns: HttpResponseRedirect: Redirects to Spotify authorization URL.
 def spotify_login(request):
     # Spotify OAuth URL creation
     spotify_auth_url = (
-    f"https://accounts.spotify.com/authorize?response_type=code&"
-    f"client_id={SPOTIFY_CLIENT_ID}&"
-    f"redirect_uri={SPOTIFY_REDIRECT_URI}&"
-    f"scope=user-read-recently-played user-library-read user-top-read"
-)
+        f"https://accounts.spotify.com/authorize?response_type=code&"
+        f"client_id={SPOTIFY_CLIENT_ID}&"
+        f"redirect_uri={SPOTIFY_REDIRECT_URI}&"
+        f"scope="
+        "user-library-read user-library-modify user-read-private user-read-email "
+        "user-top-read user-read-recently-played user-follow-read user-follow-modify "
+        "user-read-playback-state user-modify-playback-state streaming app-remote-control "
+    )
     return redirect(spotify_auth_url)
-
+def check_token_scopes(access_token):
+    headers = {'Authorization': f'Bearer {access_token}'}
+    response = requests.get('https://api.spotify.com/v1/me', headers=headers)
+    response_data = response.json()
+    print(response_data)
+    if response.status_code == 200:
+        print("Token is valid")
+        print("Scopes:", response.json().get('scope'))
+    else:
+        print("Invalid token or missing scopes")
 '''
 uses Spotify API to get data
 
