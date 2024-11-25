@@ -3,6 +3,7 @@ import uuid
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from pyexpat.errors import messages
+from django.contrib import messages
 
 from functionality.views import get_User_Data
 import openai
