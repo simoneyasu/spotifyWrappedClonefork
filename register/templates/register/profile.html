@@ -1,98 +1,40 @@
-{% extends 'register/base.html' %}
 {% load static %}
-{% block title %}Your Profile{% endblock %}
-{% block content %}
-<div class="content-wrapper">
-    <h1 class="title">Your Profile</h1>
-    <p>You are logged in as <strong>{{ user.username }}</strong></p>
-    <p>Email: <strong>{{ user.email }}</strong></p>
-
-    <!-- Navigation Buttons -->
-    <div class="button-group">
-        <a href="{% url 'development_process' %}" class="btn btn-primary">Development Process</a>
-        <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
-    </div>
-</div>
-   <style>
-    :root {
-        --background-color: #ffffff;
-        --text-color: #333333;
-        --button-bg: #28a745;
-        --button-hover-bg: #218838;
-        --button-secondary-bg: #6c757d;
-        --button-secondary-hover-bg: #5a6268;
-    }
-
-    [data-theme="dark"] {
-        --background-color: #000000;
-        --text-color: #00ff00; /* Green text for dark mode */
-        --button-bg: #28a745;
-        --button-hover-bg: #218838;
-        --button-secondary-bg: #6c757d;
-        --button-secondary-hover-bg: #5a6268;
-    }
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/translation.js' %}"></script>
+</head>
+<style>
     body {
-        background-color: var(--background-color);
-        color: var(--text-color);
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        text-align: center;
-    }
-
-    .content-wrapper {
-        max-width: 600px;
-        margin: auto;
-        padding: 20px;
-        border-radius: 10px;
-    }
-
-    .title {
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-    }
-
-    p {
-        font-size: 1.2rem;
-        margin-bottom: 10px;
-    }
-
-    .button-group {
-        margin-top: 20px;
-    }
-
-    .btn {
-        display: inline-block;
-        padding: 10px 20px;
-        font-size: 1rem;
-        text-align: center;
-        text-decoration: none;
-        color: #fff;
-        border-radius: 5px;
-        margin: 5px;
-        transition: background-color 0.3s;
-    }
-
-    .btn-primary {
-        background-color: var(--button-bg);
-    }
-
-    .btn-primary:hover {
-        background-color: var(--button-hover-bg);
-    }
-
-    .btn-secondary {
-        background-color: var(--button-secondary-bg);
-    }
-
-    .btn-secondary:hover {
-        background-color: var(--button-secondary-hover-bg);
+        overflow: hidden;
     }
 </style>
 
-{% endblock %}
+<body>
+    <div class="container" id="content">
+        <h2>Your Profile</h2>
+
+        <!-- Display user information -->
+        <ul class="user-info">
+            <li><strong>Username:</strong> {{ user.username }}</li>
+            <li><strong>Email:</strong> {{ user.email }}</li>
+        </ul>
+
+        <!-- Button to Development Process page -->
+        <a href="{% url 'development_process' %}" class="btn btn-primary">Development Process</a>
+
+        <!-- Link to delete account or other features -->
+        <a href="{% url 'delete_account' %}" class="btn btn-danger">Delete My Account</a>
+
+        <!-- back to home button -->
+         <div class="middle-bottom">
+        <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+    </div>
+
+    </div>
+</body>
+</html>
