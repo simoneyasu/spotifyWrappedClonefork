@@ -1,11 +1,14 @@
 import uuid
+
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
+from pyexpat.errors import messages
 
 from functionality.views import get_User_Data
 import openai
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from register.models import SpotifyWrap
+from register.models import SpotifyWrap, UserProfile
 from django.http import JsonResponse
 import os
 import requests
@@ -16,6 +19,9 @@ from requests_oauthlib import OAuth1
 from openai import OpenAI
 from django.core.exceptions import ObjectDoesNotExist
 import uuid
+from django.contrib import messages
+
+from register.views import refresh_spotify_token
 
 '''
 
@@ -47,13 +53,26 @@ def your_wrap(request, wrap_id):
 
     term = time_range_mapping.get(spotify_wrap.time_range)
 
+    # Fetch primary user data
     user_data = get_User_Data(access_token, term)
+    duo_user_data = None
+
+    if spotify_wrap.theme == 'duo':
+        duo_username = spotify_wrap.data.get('duo_username')
+        if duo_username:
+            duo_user = User.objects.get(username=duo_username)
+            print(duo_user)
+            duo_user_profile = UserProfile.objects.get(user=duo_user)
+            duo_user_data = get_User_Data(duo_user_profile.access_token, duo_user_profile, term)
+
+        else:
+            print( "Duo username not found.")
 
     context = {
         'user_data': user_data,
-        'spotify_wrap': spotify_wrap
+        'spotify_wrap': spotify_wrap,
+        'duo_user_data': duo_user_data
     }
-
     return render(request, 'wrap/your_wrap.html', context)
 
 '''
@@ -188,9 +207,19 @@ def create(request):
         name = request.POST.get('wrap_name')
         theme = request.POST.get('theme')
         time_range = request.POST.get('time')
+        duo = request.POST.get('duo')
+        username = request.POST.get('username', None) if theme == 'duo' else None
 
-        # Ensure valid user is logged in
         user = request.user
+
+        if theme == 'duo':
+            if not username:
+                messages.error(request, "Duo mode selected, but no username provided.")
+                return render(request, 'wrap/create_wrap.html', {'form_data': request.POST})
+            if not User.objects.filter(username=username).exists():
+                messages.error(request, f"Username '{username}' does not exist.")
+                return render(request, 'wrap/create_wrap.html', {'form_data': request.POST})
+
 
         # Create the SpotifyWrap object
         wrap = SpotifyWrap.objects.create(
@@ -199,8 +228,8 @@ def create(request):
             name=name,
             theme=theme,
             time_range=time_range,
-            year=2024,  # Example year, update accordingly
-            data={},  # Assuming you're adding data here later
+            year=2024,
+            data={'duo_username': username} if theme == 'duo' else {},
         )
 
         # Redirect to a page that shows the created wrap

@@ -137,7 +137,7 @@
                 <li class="wrap-item">
                     <span>
                         <strong><a href="{% url 'your_wrap' wrap.wrap_id %}">{{ wrap.name }}</a></strong><br>
-                        <small>Year: {{ wrap.year }} | Theme: {{ wrap.theme|default:"N/A" }}</small>
+                        <small>Year: {{ wrap.year }} | Theme: {{ wrap.theme|default:"N/A"|title }}</small>
                         <br>
                         <a href="{% url 'wrap_detail' wrap.wrap_id %}">View Details</a>
                         <a href="{% url 'analyze_wrap' wrap.wrap_id %}">Analyze Wrap</a>

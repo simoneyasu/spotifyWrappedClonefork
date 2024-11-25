@@ -26,7 +26,7 @@
         color: white;
         font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         text-align: center;
-        font-size: 8vh;
+        font-size: 36px;
         font-weight: 100;
     }
 
@@ -778,7 +778,173 @@
   </style>
 </head>
 <body>
-{% if spotify_wrap.theme == 'none' %}
+{% if spotify_wrap.theme == 'duo' %}
+    <div class="mySlides" id="one">
+        <div class='slideOneStar'>
+            <img src='{% static "wrap/images/StarS1.png" %}' class="star" alt="star">
+            <div class='StarWord'>You Two Have Been a Part of Spotify For a Long Time</div>
+            <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+        </div>
+        <div class="share-buttons">
+            <button class="downloadBTN" onclick="downloadImage('one')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('one')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('one')"></button>
+        </div>
+    </div>
+
+    <div class="mySlides" id="two">
+        <div class="planets">
+            <img src='{% static "wrap/images/Planets.png" %}' alt="planets" class="planet">
+            <div class="userMinute">
+                You have listened to:<br> {{ user_data.total_mins_listened }} minutes
+            </div>
+            <div class="duoUserMinute">
+                Your friend has listened to:<br> {{ duo_user_data.total_mins_listened }} minutes
+            </div>
+            <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+        </div>
+        <div class="share-buttons">
+            <button class="downloadBTN" onclick="downloadImage('two')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('two')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('two')"></button>
+        </div>
+    </div>
+
+    <div class="mySlides" id="three">
+        <div class="arched-text">
+          <span>O</span><span>v</span><span>e</span><span>r</span><span> </span>
+          <span>T</span><span>h</span><span>i</span><span>s</span><span> </span>
+          <span>T</span><span>i</span><span>m</span><span>e</span><span> </span>
+          <span>Y</span><span>o</span><span>u</span><span> </span>
+          <span>H</span><span>a</span><span>v</span><span>e</span><span> </span>
+          <span>L</span><span>i</span><span>s</span><span>t</span><span>e</span><span>n</span><span>e</span><span>d</span><span> </span>
+          <span>t</span><span>o</span><span> </span>
+          <span>a</span><span> </span>
+          <span>L</span><span>a</span><span>r</span><span>g</span><span>e</span><span> </span>
+          <span>V</span><span>a</span><span>r</span><span>i</span><span>e</span><span>t</span><span>y</span>
+      </div>
+        <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+        <div class="share-buttons">
+            <button class="downloadBTN" onclick="downloadImage('three')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('three')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('three')"></button>
+        </div>
+    </div>
+
+    <div class="mySlides" id="four">
+        <div class="userTopGenre">
+            Your Top Genres Are:
+            <ol>
+                {% for genre in user_data.top_genres %}
+                    <li>{{ genre.genre|title }}</li>
+                {% endfor %}
+            </ol>
+        </div>
+        <div class="duoTopGenre">
+            Your Friend's Top Genres Are:
+            <ol>
+                {% for genre in duo_user_data.top_genres %}
+                    <li>{{ genre.genre|title }}</li>
+                {% endfor %}
+            </ol>
+        </div>
+        <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+        <div class="ship">
+            <img src='{% static "wrap/images/shipSlide.png" %}' alt="ship">
+        </div>
+        <div class="share-buttons">
+            <button class="downloadBTN" onclick="downloadImage('four')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('four')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('four')"></button>
+        </div>
+    </div>
+
+    <div class="mySlides" id="five">
+        <div class="fiveContent">
+            <span>Throughout </span>
+            <span>these </span>
+            <span>Genres </span>
+            <span>a </span>
+            <span>Few </span>
+            <span>Artists </span>
+            <span>Have </span>
+            <span>Made </span>
+            <span>Their </span>
+            <span>Impact </span>
+        </div>
+        <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+        <div class="share-buttons">
+            <button class="downloadBTN" onclick="downloadImage('five')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('five')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('five')"></button>
+        </div>
+    </div>
+
+    <div class="mySlides" id="six">
+        <div class="sixContent">
+            Your Favorite Artists Are:
+            <ol>
+                {% for artist in user_data.top_artists %}
+                    <li>{{ artist }}</li>
+                {% endfor %}
+            </ol>
+            <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+            <div class="ship">
+                <img src='{% static "wrap/images/shipSlide.png" %}' alt="ship">
+            </div>
+            <div class="share-buttons">
+                <button class="downloadBTN" onclick="downloadImage('six')"></button>
+                <button class="twitterBTN" onclick="uploadToTwitter('six')"></button>
+                <button class="linkedinBTN" onclick="uploadToLinkedIn('six')"></button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mySlides" id="seven">
+        <div class="sevenContent">
+            <p>Now Here Are a Few Songs You Can't Stop Listening to:</p>
+        </div>
+        <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+        <div class="share-buttons">
+            <button class="downloadBTN" onclick="downloadImage('seven')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('seven')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('seven')"></button>
+        </div>
+    </div>
+
+    <div class="mySlides" id="eight">
+        <div class="track-list">
+            {% for track in user_data.top_tracks %}
+                <div class="track-item">{{ track }}</div>
+            {% endfor %}
+        </div>
+        <div class="eightContent">
+            <p>Your Top Songs Are:</p>
+        </div>
+        <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+        <div class="share-buttons">
+            <button class="downloadBTN" onclick="downloadImage('eight')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('eight')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('eight')"></button>
+        </div>
+    </div>
+
+    <div class="mySlides" id="last">
+        <div class="lastContent">
+            Return to Dashboard:
+            <a href="{% url 'view_wraps' %}">
+                <button type="button" class="returnBTN"> Return </button>
+            </a>
+        </div>
+        <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
+        <div class="share-buttons">
+            <button class="downloadBTN" onclick="downloadImage('last')"></button>
+            <button class="twitterBTN" onclick="uploadToTwitter('last')"></button>
+            <button class="linkedinBTN" onclick="uploadToLinkedIn('last')"></button>
+        </div>
+    </div>
+    {% elif spotify_wrap.theme == 'none' %}
     <div class="mySlides" id="one">
         <div class='slideOneStar'>
             <img src='{% static "wrap/images/StarS1.png" %}' class="star" alt="star">
