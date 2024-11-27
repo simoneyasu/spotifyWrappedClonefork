@@ -29,61 +29,114 @@
             text-align: center;
             margin-bottom: 20px;
             color: #1DB954;
+            font-size: 24px;
         }
 
         .wrap-item {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 15px;
-            margin-bottom: 10px;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 15px;
             background-color: #2a2a2a;
             border-radius: 5px;
         }
 
-        .wrap-item span {
+        .wrap-left, .wrap-center, .wrap-right {
             flex: 1;
+            text-align: center;
+        }
+
+        .wrap-center {
+            margin: 0 20px;
+        }
+
+        .wrap-details {
+            text-align: left;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .wrap-meta {
+            font-size: 14px;
+            color: #b3b3b3;
+        }
+
+        .detail-link {
+            font-size: 14px;
             color: #1DB954;
-            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .detail-link:hover {
+            text-decoration: underline;
+        }
+
+        .share-buttons-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .share-buttons-row .btn, .btn-danger {
+            width: 120px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            text-align: center;
+            line-height: 1.5;
+            white-space: nowrap;
+            padding: 0;
+            margin: 0;
         }
 
         .btn {
             background-color: #1DB954;
             color: white;
             border: none;
-            padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
+            transition: background-color 0.3s ease;
             text-decoration: none;
-            display: inline-block;
-            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .btn:hover {
             background-color: #17a74a;
-            color: white; /* hover effect */
         }
-
 
         .btn-danger {
             background-color: #f44336;
             color: white;
+            text-align: center;
+            width: 120px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            text-align: center;
+            line-height: 1.5;
+            white-space: nowrap;
+            padding: 0;
+            margin: 0;
+            margin-left: 50px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
 
         .btn-danger:hover {
             background-color: #d32f2f;
         }
 
-        .social-share h3 {
-            margin-bottom: 10px;
-            color: #1DB954;
+        .create-wrap {
+            text-align: center;
+            margin-top: 20px;
         }
 
-        .copy-message {
-            display: none;
-            color: #1DB954;
-            margin-top: 5px;
+        .create-wrap .btn {
+            width: 50%;
         }
     </style>
 </head>
@@ -102,42 +155,39 @@
     {% else %}
         <ul>
             {% for wrap in wraps %}
-                <li class="wrap-item">
-                    <span>
+                <div class="wrap-item">
+                    <div class="wrap-left">
                         <strong><a href="{% url 'your_wrap' wrap.wrap_id %}">{{ wrap.name }}</a></strong><br>
-                        <small>Year: {{ wrap.year }} | Theme: {{ wrap.theme|default:"N/A" }}</small>
+                        <span class="wrap-meta">Year: {{ wrap.year }} | Theme: {{ wrap.theme|default:"N/A" }}</span>
                         <br>
-                        <a href="{% url 'wrap_detail' wrap.wrap_id %}">View Details </a>
-                        <a href="{% url 'analyze_wrap' wrap.wrap_id %}">| Analyze Wrap</a>
-                    </span>
-                    <div class="share-buttons">
-                        <!-- Social media sharing -->
-                        <div class="social-share">
+                        <a href="{% url 'wrap_detail' wrap.wrap_id %}" class="detail-link">View Details</a>
+                        <a href="{% url 'analyze_wrap' wrap.wrap_id %}" class="detail-link">| Analyze Wrap</a>
+                    </div>
 
-                            <h3>Share Your Wrap</h3>
-
-                            <!-- twitter/x shareing button -->
-                            <a href="https://twitter.com/intent/tweet?text=Check out my Spotify Wrap!&url={{ request.scheme }}://{{ request.get_host }}{% url 'your_wrap' wrap.wrap_id %}" target="_blank" class="btn btn">Share on Twitter</a>
-
-                            <!-- copy link button -->
-                            <input type="hidden" id="wrapLink-{{ wrap.wrap_id }}" value="{{ request.scheme }}://{{ request.get_host }}{% url 'your_wrap' wrap.wrap_id %}">
-
+                    <div class="wrap-center">
+                        <h3>Share Your Wrap</h3>
+                        <div class="share-buttons-row">
+                            <a href="https://twitter.com/intent/tweet?text=Check out my Spotify Wrap!&url={{ request.scheme }}://{{ request.get_host }}{% url 'your_wrap' wrap.wrap_id %}"
+                               target="_blank" class="btn">Share on Twitter</a>
                             <button onclick="copyLink('{{ wrap.wrap_id }}')" class="btn">Copy Link</button>
-                            <div id="copyMessage-{{ wrap.wrap_id }}" class="copy-message">Link copied to clipboard!</div>
                         </div>
                     </div>
-                    <form action="{% url 'delete_wrap' wrap.wrap_id %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </li>
+
+                    <div class="wrap-right">
+                        <form action="{% url 'delete_wrap' wrap.wrap_id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
             {% endfor %}
         </ul>
     {% endif %}
-    <a href="{% url 'create_wrap' %}">
-        <button class="btn btn">Create New Wrap</button>
-    </a>
+    <div class="create-wrap">
+        <a href="{% url 'create_wrap' %}" class="btn btn">Create New Wrap</a>
+    </div>
 </div>
+
 
 <!-- copy link function -->
 <script>
