@@ -13,6 +13,7 @@
             color: white;
             margin: 0;
             padding: 0;
+            text-align: center;
         }
 
         .wrap-detail {
@@ -22,15 +23,16 @@
             border-radius: 10px;
             background-color: #1E1E1E;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
         }
 
         .wrap-detail h1, .wrap-detail h2 {
-            text-align: center;
             color: #1DB954;
         }
 
         .wrap-detail p, .wrap-detail ul {
             margin: 15px 0;
+            text-align: center;
         }
 
         .wrap-detail ul {
@@ -49,13 +51,15 @@
 
         .action-buttons {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
             margin-top: 30px;
         }
 
         .action-buttons a, .action-buttons form button {
             text-decoration: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -63,6 +67,13 @@
             font-weight: bold;
             color: #fff;
             transition: background-color 0.3s ease;
+            min-width: 150px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            box-sizing: border-box;
         }
 
         .action-buttons a {
@@ -80,6 +91,10 @@
         .action-buttons form button:hover {
             background-color: #c30710;
         }
+
+        .action-buttons form button, .action-buttons a {
+            appearance: none;
+        }
     </style>
 </head>
 <body>
@@ -91,10 +106,11 @@
 
         <h2>Top Tracks</h2>
         <ul>
-            {% for track in wrap.data.tracks %}
+            {% for track in top_tracks %}
                 <li>
-                    <strong>{{ track.name }}</strong> by {{ track.artist }}
-                    (Album: {{ track.album }}, Duration: {{ track.formatted_duration }})
+                    <strong>{{ track.name }}</strong>
+                    by {{ track.artists.0.name }}
+                    (Duration: {{ track.formatted_duration }})
                 </li>
             {% empty %}
                 <li>No tracks available for this wrap.</li>
@@ -103,23 +119,25 @@
 
         <h2>Top Artists</h2>
         <ul>
-            {% for artist in wrap.data.artists %}
-                <li>
-                    <strong>{{ artist.name }}</strong> - {{ artist.genres|join:", " }}
-                    (Followers: {{ artist.followers }})
-                </li>
+            {% for artist in top_artists %}
+                <li>{{ artist }}</li>
             {% empty %}
                 <li>No artists available for this wrap.</li>
             {% endfor %}
         </ul>
 
-        <h2>Audio Features</h2>
-        {% if wrap.data.audio_features %}
-            <p>Energy: {{ wrap.data.audio_features.energy }}</p>
-            <p>Tempo: {{ wrap.data.audio_features.tempo }} BPM</p>
-        {% else %}
-            <p>No audio features available for this wrap.</p>
-        {% endif %}
+        <h2>Top Genres</h2>
+        <ul>
+            {% for genre in top_genres %}
+                <li>{{ genre.genre }} (Count: {{ genre.count }})</li>
+            {% empty %}
+                <li>No genres available for this wrap.</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Total Minutes Listened</h2>
+        <p>{{ total_mins_listened }} minutes</p>
+
 
         <div class="action-buttons">
             <a href="{% url 'view_wraps' %}">Back to List</a>

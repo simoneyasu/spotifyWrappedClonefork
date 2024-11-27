@@ -11,18 +11,11 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from register.models import SpotifyWrap
 from django.http import JsonResponse
-import os
-import requests
-import base64
-from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
-from requests_oauthlib import OAuth1
-
-from register.views import check_token_scopes
-
 from openai import OpenAI
 from django.core.exceptions import ObjectDoesNotExist
-
+import json
+import requests
 
 '''
 Displays the dashboard showing recent Spotify Wraps for the logged-in user.
@@ -112,13 +105,64 @@ Displays detailed information about a specific Spotify Wrap.
 def wrap_detail(request, wrap_id):
     wrap = get_object_or_404(SpotifyWrap, wrap_id=wrap_id, user=request.user)
 
-    # Convert track durations from milliseconds to "minutes:seconds"
-    for track in wrap.data.get('tracks', []):
-        duration_ms = track.get('duration', 0)
-        minutes, seconds = divmod(duration_ms // 1000, 60)
-        track['formatted_duration'] = f"{minutes}:{seconds:02}"
+    access_token = request.session.get('access_token', None)
+    if not access_token:
+        return redirect('spotify_login')
 
-    return render(request, 'wrap/wrap_detail.html', {'wrap': wrap})
+    try:
+        if isinstance(wrap.data, str):
+            wrap_data = json.loads(wrap.data)
+        elif isinstance(wrap.data, dict):
+            wrap_data = wrap.data
+        else:
+            return render(request, 'wrap/wrap_detail.html', {
+                'error': "Wrap data is in an unsupported format."
+            })
+    except json.JSONDecodeError as e:
+        return render(request, 'wrap/wrap_detail.html', {
+            'error': f"Failed to parse wrap data: {e}"
+        })
+
+    try:
+        user_data = get_User_Data(access_token, request.user, wrap_data.get('time_range', 'long_term'))
+        print("DEBUG: User data fetched successfully:", user_data)
+    except Exception as e:
+        return render(request, 'wrap/wrap_detail.html', {
+            'error': f"Error fetching data from Spotify API: {e}"
+        })
+
+    top_tracks_names = user_data.get('top_tracks', [])
+    top_tracks = []
+
+    headers = {'Authorization': f'Bearer {access_token}'}
+    for track_name in top_tracks_names:
+        track_search_url = f"https://api.spotify.com/v1/search?q={track_name}&type=track&limit=1"
+        response = requests.get(track_search_url, headers=headers)
+
+        if response.status_code == 200:
+            search_data = response.json()
+            if search_data.get('tracks', {}).get('items'):
+                track = search_data['tracks']['items'][0]
+                duration_ms = track.get('duration_ms', 0)
+                minutes, seconds = divmod(duration_ms // 1000, 60)
+                track['formatted_duration'] = f"{minutes}:{seconds:02}"
+                top_tracks.append(track)
+            else:
+                print(f"DEBUG: No track found for {track_name}")
+        else:
+            print(f"DEBUG: Failed to fetch track details for {track_name}: {response.status_code}")
+
+    top_artists = user_data.get('top_artists', wrap_data.get('artists', []))
+    top_genres = user_data.get('top_genres', [])
+    total_mins_listened = user_data.get('total_mins_listened', 0)
+
+    return render(request, 'wrap/wrap_detail.html', {
+        'wrap': wrap,
+        'top_tracks': top_tracks,
+        'top_artists': top_artists,
+        'top_genres': top_genres,
+        'total_mins_listened': total_mins_listened,
+    })
 
 '''
 Deletes a specific Spotify Wrap for the logged-in user.
