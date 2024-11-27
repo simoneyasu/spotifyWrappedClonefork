@@ -22,7 +22,12 @@ class SpotifyWrap(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=255, default='No Name')
     time_range = models.CharField(max_length=10, choices=[('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')])
-    theme = models.CharField(max_length=20, choices=[('halloween', 'Halloween'), ('christmas', 'Christmas')])
+    theme = models.CharField(max_length=20, choices=[
+        ('halloween', 'Halloween'),
+        ('christmas', 'Christmas'),
+        ('none', 'None'),
+        ('duo', 'Duo-Wrap')])
+    duo_username = models.CharField(max_length=255, null=True, blank=True)
     wrap_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
     def __str__(self):
