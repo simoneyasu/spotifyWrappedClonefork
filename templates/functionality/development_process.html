@@ -1,87 +1,151 @@
+{% extends 'register/base.html' %}
 {% load static %}
+
+{% block title %}Development Process{% endblock %}
+
+{% block extra_css %}
 <style>
-    .container {
-        margin-top: 200px;  
-        padding-top: 15px;
+    body {
+        padding: 0;
+        margin: 0;
     }
-    
+
+    .content-wrapper {
+        margin: 50px auto;
+        text-align: center;
+        padding: 20px;
+        max-width: 800px;
+    }
+
+    .developer-card {
+        background-color: #242424;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 30px;
+        text-align: left;
+    }
+
+    .developer-card h4 {
+        color: #1DB954;
+        margin-bottom: 10px;
+    }
+
+    .developer-card p {
+        color: #b3b3b3;
+        margin: 0;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 1rem;
+        margin-bottom: 5px;
+        color: #b3b3b3;
+    }
+
     .form-group input[type="text"],
     .form-group textarea {
         width: 100%;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #3e3e3e;
+        background-color: #121212;
+        color: #b3b3b3;
     }
-    
-    .developer {
-        margin-bottom: 20px;
+
+    .form-actions {
+        margin-top: 20px;
     }
-    .developer h4 {
-        margin-bottom: 5px;
-        font-size: 1.2em;
-        color: #1DB954;
+
+    .form-actions .btn {
+        margin: 5px;
     }
-    .developer p {
-        margin: 0;
-        color: #555;
-        font-size: 0.95em;
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 1rem;
+        text-align: center;
+        text-decoration: none;
+        color: #fff;
+        border-radius: 500px;
+        margin: 5px;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .btn-primary {
+        background-color: #1DB954;
+    }
+
+    .btn-primary:hover {
+        background-color: #1ed760;
+        transform: scale(1.05);
+    }
+
+    .btn-secondary {
+        background-color: #282828;
+    }
+
+    .btn-secondary:hover {
+        background-color: #3e3e3e;
+        transform: scale(1.05);
     }
 </style>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Development Process</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <script src="{% static 'js/translation.js' %}"></script>
-</head>
-<body>
-    <div class="container">
-        <h2>Our Team</h2>
-        
-        <!-- our bios -->
-        <div class="developer">
-            <h4>Derrick Chen</h4>
-            <p>Derrick focused on frontend development. He enjoys tackling complex challenges and finding efficient solutions.</p>
-        </div>
-        <div class="developer">
-            <h4>Joseph Cloer</h4>
-            <p>Joseph specializes in frontend design and user experience, ensuring the application is visually appealing and user-friendly.</p>
-        </div>
-        <div class="developer">
-            <h4>Simon Eyasu</h4>
-            <p>Simon is our scrum master...</p>
-        </div>
-        <div class="developer">
-            <h4>Minseo Kim</h4>
-            <p>Minseo worked as a fullstack developer on quality assurance to ensure smooth functionality across all features.</p>
-        </div>
-        <div class="developer">
-            <h4>Sachith Koduri</h4>
-            <p>Sachith as out frontend engineer, worked on all aspects of the project including frontend and backend.</p>
-        </div>
-        <!-- contact form -->
-        <h3>Send Us Your Feedback</h3>
-        <form action="" method="POST">
-            {% csrf_token %}
-            <!-- loops through fields for forms -->
-            {% for hidden in form.hidden_fields %}
-                {{ hidden }}
-            {% endfor %}
-        
-            <!-- loops though forms and shows the fields -->
-            {% for field in form.visible_fields %}
-                <div class="form-group">
-                    {{ field.errors }}
-                    <label>{{ field.label_tag }}</label>
-                    <p>{{ field }}</p>
-                </div>
-            {% endfor %}
-        
-            <div class="form-actions">
-                <button type="reset" class="btn btn-secondary">Reset</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </form>
-        <a href="{% url 'profile' %}" class="btn btn-secondary">Back to Profile</a>
+{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <h2>Our Team</h2>
+    
+    <!-- Team Bios -->
+    <div class="developer-card">
+        <h4>Derrick Chen</h4>
+        <p>Derrick focused on frontend development. He enjoys tackling complex challenges and finding efficient solutions.</p>
     </div>
-</body>
-</html>
+    <div class="developer-card">
+        <h4>Joseph Cloer</h4>
+        <p>Joseph specializes in frontend design and user experience, ensuring the application is visually appealing and user-friendly.</p>
+    </div>
+    <div class="developer-card">
+        <h4>Simon Eyasu</h4>
+        <p>Simon is our scrum master...</p>
+    </div>
+    <div class="developer-card">
+        <h4>Minseo Kim</h4>
+        <p>Minseo worked as a fullstack developer on quality assurance to ensure smooth functionality across all features.</p>
+    </div>
+    <div class="developer-card">
+        <h4>Sachith Koduri</h4>
+        <p>Sachith as our frontend engineer, worked on all aspects of the project including frontend and backend.</p>
+    </div>
+    
+    <!-- Contact Form -->
+    <h3>Send Us Your Feedback</h3>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+        {% for field in form.visible_fields %}
+            <div class="form-group">
+                {{ field.errors }}
+                <label>{{ field.label_tag }}</label>
+                <p>{{ field }}</p>
+            </div>
+        {% endfor %}
+        <div class="form-actions">
+            <button type="reset" class="btn btn-secondary">Reset</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+
+    <!-- Navigation Buttons -->
+    <div class="button-group">
+        <a href="{% url 'profile' %}" class="btn btn-primary">Back to Profile</a>
+        <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+    </div>
+</div>
+{% endblock %}
+              
+{% block extra_js %}
+    <script src="{% static 'js/translation.js' %}"></script>
+{% endblock %}

@@ -1,34 +1,100 @@
+{% extends 'register/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <script src="{% static 'js/translation.js' %}"></script>
-</head>
-<body>
-    <div class="container" id="content">
-        <h2>Your Profile</h2>
 
-        <!-- Display user information -->
-        <ul class="user-info" data-no-translate>
-            <li><strong>Username:</strong> {{ user.username }}</li>
-            <li><strong>Email:</strong> {{ user.email }}</li>
-        </ul>
+{% block title %}Profile{% endblock %}
 
-        <!-- Button to Development Process page -->
-        <a href="{% url 'development_process' %}" class="btn btn-primary">Development Process</a>
+{% block extra_css %}
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
 
-        <!-- Link to delete account or other features -->
-        <a href="{% url 'delete_account' %}" class="btn btn-danger">Delete My Account</a>
+    .container {
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-        <!-- back to home button -->
-         <div class="middle-bottom">
+    .user-info {
+        list-style-type: none;
+        padding: 0;
+        margin: 20px 0;
+        background-color: rgba(0,0,0,0.05);
+        border-radius: 5px;
+        padding: 15px;
+    }
+
+    .user-info li {
+        margin: 10px 0;
+        font-size: 16px;
+    }
+
+    .btn {
+        display: inline-block;
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #1DB954;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #1aa34a;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .middle-bottom {
+        margin-top: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" id="content">
+    <h2>Your Profile</h2>
+
+    <!-- Display user information -->
+    <ul class="user-info">
+        <li><strong>Username:</strong> {{ user.username }}</li>
+        <li><strong>Email:</strong> {{ user.email }}</li>
+    </ul>
+
+    <!-- Button to Development Process page -->
+    <a href="{% url 'development_process' %}" class="btn btn-primary">Development Process</a>
+
+    <!-- Link to delete account or other features -->
+    <a href="{% url 'delete_account' %}" class="btn btn-danger">Delete My Account</a>
+
+    <!-- back to home button -->
+    <div class="middle-bottom">
         <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
     </div>
+</div>
+{% endblock %}
 
-    </div>
-</body>
-</html>
+{% block extra_js %}
+    <script src="{% static 'js/translation.js' %}"></script>
+{% endblock %}
