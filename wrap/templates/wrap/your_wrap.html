@@ -21,7 +21,7 @@
     <div class="mySlides" id="one">
         <div class='slideOneStar'>
             <img src='{% static "wrap/images/StarS1.png" %}' class="star" alt="star">
-            <div class='StarWord'>You Two Have Been a Part of Spotify For a Long Time</div>
+            <div class='duoStarWord'>You Two Have Been a Part of Spotify For a Long Time</div>
             <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         </div>
         <div class="share-buttons">
@@ -121,12 +121,23 @@
 
     <div class="mySlides" id="six">
         <div class="sixContent">
-            Your Favorite Artists Are:
-            <ol>
-                {% for artist in user_data.top_artists %}
-                    <li>{{ artist }}</li>
-                {% endfor %}
-            </ol>
+            <div class="userTopArtist">
+                Your Favorite Artists Are:
+                <ol>
+                    {% for artist in user_data.top_artists %}
+                        <li>{{ artist }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+            <div class="duoTopArtist">
+                Your Friend's Artists Are:
+                <ol>
+                    {% for artist in duo_user_data.top_artists %}
+                        <li>{{ artist }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+
             <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
             <div class="ship">
                 <img src='{% static "wrap/images/shipSlide.png" %}' alt="ship">
@@ -137,7 +148,6 @@
                 <button class="linkedinBTN" onclick="uploadToLinkedIn('six')"></button>
             </div>
         </div>
-
     </div>
 
     <div class="mySlides" id="seven">
@@ -153,13 +163,22 @@
     </div>
 
     <div class="mySlides" id="eight">
-        <div class="track-list">
-            {% for track in user_data.top_tracks %}
-                <div class="track-item">{{ track }}</div>
-            {% endfor %}
+        <div class="userTopTrack">
+            Your Top Songs Are:
+            <ol>
+                {% for track in user_data.top_tracks %}
+                    <li>{{ track }}</li>
+                {% endfor %}
+            </ol>
+
         </div>
-        <div class="eightContent">
-            <p>Your Top Songs Are:</p>
+        <div class="duoTopTrack">
+            Your Friend's Top Songs Are:
+            <ol>
+                {% for track in duo_user_data.top_tracks %}
+                    <li>{{ track }}</li>
+                {% endfor %}
+            </ol>
         </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
@@ -292,7 +311,6 @@
                 <button class="linkedinBTN" onclick="uploadToLinkedIn('six')"></button>
             </div>
         </div>
-
     </div>
 
     <div class="mySlides" id="seven">
@@ -587,10 +605,11 @@
         </a>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-        <div class="share-buttons">
-            <button class="downloadBTN" onclick="downloadImage('lastH')"></button>
-            <button class="twitterBTN" onclick="uploadToTwitter('lastH')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('lastH')"></button>
+            <div class="share-buttons">
+                <button class="downloadBTN" onclick="downloadImage('lastH')"></button>
+                <button class="twitterBTN" onclick="uploadToTwitter('lastH')"></button>
+                <button class="linkedinBTN" onclick="uploadToLinkedIn('lastH')"></button>
+            </div>
         </div>
     </div>
 {% endif %}

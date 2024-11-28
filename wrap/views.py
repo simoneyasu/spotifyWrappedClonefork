@@ -1,7 +1,11 @@
 import uuid
+from datetime import timedelta
+from urllib.parse import uses_relative
 
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.timezone import now
 from pyexpat.errors import messages
 from django.contrib import messages
 
@@ -9,13 +13,15 @@ from functionality.views import get_User_Data
 import openai
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from register.models import SpotifyWrap
+from register.models import SpotifyWrap, UserProfile
 from django.http import JsonResponse
 from django.urls import reverse
 from openai import OpenAI
 from django.core.exceptions import ObjectDoesNotExist
 import json
 import requests
+
+from register.views import refresh_spotify_token
 
 '''
 Displays the dashboard showing recent Spotify Wraps for the logged-in user.
@@ -38,7 +44,11 @@ Displays the details of a specific Spotify Wrap.
 def your_wrap(request, wrap_id):
     spotify_wrap = get_object_or_404(SpotifyWrap, wrap_id=wrap_id)
 
-    access_token = request.session.get('access_token', None)
+    user_profile = UserProfile.objects.get(user=request.user)
+    if user_profile.token_expires_at is None:
+        user_profile.token_expires_at = now() + timedelta(hours=1)
+        user_profile.save()
+    access_token = user_profile.access_token
     if not access_token:
         return redirect('login')
 
@@ -50,10 +60,26 @@ def your_wrap(request, wrap_id):
 
     term = time_range_mapping.get(spotify_wrap.time_range)
 
-    user_data = get_User_Data(access_token, term)
+    user_data = get_User_Data(access_token, user_profile, term)
+
+    duo_data = None
+
+    if spotify_wrap.theme == 'duo':
+        duo_user = User.objects.get(username=spotify_wrap.duo_username)
+        duo_user_profile = UserProfile.objects.get(user=duo_user)
+        if duo_user_profile.token_expires_at is None:
+            duo_user_profile.token_expires_at = now() + timedelta(hours=1)
+            duo_user_profile.save()
+
+        refresh_spotify_token(duo_user_profile)
+        duo_access_token = duo_user_profile.access_token
+        duo_data = get_User_Data(duo_access_token, duo_user_profile, term)
+
+
 
     context = {
         'user_data': user_data,
+        'duo_user_data': duo_data,
         'spotify_wrap': spotify_wrap,
         'token': access_token
     }
@@ -68,7 +94,7 @@ Displays a list of all Spotify Wraps for the logged-in user.
 '''
 @login_required
 def view_wraps(request):
-    wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-created_at')
+    wraps = SpotifyWrap.objects.filter(Q(user=request.user) | Q(duo_username=request.user.username)).order_by('-created_at')
     no_wraps = wraps.count() == 0
 
     share_urls = []
@@ -273,7 +299,8 @@ def create(request):
             theme=theme,
             time_range=time_range,
             year=2024,
-            data={'duo_username': username} if theme == 'duo' else {},
+            duo_username=username,
+            data={},
         )
 
         # Redirect to a page that shows the created wrap
