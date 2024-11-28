@@ -76,5 +76,30 @@
         <!-- Profile button -->
         <a href="{% url 'profile' %}" class="btn btn-primary">Go to Profile</a>
     </div>
+    </div>
+          <div class="language-selection">
+            <label for="lang">Select Language:</label>
+            <select name="languages" id="lang" onchange="changeLanguage(this.value)">
+              <option value="">--Select a language--</option>
+              <option value="en">English</option>
+              <option value="ko">한국어</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+              <option value="de">Deutsch</option>
+            </select>
+          </div>
+    </div>
+
+    <script>
+        function changeLanguage(langCode) {
+          if (langCode) {
+            setLanguage(langCode);
+          }
+        }
+    </script>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/translation.js' %}"></script>
 {% endblock %}
