@@ -2,6 +2,7 @@ import uuid
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import now
 
 # Create your models here.
 
@@ -9,7 +10,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     access_token = models.TextField()
     refresh_token = models.TextField()
-    token_expires_at = models.DateTimeField()
+    token_expires_at = models.DateTimeField(default=now)
 
     def __str__(self):
         return self.user.username
