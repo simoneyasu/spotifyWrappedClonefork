@@ -1,14 +1,13 @@
 /* styles.css - Spotify Themed */
+
+/* General Styles */
 body {
     background-color: #121212;  /* Spotify's dark background */
-    color: #FFFFFF;  /* White text */
+    color: #FFFFFF;             /* White text */
     font-family: 'Helvetica', 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    /* Removed flex centering to allow for scrolling if needed */
 }
 
 .container {
@@ -16,83 +15,88 @@ body {
     max-width: 400px;
     padding: 20px;
     text-align: center;
+    margin: 0 auto;            /* Center the container */
 }
 
 h2 {
-    color: #FFFFFF;  /* Main text color */
+    color: #FFFFFF;            /* Main text color */
     font-size: 2em;
     margin-bottom: 20px;
 }
 
 p {
-    color: #B3B3B3;  /* Secondary muted grey color */
+    color: #B3B3B3;            /* Secondary muted grey color */
     margin-bottom: 20px;
 }
 
 a {
-    color: #1DB954;  /* Spotify green */
+    color: #1DB954;            /* Spotify green */
     text-decoration: none;
 }
 
 a:hover {
-    color: #1ed760;  /* Hover effect for links */
+    color: #1ed760;            /* Hover effect for links */
 }
 
 button, .btn {
-    background-color: #1DB954;
+    display: inline-block;
+    background-color: #1DB954; /* Spotify green */
     color: #FFFFFF;
-    border: none;
     padding: 10px 20px;
     font-size: 1em;
-    border-radius: 50px;  /* Rounded buttons */
+    border-radius: 50px;
+    text-align: center;
+    text-decoration: none;
     cursor: pointer;
-    margin: 10px 0;
     transition: background-color 0.3s ease;
 }
 
 button:hover, .btn:hover {
-    background-color: #1ed760;
+    background-color: #1ed760; /* Lighter green on hover */
 }
 
 form {
     display: flex;
     flex-direction: column;
+    align-items: center;       /* Center items horizontally */
 }
 
 input {
-    background-color: #282828;  /* Darker background for input fields */
+    background-color: #282828; /* Darker background for input fields */
     border: none;
     padding: 15px;
     color: #FFFFFF;
     border-radius: 5px;
     margin-bottom: 15px;
+    width: 100%;               /* Full width input fields */
+    max-width: 350px;
 }
 
 input::placeholder {
     color: #B3B3B3;
 }
+
 .btn-link {
-  background: none;
-  border: none;
-  color: #1DB954;  /* Spotify green */
-  text-decoration: underline;
-  cursor: pointer;
-  font-size: inherit;
-  padding: 0;
+    background: none;
+    border: none;
+    color: #1DB954;            /* Spotify green */
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: inherit;
+    padding: 0;
 }
 
 .btn-link:hover {
-  color: #1ed760;  /* Hover effect for Spotify green */
+    color: #1ed760;            /* Hover effect for Spotify green */
 }
 
-/* for the "back to home" button in views_wrap.html */
+/* Positioning Buttons */
 .top-left {
     position: absolute;
     top: 25px;
     left: 15px;
 }
 
-/* for the "go to profile" button in views_wrap.html */
 .top-left-below {
     position: absolute;
     top: 70px;
@@ -105,4 +109,56 @@ input::placeholder {
     position: absolute;
     bottom: 20px;
     width: 100%;
+}
+
+/* Language Selection Styles */
+.language-selection {
+    margin: 20px;
+    text-align: center;        /* Center the language selection */
+}
+
+.language-selection label {
+    color: #FFFFFF;            /* Ensure label text is white */
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.language-selection select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 50px;       /* Match button style */
+    border: none;
+    background-color: #1DB954; /* Spotify green */
+    color: #FFFFFF;            /* White text for consistency */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.language-selection select:hover {
+    background-color: #1ed760; /* Hover effect */
+}
+
+.language-selection select option {
+    color: #000000;            /* Black text color for options */
+    background-color: #FFFFFF; /* White background for options */
+}
+
+.language-selection select:focus {
+    outline: none;
+}
+
+/* Adjusted Styles for Compatibility */
+select::-ms-expand {
+    display: none;             /* Hide the default dropdown arrow in IE */
+}
+
+select {
+    -webkit-appearance: none;  /* Remove default styling in Chrome and Safari */
+    -moz-appearance: none;     /* Remove default styling in Firefox */
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"><polygon points="0,0 20,0 10,10"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+    padding-right: 30px;       /* Space for the custom arrow */
 }
