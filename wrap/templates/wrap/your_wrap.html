@@ -220,6 +220,20 @@
       transform: translateX(-50%);
     }
 
+    .userMinute {
+        font-size: 5vh;
+        position: absolute;
+        top: 45vh;
+        left: 10vh;
+    }
+
+    .duoUserMinute {
+        font-size: 5vh;
+        position: absolute;
+        top: 45vh;
+        right: 10vh;
+    }
+
     #three {
         position: absolute;
         top: 0;
@@ -382,6 +396,20 @@
         padding-top: 38vh;
     }
 
+    .userTopGenre {
+        font-size: 5vh;
+        position: absolute;
+        top: 33vh;
+        left: 18vh;
+    }
+
+    .duoTopGenre {
+        font-size: 5vh;
+        position: absolute;
+        top: 33vh;
+        right: 18vh;
+    }
+
     #five {
         position: absolute;
         top: 0;
@@ -502,6 +530,20 @@
         color: #ff8b1e;
     }
 
+    .userTopArtist {
+        font-size: 5vh;
+        position: absolute;
+        top: 33vh;
+        left: 18vh;
+    }
+
+    .duoTopArtist {
+        font-size: 5vh;
+        position: absolute;
+        top: 33vh;
+        right: 18vh;
+    }
+
     .ship {
       position: absolute;
       bottom: -10vw;
@@ -607,6 +649,21 @@
         padding-top: 41vh;
         font-family: "Droid Sans", serif;
     }
+
+    .userTopTrack {
+        position: absolute;
+        color: #170638;
+        top: 10vh;
+        left: 7vh;
+    }
+
+    .duoTopTrack {
+        position: absolute;
+        color: #170638;
+        top: 10vh;
+        right: 7vh;
+    }
+
 
     .track-list {
         position: relative;
@@ -886,12 +943,23 @@
 
     <div class="mySlides" id="six">
         <div class="sixContent">
-            Your Favorite Artists Are:
-            <ol>
-                {% for artist in user_data.top_artists %}
-                    <li>{{ artist }}</li>
-                {% endfor %}
-            </ol>
+            <div class="userTopArtist">
+                Your Favorite Artists Are:
+                <ol>
+                    {% for artist in user_data.top_artists %}
+                        <li>{{ artist }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+            <div class="duoTopArtist">
+                Your Friend's Artists Are:
+                <ol>
+                    {% for artist in duo_user_data.top_artists %}
+                        <li>{{ artist }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+
             <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
             <div class="ship">
                 <img src='{% static "wrap/images/shipSlide.png" %}' alt="ship">
@@ -902,7 +970,6 @@
                 <button class="linkedinBTN" onclick="uploadToLinkedIn('six')"></button>
             </div>
         </div>
-
     </div>
 
     <div class="mySlides" id="seven">
@@ -918,13 +985,22 @@
     </div>
 
     <div class="mySlides" id="eight">
-        <div class="track-list">
-            {% for track in user_data.top_tracks %}
-                <div class="track-item">{{ track }}</div>
-            {% endfor %}
+        <div class="userTopTrack">
+            Your Top Songs Are:
+            <ol>
+                {% for track in user_data.top_tracks %}
+                    <li>{{ track }}</li>
+                {% endfor %}
+            </ol>
+
         </div>
-        <div class="eightContent">
-            <p>Your Top Songs Are:</p>
+        <div class="duoTopTrack">
+            Your Friend's Top Songs Are:
+            <ol>
+                {% for track in duo_user_data.top_tracks %}
+                    <li>{{ track }}</li>
+                {% endfor %}
+            </ol>
         </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
@@ -1057,7 +1133,6 @@
                 <button class="linkedinBTN" onclick="uploadToLinkedIn('six')"></button>
             </div>
         </div>
-
     </div>
 
     <div class="mySlides" id="seven">
@@ -1352,10 +1427,11 @@
         </a>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
-        <div class="share-buttons">
-            <button class="downloadBTN" onclick="downloadImage('lastH')"></button>
-            <button class="twitterBTN" onclick="uploadToTwitter('lastH')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('lastH')"></button>
+            <div class="share-buttons">
+                <button class="downloadBTN" onclick="downloadImage('lastH')"></button>
+                <button class="twitterBTN" onclick="uploadToTwitter('lastH')"></button>
+                <button class="linkedinBTN" onclick="uploadToLinkedIn('lastH')"></button>
+            </div>
         </div>
     </div>
 {% endif %}
