@@ -1,6 +1,8 @@
+from datetime import timedelta
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-
+from django.utils.timezone import now
 
 from spotifyWrappedClone.settings import redirect_uri, SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
@@ -10,6 +12,7 @@ import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+from .models import UserProfile
 
 # Create your views here.
 
@@ -181,6 +184,15 @@ returns: HttpResponseRedirect: Redirects to view_wraps page.
 @login_required
 def fetch_wrap_data(request):
     access_token = request.session.get('access_token')
+
+    if not UserProfile.objects.filter(user = request.user).exists():
+        UserProfile.objects.create(
+            user=request.user,
+            access_token= request.session.get('access_token'),
+            refresh_token= request.session.get('refresh_token'),
+            token_expires_at= now() + timedelta(hours=1)
+        )
+
     if not access_token:
         return redirect('spotify_login') # access_token(X) -> login
 
