@@ -159,6 +159,14 @@
       left: 50%;
     }
 
+    .duoStarWord {
+      position: relative;
+      z-index: 1;
+      transform: translate(-50%, 100%);
+      width: 20%;
+      left: 50%;
+    }
+
     #two {
         position: absolute;
         top: 0;
@@ -843,7 +851,7 @@
     <div class="mySlides" id="one">
         <div class='slideOneStar'>
             <img src='{% static "wrap/images/StarS1.png" %}' class="star" alt="star">
-            <div class='StarWord'>You Two Have Been a Part of Spotify For a Long Time</div>
+            <div class='duoStarWord'>You Two Have Been a Part of Spotify For a Long Time</div>
             <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         </div>
         <div class="share-buttons">
