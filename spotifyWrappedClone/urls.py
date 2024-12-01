@@ -25,5 +25,4 @@ urlpatterns = [
     path('register/', include('register.urls')),
     path('wrap/', include('wrap.urls')),
     path('functionality/', include('functionality.urls')),
-    path('translation/', include('translation.urls')),
 ]
