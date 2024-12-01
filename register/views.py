@@ -1,11 +1,11 @@
-from datetime import timedelta, datetime
-
+from datetime import timedelta
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.utils.timezone import now
 
 from spotifyWrappedClone.settings import redirect_uri, SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from django.utils import timezone
 from django.conf import settings
 import requests
 from django.contrib import messages
@@ -17,9 +17,7 @@ from .models import UserProfile
 
 '''
 Allows users to register for an account
-
 args: request (HttpRequest): The HTTP request object
-
 returns: HttpResponse: Renders the registration page or redirects to login
 '''
 def register(request):
@@ -39,9 +37,7 @@ def register(request):
 
 '''
 Allows users to log into their account
-
 Args: request (HttpRequest): The HTTP request object
-
 Returns: HttpResponse: Renders the login page or redirects to home
 '''
 def login_view(request):
@@ -57,9 +53,7 @@ def login_view(request):
 
 '''
 Allows users to log into their account
-
 args: request (HttpRequest): The HTTP request object
-
 returns: HttpResponse: Renders account deletion page or redirects to login
 '''
 @login_required
@@ -74,23 +68,18 @@ def delete_account(request):
 
 '''
 Allows users to view their profile. Shows their email and password
-
 args: request (HttpRequest): The HTTP request object
-
 returns: HttpResponse: Renders the profile page
 '''
 @login_required
 def profile(request):
-    sync_session_with_userprofile(request)
     return render(request, 'register/profile.html', {
         'user': request.user  # Pass the current user to the template
     })
 
 '''
 Brings to home page
-
 args: request (HttpRequest): The HTTP request object
-
 returns: HttpResponse: Renders the home page
 '''
 def home(request):
@@ -98,9 +87,7 @@ def home(request):
 
 '''
 gets authorization code for an access token and refreshes token from Spotify
-
 args: code (str): Authorization code from Spotify
-
 returns: dict: Token data including access and refresh tokens
 '''
 def get_spotify_token(code):
@@ -120,40 +107,22 @@ def get_spotify_token(code):
 
 '''
 retrieves and stores Spotify tokens in session
-
 args: request (HttpRequest): The HTTP request object
-
 returns: HttpResponseRedirect: Redirects to fetch_wrap_data view
 '''
 def spotify_callback(request):
     code = request.GET.get('code')
     token_data = get_spotify_token(code)
 
-    user_profile, created = UserProfile.objects.get_or_create(
-        user=request.user,
-        defaults={
-            'access_token': token_data['access_token'],
-            'refresh_token': token_data['refresh_token'],
-            'token_expires_at': now() + timedelta(seconds=token_data['expires_in'])
-        }
-    )
-
-    if not created:
-        user_profile.access_token = token_data['access_token']
-        user_profile.refresh_token = token_data['refresh_token']
-        user_profile.token_expires_at = now() + timedelta(seconds=token_data['expires_in'])
-        user_profile.save()
-
-    request.session['access_token'] = user_profile.access_token
-    request.session['refresh_token'] = user_profile.refresh_token
-    request.session['token_expires_at'] = user_profile.token_expires_at.isoformat()
-
+    # access_token& refresh_token store at session
+    request.session['access_token'] = token_data['access_token']
+    request.session['refresh_token'] = token_data['refresh_token']
+    # move to logic to get wrap1 data
     return redirect('fetch_wrap_data')
+
 '''
 landing page
-
 args: request (HttpRequest): The HTTP request object
-
 returns: HttpResponse: Renders the landing page
 '''
 def landing_view(request):
@@ -161,9 +130,7 @@ def landing_view(request):
 
 '''
 allows users to log into their Spotify account
-
 args: request (HttpRequest): The HTTP request object.
-
 returns: HttpResponseRedirect: Redirects to Spotify authorization URL.
 '''
 def spotify_login(request):
@@ -190,43 +157,46 @@ def check_token_scopes(access_token):
         print("Invalid token or missing scopes")
 '''
 uses Spotify API to get data
-
 args: request (HttpRequest): The HTTP request object.
-
 returns: HttpResponseRedirect: Redirects to view_wraps page.
 '''
 @login_required
 def fetch_wrap_data(request):
-    try:
-        sync_session_with_userprofile(request)
+    access_token = request.session.get('access_token')
+    if not UserProfile.objects.filter(user = request.user).exists():
+        UserProfile.objects.create(
+            user=request.user,
+            access_token= request.session.get('access_token'),
+            refresh_token= request.session.get('refresh_token'),
+            token_expires_at= now() + timedelta(hours=1)
+        )
+    if not access_token:
+        return redirect('spotify_login') # access_token(X) -> login
 
-        headers = {
-            'Authorization': f"Bearer {request.session['access_token']}"
-        }
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
 
-        response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers)
-        response.raise_for_status()
-        wrap_data = response.json()
+    # request wrap1 data using spotify api
+    response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers)
 
-        request.session['wrap_data'] = wrap_data
 
-    except requests.exceptions.RequestException as e:
-        messages.error(request, "Failed to fetch Spotify data. Please check your connection and try again.")
-        return redirect('spotify_login')
-    except Exception as e:
-        messages.error(request, f"Unexpected error: {str(e)}")
-        return redirect('spotify_login')
+    wrap_data = response.json()
 
+
+    # store wrap1 data into session storage
+    request.session['wrap_data'] = wrap_data
+
+    # redirect to screen that shows wrap1 data
     return redirect('view_wraps')
 
 
 '''
 Refreshes the Spotify access token if expired.
-
 args: user_profile (UserProfile): The user's profile containing tokens.
 '''
 def refresh_spotify_token(user_profile):
-    try:
+    if timezone.now() > user_profile.token_expires_at:
         url = "https://accounts.spotify.com/api/token"
         data = {
             'grant_type': 'refresh_token',
@@ -235,36 +205,7 @@ def refresh_spotify_token(user_profile):
             'client_secret': settings.SPOTIFY_CLIENT_SECRET,
         }
         response = requests.post(url, data=data)
-        response.raise_for_status()
-
         token_data = response.json()
         user_profile.access_token = token_data['access_token']
-        user_profile.token_expires_at = now() + timedelta(seconds=token_data['expires_in'])
+        user_profile.token_expires_at = timezone.now() + timezone.timedelta(seconds=token_data['expires_in'])
         user_profile.save()
-
-    except requests.exceptions.RequestException as e:
-        raise Exception("Failed to refresh Spotify token. Please re-login.")
-
-
-def sync_session_with_userprofile(request):
-    try:
-        user_profile = UserProfile.objects.get(user=request.user)
-
-        request.session['access_token'] = user_profile.access_token
-        request.session['refresh_token'] = user_profile.refresh_token
-
-        token_expires_at = request.session.get('token_expires_at')
-        if token_expires_at and isinstance(token_expires_at, str):
-            token_expires_at = datetime.fromisoformat(token_expires_at)
-
-        if not token_expires_at or now() > token_expires_at:
-            refresh_spotify_token(user_profile)
-            request.session['access_token'] = user_profile.access_token
-            request.session['refresh_token'] = user_profile.refresh_token
-            request.session['token_expires_at'] = user_profile.token_expires_at.isoformat()
-
-    except UserProfile.DoesNotExist:
-        request.session.flush()
-        raise Exception("User profile not found. Please re-login.")
-    except Exception as e:
-        raise Exception(f"Error syncing session with UserProfile: {str(e)}")
