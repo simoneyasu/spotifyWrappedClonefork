@@ -1,5 +1,4 @@
 from datetime import timedelta
-
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.utils.timezone import now
@@ -18,9 +17,7 @@ from .models import UserProfile
 
 '''
 Allows users to register for an account
-
 args: request (HttpRequest): The HTTP request object
-
 returns: HttpResponse: Renders the registration page or redirects to login
 '''
 def register(request):
@@ -40,9 +37,7 @@ def register(request):
 
 '''
 Allows users to log into their account
-
 Args: request (HttpRequest): The HTTP request object
-
 Returns: HttpResponse: Renders the login page or redirects to home
 '''
 def login_view(request):
@@ -58,9 +53,7 @@ def login_view(request):
 
 '''
 Allows users to log into their account
-
 args: request (HttpRequest): The HTTP request object
-
 returns: HttpResponse: Renders account deletion page or redirects to login
 '''
 @login_required
@@ -75,9 +68,7 @@ def delete_account(request):
 
 '''
 Allows users to view their profile. Shows their email and password
-
 args: request (HttpRequest): The HTTP request object
-
 returns: HttpResponse: Renders the profile page
 '''
 @login_required
@@ -88,9 +79,7 @@ def profile(request):
 
 '''
 Brings to home page
-
 args: request (HttpRequest): The HTTP request object
-
 returns: HttpResponse: Renders the home page
 '''
 def home(request):
@@ -98,9 +87,7 @@ def home(request):
 
 '''
 gets authorization code for an access token and refreshes token from Spotify
-
 args: code (str): Authorization code from Spotify
-
 returns: dict: Token data including access and refresh tokens
 '''
 def get_spotify_token(code):
@@ -120,9 +107,7 @@ def get_spotify_token(code):
 
 '''
 retrieves and stores Spotify tokens in session
-
 args: request (HttpRequest): The HTTP request object
-
 returns: HttpResponseRedirect: Redirects to fetch_wrap_data view
 '''
 def spotify_callback(request):
@@ -137,9 +122,7 @@ def spotify_callback(request):
 
 '''
 landing page
-
 args: request (HttpRequest): The HTTP request object
-
 returns: HttpResponse: Renders the landing page
 '''
 def landing_view(request):
@@ -147,9 +130,7 @@ def landing_view(request):
 
 '''
 allows users to log into their Spotify account
-
 args: request (HttpRequest): The HTTP request object.
-
 returns: HttpResponseRedirect: Redirects to Spotify authorization URL.
 '''
 def spotify_login(request):
@@ -176,15 +157,12 @@ def check_token_scopes(access_token):
         print("Invalid token or missing scopes")
 '''
 uses Spotify API to get data
-
 args: request (HttpRequest): The HTTP request object.
-
 returns: HttpResponseRedirect: Redirects to view_wraps page.
 '''
 @login_required
 def fetch_wrap_data(request):
     access_token = request.session.get('access_token')
-
     if not UserProfile.objects.filter(user = request.user).exists():
         UserProfile.objects.create(
             user=request.user,
@@ -192,7 +170,6 @@ def fetch_wrap_data(request):
             refresh_token= request.session.get('refresh_token'),
             token_expires_at= now() + timedelta(hours=1)
         )
-
     if not access_token:
         return redirect('spotify_login') # access_token(X) -> login
 
@@ -216,7 +193,6 @@ def fetch_wrap_data(request):
 
 '''
 Refreshes the Spotify access token if expired.
-
 args: user_profile (UserProfile): The user's profile containing tokens.
 '''
 def refresh_spotify_token(user_profile):

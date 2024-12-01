@@ -10,24 +10,43 @@
         margin: 0;
     }
 
+    .container {
+        max-width: 900px;
+        width: 96%;
+        margin: 10px auto;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
     .content-wrapper {
-        margin: 50px auto;
+        margin: 20px auto;
         text-align: center;
-        padding: 20px;
-        max-width: 800px;
+        padding: 10px;
+        max-width: 750px;
+        box-sizing: border-box;
     }
 
     .developer-card {
-        background-color: #242424;
+        background-color: #f5f5f5;
         border-radius: 8px;
-        padding: 20px;
-        margin-bottom: 30px;
+        padding: 15px;
+        margin-bottom: 15px;
         text-align: left;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode .developer-card {
+        background-color: #242424;
+        color: #b3b3b3;
     }
 
     .developer-card h4 {
         color: #1DB954;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
+    }
+
+    body.dark-mode .developer-card h4 {
+        color: #1ed760;
     }
 
     .developer-card p {
@@ -35,10 +54,18 @@
         margin: 0;
     }
 
+    body.dark-mode .developer-card p {
+        color: #b3b3b3;
+    }
+
     .form-group label {
         display: block;
         font-size: 1rem;
         margin-bottom: 5px;
+        color: #333333;
+    }
+
+    body.dark-mode .form-group label {
         color: #b3b3b3;
     }
 
@@ -47,13 +74,22 @@
         width: 100%;
         padding: 8px;
         border-radius: 5px;
-        border: 1px solid #3e3e3e;
+        border: 1px solid #cccccc;
+        background-color: #f5f5f5;
+        color: #333333;
+        box-sizing: border-box;
+        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    body.dark-mode .form-group input[type="text"],
+    body.dark-mode .form-group textarea {
         background-color: #121212;
         color: #b3b3b3;
+        border: 1px solid #3e3e3e;
     }
 
     .form-actions {
-        margin-top: 20px;
+        margin-top: 15px;
     }
 
     .form-actions .btn {
@@ -62,7 +98,7 @@
 
     .btn {
         display: inline-block;
-        padding: 10px 20px;
+        padding: 8px 18px;
         font-size: 1rem;
         text-align: center;
         text-decoration: none;
@@ -93,6 +129,7 @@
 {% endblock %}
 
 {% block content %}
+<div class="container">
 <div class="content-wrapper">
     <h2>Our Team</h2>
     
@@ -143,5 +180,6 @@
         <a href="{% url 'profile' %}" class="btn btn-primary">Back to Profile</a>
         <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
     </div>
+</div>
 </div>
 {% endblock %}

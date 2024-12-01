@@ -4,7 +4,7 @@
 {% block title %}Profile{% endblock %}
 
 {% block extra_css %}
-<style>
+ <style>
     body {
         display: flex;
         justify-content: center;
@@ -22,6 +22,7 @@
         padding: 30px;
         border-radius: 10px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
     }
 
     .user-info {
@@ -31,6 +32,7 @@
         background-color: rgba(0,0,0,0.05);
         border-radius: 5px;
         padding: 15px;
+        box-sizing: border-box;
     }
 
     .user-info li {
@@ -39,13 +41,14 @@
     }
 
     .btn {
-        display: inline-block;
+        display: block;
         width: 100%;
         padding: 12px;
         margin: 10px 0;
         border-radius: 5px;
         text-decoration: none;
         transition: background-color 0.3s ease;
+        box-sizing: border-box;
     }
 
     .btn-primary {
