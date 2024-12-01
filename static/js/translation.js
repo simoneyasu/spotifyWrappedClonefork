@@ -6,15 +6,14 @@
 function setLanguage(language) {
   localStorage.setItem('selectedLanguage', language);
   translatePage(language);
-  location.reload();
 }
 
 /**
  * Event listener for the DOMContentLoaded event.
  * Initializes the page translation process by checking the stored language in local storage.
  */
-document.addEventListener("DOMContentLoaded", function () {
-  const selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+document.addEventListener("DOMContentLoaded", function() {
+  let selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
   console.log("Page loaded. Current language from localStorage:", selectedLanguage);
 
   if (selectedLanguage !== 'en') {
@@ -31,22 +30,16 @@ document.addEventListener("DOMContentLoaded", function () {
 async function translatePage(targetLanguage) {
   console.log(`Translating page to: ${targetLanguage}`);
 
-  // Select text nodes of elements to translate
-  const elementsToTranslate = Array.from(document.querySelectorAll('*'))
-    .filter(el => !el.closest('[data-no-translate]') && el.childNodes.length > 0)
-    .flatMap(el =>
-      Array.from(el.childNodes).filter(node =>
-        node.nodeType === Node.TEXT_NODE && node.nodeValue.trim()
-      )
-    );
+  const elementsToTranslate = Array.from(document.querySelectorAll('#content h1, #content h2, #content h3, #content h4, #content h5, #content p, #content button, #content a, #content label'))
+                                    .filter(el => !el.closest('[data-no-translate]'));
 
-  if (elementsToTranslate.length === 0) {
-    console.warn("No text nodes found for translation.");
-    return;
-  }
-
-  const textArray = elementsToTranslate.map(node => node.nodeValue);
-  console.log("Texts to translate:", textArray);
+  const textArray = elementsToTranslate.map(element => {
+    // Save original text if not already saved
+    if (!element.getAttribute('data-original-text')) {
+      element.setAttribute('data-original-text', element.innerText);
+    }
+    return element.innerText;
+  });
 
   const csrftoken = getCookie('csrftoken');
 
@@ -62,16 +55,33 @@ async function translatePage(targetLanguage) {
 
     const data = await response.json();
 
-    if (data.translatedTexts && data.translatedTexts.length === elementsToTranslate.length) {
-      elementsToTranslate.forEach((node, index) => {
-        node.nodeValue = data.translatedTexts[index];
+    if (data.translatedTexts) {
+      elementsToTranslate.forEach((element, index) => {
+        // Apply translated text while keeping links intact
+        element.innerText = data.translatedTexts[index];
       });
     } else {
-      console.error("Translation mismatch or error:", data.error || "Unknown error");
+      console.error("Translation error:", data.error);
+      restoreOriginalText(elementsToTranslate);
     }
   } catch (error) {
     console.error("Translation failed:", error);
+    restoreOriginalText(elementsToTranslate);
   }
+}
+
+/**
+ * Restores the original text content of elements if the translation fails.
+ *
+ * @param {HTMLElement[]} elements - The list of elements whose text needs to be restored.
+ */
+function restoreOriginalText(elements) {
+  elements.forEach((element) => {
+    const originalText = element.getAttribute('data-original-text');
+    if (originalText) {
+      element.innerText = originalText;
+    }
+  });
 }
 
 /**
@@ -94,21 +104,3 @@ function getCookie(name) {
   }
   return cookieValue;
 }
-
-/**
- * MutationObserver for dynamically added or updated elements.
- */
-const observer = new MutationObserver(() => {
-  const selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-  if (selectedLanguage !== 'en') translatePage(selectedLanguage);
-});
-
-observer.observe(document.body, { childList: true, subtree: true });
-
-/**
- * Handles elements that are dynamically added or modified, ensuring they are translated.
- */
-document.addEventListener('DOMNodeInserted', function () {
-  const selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-  if (selectedLanguage !== 'en') translatePage(selectedLanguage);
-});

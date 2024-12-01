@@ -1,15 +1,17 @@
-/* Existing styles */
+/* Place your CSS styles in this file */
 
 body {
-  background: white url("images/Spotify Landing BG.png");
+ background: white url("images/Spotify Landing BG.png");
   background-size: cover;
-  text-align: center;
-  color: white;
-  font-family: 'Lucida Sans', sans-serif;
+ text-align: center;
+ color: white;
+ font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .header {
   color: #121212;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  text-align: center;
   background-color: #1DB954;
   padding: 30px;
   font-size: 30px;
@@ -20,10 +22,10 @@ body {
   border: none;
   padding: 15px 25px;
   border-radius: 25px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   font-size: 17px;
-  font-weight: bold;
+  font-weight: 1000;
   margin-bottom: 15px;
-  cursor: pointer;
 }
 
 h2 {
@@ -32,36 +34,8 @@ h2 {
 }
 
 .text {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255,255,255, 0.1);
   padding: 25px;
   margin: 3% 22%;
   border-radius: 25px;
-}
-
-/* Language Selection Styles */
-.language-selection {
-  margin: 20px;
-}
-
-.language-selection label {
-  color: white;
-  font-size: 18px;
-  margin-right: 10px;
-}
-
-.language-selection select {
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: none;
-  background-color: #1DB954;
-  color: white;
-}
-
-.language-selection select option {
-  color: black; /* Text color of the options */
-}
-
-.language-selection select:focus {
-  outline: none;
 }

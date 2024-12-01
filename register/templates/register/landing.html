@@ -1,46 +1,38 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
   <title>Landing</title>
-  <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <script src="{% static 'js/translation.js' %}"></script>
 </head>
+
+<template>
+
+</template>
+
+<div class="header">
+  <h1> Spotify Wrapper </h1>
+
+</div>
 <body>
-  <div class="header">
-    <h1>Spotify Wrapper</h1>
-  </div>
 
-  <div class="text" id="content">
-    <h2>This website allows you to view your past music history through creative slide shows</h2>
-    <h2>If you do not have an account, register with the button below</h2>
-    <button class="button" onclick="location.href='/register/register'">Register</button>
-    <h2>If you have an account, you can login with your username and password below</h2>
-    <button class="button" onclick="location.href='/register/login'">Login</button>
-  </div>
+<div class="text" id="content">
+  <h2>This website allows you to view your past music history through creative slide shows</h2>
+  <h2>If you do not have an account, register with the button below</h2>
+  <button class="button" onclick="location.href='/register/register'">Register</button>
+  <h2>If you have an account, you can login with your username and password below</h2>
+  <button class="button" onclick="location.href='/register/login'">Login</button>
+</div>
 
-  <!-- Language Selection -->
-  <div class="language-selection">
-    <select name="languages" id="lang" onchange="changeLanguage(this.value)">
-      <option value="">--Select a language--</option>
-      <option value="en">English</option>
-      <option value="ko">한국어</option>
-      <option value="es">Español</option>
-      <option value="fr">Français</option>
-      <option value="de">Deutsch</option>
-    </select>
-  </div>
-
-  <!-- Your existing scripts -->
-  <script src="{% static 'js/translation.js' %}"></script>
-
-  <!-- Language Change Script -->
-  <script>
-    function changeLanguage(langCode) {
-      if (langCode) {
-        setLanguage(langCode);
-      }
-    }
-  </script>
+<div class="language-buttons">
+  <button onclick="setLanguage('en')">English</button>
+  <button onclick="setLanguage('ko')">한국어</button>
+  <button onclick="setLanguage('es')">Español</button>
+  <button onclick="setLanguage('fr')">Français</button>
+  <button onclick="setLanguage('de')">Deutsch</button>
+</div>
 </body>
+
 </html>

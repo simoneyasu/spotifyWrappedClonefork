@@ -5,11 +5,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ wrap.name }} - Spotify Wrap Details</title>
-    <link rel="stylesheet" href="{% static 'wrap/wrap_detail.css' %}">
-    <script src="{% static 'js/translation.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .wrap-detail {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #1E1E1E;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .wrap-detail h1, .wrap-detail h2 {
+            color: #1DB954;
+        }
+
+        .wrap-detail p, .wrap-detail ul {
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .wrap-detail ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .wrap-detail li {
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .wrap-detail strong {
+            color: #1DB954;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .action-buttons a, .action-buttons form button {
+            text-decoration: none;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            transition: background-color 0.3s ease;
+            min-width: 150px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            box-sizing: border-box;
+        }
+
+        .action-buttons a {
+            background-color: #1DB954;
+        }
+
+        .action-buttons a:hover {
+            background-color: #17a74a;
+        }
+
+        .action-buttons form button {
+            background-color: #E50914;
+        }
+
+        .action-buttons form button:hover {
+            background-color: #c30710;
+        }
+
+        .action-buttons form button, .action-buttons a {
+            appearance: none;
+        }
+    </style>
 </head>
 <body>
-    <div class="wrap-detail" id="content">
+    <div class="wrap-detail">
         <h1>{{ wrap.name }} - Details</h1>
         <p><strong>Theme:</strong> {{ wrap.theme }}</p>
         <p><strong>Year:</strong> {{ wrap.year }}</p>

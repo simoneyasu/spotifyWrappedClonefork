@@ -5,10 +5,9 @@
     <meta charset="UTF-8">
     <title>Create Wrap</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <script src="{% static 'js/translation.js' %}"></script>
 </head>
 <body>
-    <div class="container" id="content">
+    <div class="container">
         <h1>Create Your Wrap</h1>
     <form method="post" action="{% url 'create_wrap' %}">
         {% csrf_token %}
