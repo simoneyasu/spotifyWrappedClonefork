@@ -12,7 +12,20 @@
             --text-color-light: #000000;
             --bg-color-dark: #121212;
             --text-color-dark: #ffffff;
-        }
+
+            --container-bg-light: #f9f9f9;
+            --container-bg-dark: #1e1e1e;
+
+
+            --user-info-bg-light: rgba(0, 0, 0, 0.05);
+            --user-info-bg-dark: rgba(255, 255, 255, 0.1);
+
+
+            --primary-color: #1DB954;
+            --primary-color-hover: #1aa34a;
+            --danger-color: #dc3545;
+            --danger-color-hover: #c82333;
+            }
 
         body {
             margin: 0;
@@ -25,6 +38,17 @@
         body.dark-mode {
             background-color: var(--bg-color-dark);
             color: var(--text-color-dark);
+        }
+
+        .container {
+            background-color: var(--container-bg-light);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        body.dark-mode .container {
+            background-color: var(--container-bg-dark);
+            box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
         }
 
         .mode-toggle {
@@ -44,17 +68,28 @@
             background-color: #1aa34a;
         }
 
-        body.dark-mode .language-selection {
-            background-color: var(--bg-color-dark);
-            color: var(--text-color-dark);
+        body.dark-mode .user-info {
+            background-color: var(--user-info-bg-dark);
         }
 
-
-        body.dark-mode .language-selection select {
-            background: var(--bg-color-dark);
-            color: var(--text-color-dark);
-            border: 1px solid var(--text-color-dark);
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
         }
+
+        .btn-primary:hover {
+            background-color: var(--primary-color-hover);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: var(--danger-color-hover);
+        }
+
     </style>
 
     {% block extra_css %}{% endblock %}
