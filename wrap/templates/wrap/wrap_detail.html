@@ -1,33 +1,37 @@
+{% extends 'register/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ wrap.name }} - Spotify Wrap Details</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: white;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
 
+{% block title %}{{ wrap.name }} - Spotify Wrap Details{% endblock %}
+
+{% block extra_css %}
+    <style>
         .wrap-detail {
             max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
+            margin: 40px auto;
+            padding: 25px;
             border-radius: 10px;
-            background-color: #1E1E1E;
+            background-color: var(--container-bg-light);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode .wrap-detail {
+            background-color: var(--container-bg-dark);
+        }
+
+        .wrap-detail h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+            margin-bottom: 20px;
             text-align: center;
         }
 
-        .wrap-detail h1, .wrap-detail h2 {
-            color: #1DB954;
+        .wrap-detail h2 {
+            color: var(--primary-color);
+            font-size: 22px;
+            margin-top: 30px;
+            margin-bottom: 10px;
         }
 
         .wrap-detail p, .wrap-detail ul {
@@ -38,15 +42,16 @@
         .wrap-detail ul {
             list-style-type: none;
             padding: 0;
+            margin: 10px 0;
         }
 
         .wrap-detail li {
             margin-bottom: 10px;
-            color: white;
+            text-align: center;
         }
 
         .wrap-detail strong {
-            color: #1DB954;
+            color: var(--primary-color);
         }
 
         .action-buttons {
@@ -59,45 +64,41 @@
 
         .action-buttons a, .action-buttons form button {
             text-decoration: none;
-            padding: 12px 20px;
+            padding: 8px 12px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            font-weight: bold;
-            color: #fff;
+            color: white;
             transition: background-color 0.3s ease;
-            min-width: 150px;
+            min-width: 120px;
             text-align: center;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 50px;
+            height: 40px;
             box-sizing: border-box;
         }
 
         .action-buttons a {
-            background-color: #1DB954;
+            background-color: var(--primary-color);
         }
 
         .action-buttons a:hover {
-            background-color: #17a74a;
+            background-color: var(--primary-color-hover);
         }
 
         .action-buttons form button {
-            background-color: #E50914;
+            background-color: var(--danger-color);
         }
 
         .action-buttons form button:hover {
-            background-color: #c30710;
-        }
-
-        .action-buttons form button, .action-buttons a {
-            appearance: none;
+            background-color: var(--danger-color-hover);
         }
     </style>
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <div class="wrap-detail">
         <h1>{{ wrap.name }} - Details</h1>
         <p><strong>Theme:</strong> {{ wrap.theme }}</p>
@@ -147,5 +148,4 @@
             </form>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}
