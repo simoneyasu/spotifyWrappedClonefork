@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Your Wrap</title>
-    <script src="{% static 'js/translation.js' %}"></script>
     <link href='https://fonts.googleapis.com/css?family=Mountains of Christmas' rel='stylesheet'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
 
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <script>
@@ -28,10 +30,10 @@
         overflow: hidden;
         background-color: #121212;
         color: white;
-        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        font-family: "Orbitron", sans-serif;
+        font-weight: 600;
         text-align: center;
-        font-size: 36px;
-        font-weight: 100;
+        font-size: 48px;
     }
 
     button {
@@ -66,15 +68,6 @@
         height: 4vh;
         width: 4vh;
         background: black url({% static 'wrap/images/twitter-x-logo-42554.png' %});
-        background-size: cover;
-        padding: 0;
-        border-radius: 1vh;
-    }
-
-    .linkedinBTN {
-        height: 4vh;
-        width: 4vh;
-        background: lightblue url({% static 'wrap/images/512px-LinkedIn_logo_initials.png' %});
         background-size: cover;
         padding: 0;
         border-radius: 1vh;
@@ -133,17 +126,20 @@
         width: 100vw;
         height: 100vh;
         color: #ff8b1e;
+        font-size: 58px;
     }
 
     .slideOneStar {
       position: relative;
       text-align: center;
       color: white;
-      top: 25%;
+      top: -5%;
     }
 
     .star {
       position: absolute;
+      height: 926px;
+      width: 1076px;
       top: 0;
       left: 50%;
       transform: translateX(-50%);
@@ -153,17 +149,19 @@
 
     .StarWord {
       position: relative;
+      font-size: 48px;
       z-index: 1;
-      transform: translate(-50%, 130%);
-      width: 20%;
+      transform: translate(-50%, 215%);
+      width: 30%;
       left: 50%;
     }
 
     .duoStarWord {
       position: relative;
+      font-size: 48px;
       z-index: 1;
-      transform: translate(-50%, 100%);
-      width: 20%;
+      transform: translate(-50%, 150%);
+      width: 30%;
       left: 50%;
     }
 
@@ -205,6 +203,7 @@
         width: 100vw;
         height: 100vh;
         color: #ff8b1e;
+        font-size: 58px;
     }
 
     .TwoHcontent {
@@ -214,7 +213,7 @@
     .planets {
       position: relative;
       text-align: center;
-      font-size: 30px;
+      font-size: 48px;
     }
 
     .planet {
@@ -223,23 +222,23 @@
 
     .planetsContent {
       position: absolute;
-      top: 46%;
+      top: 25%;
       left: 50%;
       transform: translateX(-50%);
     }
 
     .userMinute {
-        font-size: 5vh;
         position: absolute;
+        left: 7vw;
         top: 45vh;
-        left: 10vh;
+        font-size: 40px;
     }
 
     .duoUserMinute {
-        font-size: 5vh;
         position: absolute;
+        right: 7vw;
         top: 45vh;
-        right: 10vh;
+        font-size: 40px;
     }
 
     #three {
@@ -277,6 +276,7 @@
         width: 100vw;
         height: 100vh;
         color: #ff8b1e;
+        font-size: 58px;
     }
 
     .threeCcontent {
@@ -300,61 +300,57 @@
         transform-origin: 0 600vh;
     }
     /* This took too long */
-    .arched-text span:nth-child(1) { transform: rotate(-6.8deg); }
-    .arched-text span:nth-child(2) { transform: rotate(-6.5deg); }
-    .arched-text span:nth-child(3) { transform: rotate(-6.25deg); }
-    .arched-text span:nth-child(4) { transform: rotate(-6deg); }
-    .arched-text span:nth-child(5) { transform: rotate(-5.75deg); }
-    .arched-text span:nth-child(6) { transform: rotate(-5.5deg); }
-    .arched-text span:nth-child(7) { transform: rotate(-5.25deg); }
-    .arched-text span:nth-child(8) { transform: rotate(-5deg); }
-    .arched-text span:nth-child(9) { transform: rotate(-4.75deg); }
-    .arched-text span:nth-child(10) { transform: rotate(-4.5deg); }
-    .arched-text span:nth-child(11) { transform: rotate(-4.25deg); }
-    .arched-text span:nth-child(12) { transform: rotate(-4deg); }
-    .arched-text span:nth-child(13) { transform: rotate(-3.75deg); }
-    .arched-text span:nth-child(14) { transform: rotate(-3.45deg); }
-    .arched-text span:nth-child(15) { transform: rotate(-3.25deg); }
-    .arched-text span:nth-child(16) { transform: rotate(-3deg); }
-    .arched-text span:nth-child(17) { transform: rotate(-2.75deg); }
-    .arched-text span:nth-child(18) { transform: rotate(-2.5deg); }
-    .arched-text span:nth-child(19) { transform: rotate(-2.25deg); }
-    .arched-text span:nth-child(20) { transform: rotate(-2deg); }
-    .arched-text span:nth-child(21) { transform: rotate(-1.75deg); }
-    .arched-text span:nth-child(22) { transform: rotate(-1.5deg); }
-    .arched-text span:nth-child(23) { transform: rotate(-1.25deg); }
-    .arched-text span:nth-child(24) { transform: rotate(-1deg); }
-    .arched-text span:nth-child(25) { transform: rotate(-0.75deg); }
-    .arched-text span:nth-child(26) { transform: rotate(-0.5deg); }
-    .arched-text span:nth-child(27) { transform: rotate(-0.25deg); }
-    .arched-text span:nth-child(28) { transform: rotate(0deg); }
-    .arched-text span:nth-child(29) { transform: rotate(0.25deg); }
-    .arched-text span:nth-child(30) { transform: rotate(0.5deg); }
-    .arched-text span:nth-child(31) { transform: rotate(0.75deg); }
-    .arched-text span:nth-child(32) { transform: rotate(1deg); }
-    .arched-text span:nth-child(33) { transform: rotate(1.25deg); }
-    .arched-text span:nth-child(34) { transform: rotate(1.5deg); }
-    .arched-text span:nth-child(35) { transform: rotate(1.75deg); }
-    .arched-text span:nth-child(36) { transform: rotate(2deg); }
-    .arched-text span:nth-child(37) { transform: rotate(2.25deg); }
-    .arched-text span:nth-child(38) { transform: rotate(2.5deg); }
-    .arched-text span:nth-child(39) { transform: rotate(2.75deg); }
-    .arched-text span:nth-child(40) { transform: rotate(3deg); }
-    .arched-text span:nth-child(41) { transform: rotate(3.25deg); }
-    .arched-text span:nth-child(42) { transform: rotate(3.5deg); }
-    .arched-text span:nth-child(43) { transform: rotate(3.75deg); }
-    .arched-text span:nth-child(44) { transform: rotate(4deg); }
-    .arched-text span:nth-child(45) { transform: rotate(4.25deg); }
-    .arched-text span:nth-child(46) { transform: rotate(4.5deg); }
-    .arched-text span:nth-child(47) { transform: rotate(4.75deg); }
-    .arched-text span:nth-child(48) { transform: rotate(5deg); }
-    .arched-text span:nth-child(49) { transform: rotate(5.25deg); }
-    .arched-text span:nth-child(50) { transform: rotate(5.5deg); }
-    .arched-text span:nth-child(51) { transform: rotate(5.75deg); }
-    .arched-text span:nth-child(52) { transform: rotate(6deg); }
-    .arched-text span:nth-child(53) { transform: rotate(6.25deg); }
-    .arched-text span:nth-child(54) { transform: rotate(6.5deg); }
-    .arched-text span:nth-child(55) { transform: rotate(6.75deg); }
+    .arched-text span:nth-child(1) { transform: rotate(-8.15deg); } /* O */
+    .arched-text span:nth-child(2) { transform: rotate(-7.73deg); } /* v */
+    .arched-text span:nth-child(3) { transform: rotate(-7.35deg); } /* e */
+    .arched-text span:nth-child(4) { transform: rotate(-7.05deg); } /* r */
+    .arched-text span:nth-child(5) { transform: rotate(-6.9deg); } /*   */
+    .arched-text span:nth-child(6) { transform: rotate(-6.6deg); } /* t */
+    .arched-text span:nth-child(7) { transform: rotate(-6.2deg); } /* h */
+    .arched-text span:nth-child(8) { transform: rotate(-5.95deg); } /* i */
+    .arched-text span:nth-child(9) { transform: rotate(-5.7deg); } /* s */
+    .arched-text span:nth-child(10) { transform: rotate(-5.4deg); } /*   */
+    .arched-text span:nth-child(11) { transform: rotate(-5.28deg); } /* t */
+    .arched-text span:nth-child(12) { transform: rotate(-5deg); } /* i */
+    .arched-text span:nth-child(13) { transform: rotate(-4.68deg); } /* m */
+    .arched-text span:nth-child(14) { transform: rotate(-4.25deg); } /* e */
+    .arched-text span:nth-child(15) { transform: rotate(-3.9deg); } /*   */
+    .arched-text span:nth-child(16) { transform: rotate(-3.8deg); } /* y */
+    .arched-text span:nth-child(17) { transform: rotate(-3.5deg); } /* o */
+    .arched-text span:nth-child(18) { transform: rotate(-3.15deg); } /* u */
+    .arched-text span:nth-child(19) { transform: rotate(-2.7deg); } /*   */
+    .arched-text span:nth-child(20) { transform: rotate(-2.6deg); } /* h */
+    .arched-text span:nth-child(21) { transform: rotate(-2.2deg); } /* a */
+    .arched-text span:nth-child(22) { transform: rotate(-1.85deg); } /* v */
+    .arched-text span:nth-child(23) { transform: rotate(-1.5deg); } /* e */
+    .arched-text span:nth-child(24) { transform: rotate(-1.2deg); } /*   */
+    .arched-text span:nth-child(25) { transform: rotate(-0.9deg); } /* l */
+    .arched-text span:nth-child(26) { transform: rotate(-0.6deg); } /* i */
+    .arched-text span:nth-child(27) { transform: rotate(-0.3deg); } /* s */
+    .arched-text span:nth-child(28) { transform: rotate(0deg); } /* t */
+    .arched-text span:nth-child(29) { transform: rotate(0.3deg); } /* e */
+    .arched-text span:nth-child(30) { transform: rotate(0.68deg); } /* n */
+    .arched-text span:nth-child(31) { transform: rotate(1.05deg); } /* e */
+    .arched-text span:nth-child(32) { transform: rotate(1.45deg); } /* d */
+    .arched-text span:nth-child(33) { transform: rotate(1.5deg); } /*   */
+    .arched-text span:nth-child(34) { transform: rotate(1.9deg); } /* t */
+    .arched-text span:nth-child(35) { transform: rotate(2.2deg); } /* o */
+    .arched-text span:nth-child(36) { transform: rotate(2.4deg); } /*   */
+    .arched-text span:nth-child(37) { transform: rotate(2.7deg); } /* a */
+    .arched-text span:nth-child(38) { transform: rotate(3deg); } /*  */
+    .arched-text span:nth-child(39) { transform: rotate(3.2deg); } /* l */
+    .arched-text span:nth-child(40) { transform: rotate(3.6deg); } /* a */
+    .arched-text span:nth-child(41) { transform: rotate(3.9deg); } /* r */
+    .arched-text span:nth-child(42) { transform: rotate(4.2deg); } /* g */
+    .arched-text span:nth-child(43) { transform: rotate(4.55deg); } /* e */
+    .arched-text span:nth-child(44) { transform: rotate(4.8deg); } /*   */
+    .arched-text span:nth-child(45) { transform: rotate(5.1deg); } /* v */
+    .arched-text span:nth-child(46) { transform: rotate(5.5deg); } /* a */
+    .arched-text span:nth-child(47) { transform: rotate(5.8deg); } /* r */
+    .arched-text span:nth-child(48) { transform: rotate(6deg); } /* i */
+    .arched-text span:nth-child(49) { transform: rotate(6.25deg); } /* e */
+    .arched-text span:nth-child(50) { transform: rotate(6.55deg); } /* t */
+    .arched-text span:nth-child(51) { transform: rotate(6.85deg); } /* y */
 
     #four {
         position: absolute;
@@ -389,10 +385,11 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        font-size: 58px;
     }
 
     .fourContent {
-        padding-top: 35vh;
+        padding-top: 30vh;
     }
 
     .fourCcontent {
@@ -401,21 +398,21 @@
     }
 
     .FourHcontent {
-        padding-top: 38vh;
+        padding-top: 30vh;
     }
 
     .userTopGenre {
-        font-size: 5vh;
         position: absolute;
-        top: 33vh;
-        left: 18vh;
+        left: 10vw;
+        top: 32vh;
+        font-size: 40px;
     }
 
     .duoTopGenre {
-        font-size: 5vh;
         position: absolute;
-        top: 33vh;
-        right: 18vh;
+        right: 10vw;
+        top: 32vh;
+        font-size: 40px;
     }
 
     #five {
@@ -428,7 +425,7 @@
         height: 100vh;
         display: flex;
         justify-content: center;
-        color: white;
+        color: orange;
     }
 
     #fiveH {
@@ -441,6 +438,7 @@
         width: 100vw;
         height: 100vh;
         color: #ff8b1e;
+        font-size: 58px;
     }
 
     #fiveC {
@@ -508,7 +506,21 @@
     }
 
     .sixContent {
-        padding-top: 35vh;
+        padding-top: 30vh;
+    }
+
+    .userTopArtist {
+        position: absolute;
+        left: 10vw;
+        top: 32vh;
+        font-size: 40px;
+    }
+
+    .duoTopArtist {
+        position: absolute;
+        right: 10vw;
+        top: 32vh;
+        font-size: 40px;
     }
 
     .SixCcontent {
@@ -531,25 +543,19 @@
         position: absolute;
         top: 0;
         left: 0;
-        background: white url({% static 'wrap/images/halloween/scream.png' %});
+        background: white url({% static 'wrap/images/halloween/BigPumpkin.png' %});
         background-size: cover;
         width: 100vw;
         height: 100vh;
         color: #ff8b1e;
+        font-size: 58px;
     }
 
-    .userTopArtist {
-        font-size: 5vh;
+    .sixHcontent {
         position: absolute;
-        top: 33vh;
-        left: 18vh;
-    }
-
-    .duoTopArtist {
-        font-size: 5vh;
-        position: absolute;
-        top: 33vh;
-        right: 18vh;
+        top: 10vh;
+        right: 30vh;
+        width: 30vw;
     }
 
     .ship {
@@ -593,6 +599,7 @@
         background-size: cover;
         width: 100vw;
         height: 100vh;
+        font-size: 58px;
     }
 
     .SevenHcontent {
@@ -601,9 +608,7 @@
 
     .sevenContent {
         text-align: center;
-        font-size: 5vh;
-        padding-top: 40vh;
-        font-family: "Droid Sans", serif;
+        padding-top: 36vh;
     }
 
     #eight {
@@ -641,6 +646,7 @@
         width: 100vw;
         height: 100vh;
         color: #ff8b1e;
+        font-size: 48px;
     }
 
     .eightCcontent {
@@ -653,30 +659,31 @@
 
     .eightContent {
         text-align: center;
-        font-size: 5vh;
-        padding-top: 41vh;
-        font-family: "Droid Sans", serif;
+        padding-top: 25vh;
     }
 
     .userTopTrack {
         position: absolute;
-        color: #170638;
-        top: 10vh;
-        left: 7vh;
+        left: 10vw;
+        top: 15vh;
+        width: 35vw;
+        font-size: 36px;
+        color: #101073;
     }
 
     .duoTopTrack {
         position: absolute;
-        color: #170638;
-        top: 10vh;
-        right: 7vh;
+        right: 10vw;
+        top: 15vh;
+        width: 35vw;
+        font-size: 36px;
+        color: #101073;
     }
-
 
     .track-list {
         position: relative;
         width: 100%;
-        height: 34vh;
+        height: 10vh;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -684,30 +691,29 @@
 
     .track-item {
         position: absolute;
-        width: 100px;
+        width: 150px;
         height: 50px;
         text-align: center;
         font-size: 1.2rem;
         color: white;
-        font-family: "Droid Sans", serif;
-        transform-origin: 0 50vw; /* Adjust this to control the radius of the arc */
+        transform-origin: 0 50vw;
     }
 
     /* Position each item along the arc */
     .track-item:nth-child(1) {
-        transform: rotate(-45deg);
+        transform: rotate(-55deg);
     }
     .track-item:nth-child(2) {
-        transform: rotate(-23deg);
+        transform: rotate(-33deg);
     }
     .track-item:nth-child(3) {
         transform: rotate(0deg);
     }
     .track-item:nth-child(4) {
-        transform: rotate(23deg);
+        transform: rotate(33deg);
     }
     .track-item:nth-child(5) {
-        transform: rotate(45deg);
+        transform: rotate(55deg);
     }
 
 
@@ -747,14 +753,14 @@
         width: 100vw;
         height: 100vh;
         color: black;
+        font-size: 58px;
     }
 
     .lastContent {
-        font-family: 'Trebuchet MS', sans-serif;
         font-weight: bold;
         color: #ff8b1e;
         text-align: center;
-        padding-top: 10%;
+        padding-top: 18%;
     }
 
     .returnBTN {
@@ -762,9 +768,9 @@
         color: #121212;
         border: none;
         border-radius: 25px;
-        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        font-family: "Orbitron", "sans-serif";
         font-size: 15px;
-        font-weight: 1000;
+        font-weight: 600;
         display: block;
         margin-top: 10px;
     }
@@ -779,6 +785,18 @@
         font-weight: 1000;
         display: block;
         margin-top: 30px;
+    }
+
+    .returnBTN_H {
+        background-color: #ff8b1e;
+        color: #121212;
+        border: none;
+        border-radius: 25px;
+        font-family: Creepster;
+        font-size: 15px;
+        font-weight: 600;
+        display: block;
+        margin-top: 10px;
     }
 
     @keyframes arcMotion {
@@ -857,7 +875,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('one')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('one')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('one')"></button>
         </div>
     </div>
 
@@ -875,7 +892,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('two')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('two')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('two')"></button>
         </div>
     </div>
 
@@ -896,7 +912,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('three')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('three')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('three')"></button>
         </div>
     </div>
 
@@ -924,7 +939,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('four')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('four')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('four')"></button>
         </div>
     </div>
 
@@ -939,13 +953,12 @@
             <span>Have </span>
             <span>Made </span>
             <span>Their </span>
-            <span>Impact </span>
+            <span>Mark </span>
         </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('five')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('five')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('five')"></button>
         </div>
     </div>
 
@@ -975,7 +988,6 @@
             <div class="share-buttons">
                 <button class="downloadBTN" onclick="downloadImage('six')"></button>
                 <button class="twitterBTN" onclick="uploadToTwitter('six')"></button>
-                <button class="linkedinBTN" onclick="uploadToLinkedIn('six')"></button>
             </div>
         </div>
     </div>
@@ -988,7 +1000,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('seven')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('seven')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('seven')"></button>
         </div>
     </div>
 
@@ -1014,7 +1025,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('eight')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('eight')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('eight')"></button>
         </div>
     </div>
 
@@ -1029,7 +1039,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('last')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('last')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('last')"></button>
         </div>
     </div>
     {% elif spotify_wrap.theme == 'none' %}
@@ -1042,7 +1051,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('one')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('one')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('one')"></button>
         </div>
     </div>
 
@@ -1050,14 +1058,13 @@
         <div class="planets">
             <img src='{% static "wrap/images/Planets.png" %}' alt="planets" class="planet">
             <div class="planetsContent">
-                You have listened to:<br> {{ user_data.total_mins_listened }} minutes
+                You have listened to:<br><br><br><br><br><br><br><br> {{ user_data.total_mins_listened }} minutes
             </div>
             <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         </div>
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('two')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('two')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('two')"></button>
         </div>
     </div>
 
@@ -1078,7 +1085,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('three')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('three')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('three')"></button>
         </div>
     </div>
 
@@ -1097,7 +1103,6 @@
             <div class="share-buttons">
                 <button class="downloadBTN" onclick="downloadImage('four')"></button>
                 <button class="twitterBTN" onclick="uploadToTwitter('four')"></button>
-                <button class="linkedinBTN" onclick="uploadToLinkedIn('four')"></button>
             </div>
         </div>
     </div>
@@ -1113,13 +1118,12 @@
             <span>Have </span>
             <span>Made </span>
             <span>Their </span>
-            <span>Impact </span>
+            <span>Mark </span>
         </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('five')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('five')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('five')"></button>
         </div>
     </div>
 
@@ -1138,7 +1142,6 @@
             <div class="share-buttons">
                 <button class="downloadBTN" onclick="downloadImage('six')"></button>
                 <button class="twitterBTN" onclick="uploadToTwitter('six')"></button>
-                <button class="linkedinBTN" onclick="uploadToLinkedIn('six')"></button>
             </div>
         </div>
     </div>
@@ -1151,7 +1154,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('seven')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('seven')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('seven')"></button>
         </div>
     </div>
 
@@ -1168,7 +1170,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('eight')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('eight')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('eight')"></button>
         </div>
     </div>
 
@@ -1183,7 +1184,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('last')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('last')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('last')"></button>
         </div>
     </div>
 {% elif spotify_wrap.theme == "christmas" %}
@@ -1195,7 +1195,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('oneC')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('oneC')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('oneC')"></button>
         </div>
     </div>
 
@@ -1208,7 +1207,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('twoC')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('twoC')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('twoC')"></button>
         </div>
     </div>
 
@@ -1220,7 +1218,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('threeC')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('threeC')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('threeC')"></button>
         </div>
     </div>
 
@@ -1239,20 +1236,18 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('fourC')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('fourC')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('fourC')"></button>
         </div>
     </div>
 
 
     <div class="mySlides" id="fiveC">
         <div class="FiveCcontent">
-            Through These Genres a Few Artists <br>Have Made Their Impact
+            Through These Genres a Few Artists <br>Have Made Their Mark
         </div>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('fiveC')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('fiveC')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('fiveC')"></button>
         </div>
     </div>
 
@@ -1270,7 +1265,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('sixC')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('sixC')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('sixC')"></button>
         </div>
     </div>
 
@@ -1280,7 +1274,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('sevenC')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('sevenC')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('sevenC')"></button>
         </div>
     </div>
 
@@ -1298,7 +1291,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('eightC')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('eightC')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('eightC')"></button>
         </div>
     </div>
 
@@ -1311,7 +1303,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('lastC')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('lastC')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('lastC')"></button>
         </div>
     </div>
 {% else %}
@@ -1321,7 +1312,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('oneH')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('oneH')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('oneH')"></button>
         </div>
     </div>
 
@@ -1335,7 +1325,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('twoH')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('twoH')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('twoH')"></button>
         </div>
     </div>
 
@@ -1345,7 +1334,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('threeH')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('threeH')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('threeH')"></button>
         </div>
     </div>
 
@@ -1365,33 +1353,33 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('fourH')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('fourH')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('fourH')"></button>
         </div>
     </div>
 
     <div class="mySlides" id="fiveH">
-        <p>Through These Genres a Few Artists<br> Have Made Their Impact</p>
+        <p>Through These Genres a Few Artists<br> Have Made Their Mark</p>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('fiveH')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('fiveH')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('fiveH')"></button>
         </div>
     </div>
 
 
     <div class="mySlides" id="sixH">
-        <p>Your Favorite Artists Are:</p>
-        <ol>
-            {% for artist in user_data.top_artists %}
-                <li>{{ artist }}</li>
-            {% endfor %}
-        </ol>
+        <div class="sixHcontent">
+            Your Favorite Artists Are:
+            <ol>
+                {% for artist in user_data.top_artists %}
+                    <li>{{ artist }}</li>
+                {% endfor %}
+            </ol>
+        </div>
+
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('sixH')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('sixH')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('sixH')"></button>
         </div>
     </div>
 
@@ -1405,7 +1393,6 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('sevenH')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('sevenH')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('sevenH')"></button>
         </div>
     </div>
 
@@ -1424,21 +1411,19 @@
         <div class="share-buttons">
             <button class="downloadBTN" onclick="downloadImage('eightH')"></button>
             <button class="twitterBTN" onclick="uploadToTwitter('eightH')"></button>
-            <button class="linkedinBTN" onclick="uploadToLinkedIn('eightH')"></button>
         </div>
     </div>
 
     <div class="mySlides" id="lastH">
         <p>Return to Dashboard:</p>
         <a href="{% url 'view_wraps' %}">
-            <button type="button" class="returnBTN"> Return </button>
+            <button type="button" class="returnBTN_H"> Return </button>
         </a>
         <div class="spotify-player" id="track-{{ forloop.counter }}"></div>
         <div class="share-buttons">
             <div class="share-buttons">
                 <button class="downloadBTN" onclick="downloadImage('lastH')"></button>
                 <button class="twitterBTN" onclick="uploadToTwitter('lastH')"></button>
-                <button class="linkedinBTN" onclick="uploadToLinkedIn('lastH')"></button>
             </div>
         </div>
     </div>
