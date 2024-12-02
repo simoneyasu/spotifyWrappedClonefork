@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-# import django_heroku
+import django_heroku
 
 load_dotenv()
 
@@ -192,4 +192,4 @@ TWITTER_CLIENT_SECRET = os.getenv("TWITTER_CLIENT_SECRET")
 TWITTER_REDIRECT_URI = os.getenv('TWITTER_REDIRECT_URI')
 BEARER_TOKEN = os.getenv("TWITTER_BEARER_TOKEN")
 
-# django_heroku.settings(locals())
+django_heroku.settings(locals())
