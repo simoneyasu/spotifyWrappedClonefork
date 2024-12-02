@@ -1,185 +1,150 @@
-{% extends 'register/base.html' %}
 {% load static %}
 
-{% block title %}Development Process{% endblock %}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark" id="htmlPage">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Development Process</title>
 
-{% block extra_css %}
-<style>
-    body {
-        padding: 0;
-        margin: 0;
-    }
+    <!-- Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/translation.js' %}"></script>
+    <style>
+        /* dark mode styling (default) */
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
 
-    .container {
-        max-width: 900px;
-        width: 96%;
-        margin: 10px auto;
-        padding: 10px;
-        box-sizing: border-box;
-    }
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            color: inherit;
+        }
 
-    .content-wrapper {
-        margin: 20px auto;
-        text-align: center;
-        padding: 10px;
-        max-width: 750px;
-        box-sizing: border-box;
-    }
+        /* bios styling */
+        .developer {
+            margin-bottom: 20px;
+        }
 
-    .developer-card {
-        background-color: #f5f5f5;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 15px;
-        text-align: left;
-        transition: background-color 0.3s, color 0.3s;
-    }
+        .developer h4 {
+            margin-bottom: 5px;
+            font-size: 1.2em;
+            color: #1DB954;
+        }
 
-    body.dark-mode .developer-card {
-        background-color: #242424;
-        color: #b3b3b3;
-    }
+        .developer p {
+            margin: 0;
+            color: #a0a0a0;
+            font-size: 0.95em;
+        }
 
-    .developer-card h4 {
-        color: #1DB954;
-        margin-bottom: 8px;
-    }
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            color: inherit;
+            background-color: inherit;
+        }
 
-    body.dark-mode .developer-card h4 {
-        color: #1ed760;
-    }
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
 
-    .developer-card p {
-        color: #b3b3b3;
-        margin: 0;
-    }
+        /* light mode styling */
+        .light-mode {
+            background-color: white;
+            color: black;
+        }
 
-    body.dark-mode .developer-card p {
-        color: #b3b3b3;
-    }
+        .light-mode .container {
+            background-color: #f8f9fa;
+        }
 
-    .form-group label {
-        display: block;
-        font-size: 1rem;
-        margin-bottom: 5px;
-        color: #333333;
-    }
+        .light-mode .developer p {
+            color: #555;
+        }
+    </style>
 
-    body.dark-mode .form-group label {
-        color: #b3b3b3;
-    }
+    <script>
+        // method to switch between dark and light
+        function myFunction() {
+            document.body.classList.toggle("light-mode");
+        }
+    </script>
+</head>
+<body>
 
-    .form-group input[type="text"],
-    .form-group textarea {
-        width: 100%;
-        padding: 8px;
-        border-radius: 5px;
-        border: 1px solid #cccccc;
-        background-color: #f5f5f5;
-        color: #333333;
-        box-sizing: border-box;
-        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-    }
+    <!-- light/dark toggle button -->
+    <button onclick="myFunction()" class="btn btn-dark mb-3">Toggle Dark Mode</button>
 
-    body.dark-mode .form-group input[type="text"],
-    body.dark-mode .form-group textarea {
-        background-color: #121212;
-        color: #b3b3b3;
-        border: 1px solid #3e3e3e;
-    }
+    <div class="container" id="content">
+        <h2>Our Team</h2>
 
-    .form-actions {
-        margin-top: 15px;
-    }
-
-    .form-actions .btn {
-        margin: 5px;
-    }
-
-    .btn {
-        display: inline-block;
-        padding: 8px 18px;
-        font-size: 1rem;
-        text-align: center;
-        text-decoration: none;
-        color: #fff;
-        border-radius: 500px;
-        margin: 5px;
-        transition: background-color 0.3s, transform 0.3s;
-    }
-
-    .btn-primary {
-        background-color: #1DB954;
-    }
-
-    .btn-primary:hover {
-        background-color: #1ed760;
-        transform: scale(1.05);
-    }
-
-    .btn-secondary {
-        background-color: #282828;
-    }
-
-    .btn-secondary:hover {
-        background-color: #3e3e3e;
-        transform: scale(1.05);
-    }
-</style>
-{% endblock %}
-
-{% block content %}
-<div class="container">
-<div class="content-wrapper">
-    <h2>Our Team</h2>
-    
-    <!-- Team Bios -->
-    <div class="developer-card">
-        <h4>Derrick Chen</h4>
-        <p>Derrick focused on frontend development. He enjoys tackling complex challenges and finding efficient solutions.</p>
-    </div>
-    <div class="developer-card">
-        <h4>Joseph Cloer</h4>
-        <p>Joseph specializes in frontend design and user experience, ensuring the application is visually appealing and user-friendly.</p>
-    </div>
-    <div class="developer-card">
-        <h4>Simon Eyasu</h4>
-        <p>Simon worked as our scrum master to help organize team meetings along with helping with the projects backend</p>
-    </div>
-    <div class="developer-card">
-        <h4>Minseo Kim</h4>
-        <p>Minseo worked as a fullstack developer on quality assurance to ensure smooth functionality across all features.</p>
-    </div>
-    <div class="developer-card">
-        <h4>Sachith Koduri</h4>
-        <p>Sachith as our frontend engineer, worked on all aspects of the project including frontend and backend.</p>
-    </div>
-    
-    <!-- Contact Form -->
-    <h3>Send Us Your Feedback</h3>
-    <form action="" method="POST">
-        {% csrf_token %}
-        {% for hidden in form.hidden_fields %}
-            {{ hidden }}
-        {% endfor %}
-        {% for field in form.visible_fields %}
-            <div class="form-group">
-                {{ field.errors }}
-                <label>{{ field.label_tag }}</label>
-                <p>{{ field }}</p>
-            </div>
-        {% endfor %}
-        <div class="form-actions">
-            <button type="reset" class="btn btn-secondary">Reset</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
+        <!-- our bios -->
+        <div class="developer">
+            <h4>Derrick Chen</h4>
+            <p>Derrick focused on frontend development. He enjoys tackling complex challenges and finding efficient solutions.</p>
         </div>
-    </form>
 
-    <!-- Navigation Buttons -->
-    <div class="button-group">
-        <a href="{% url 'profile' %}" class="btn btn-primary">Back to Profile</a>
-        <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+        <div class="developer">
+            <h4>Joseph Cloer</h4>
+            <p>Joseph specializes in frontend design and user experience, ensuring the application is visually appealing and user-friendly.</p>
+        </div>
+
+        <div class="developer">
+            <h4>Simon Eyasu</h4>
+            <p>Simon is our scrum master...</p>
+        </div>
+
+        <div class="developer">
+            <h4>Minseo Kim</h4>
+            <p>Minseo worked as a fullstack developer on quality assurance to ensure smooth functionality across all features.</p>
+        </div>
+
+        <div class="developer">
+            <h4>Sachith Koduri</h4>
+            <p>Sachith as our frontend engineer, worked on all aspects of the project including frontend and backend.</p>
+        </div>
+
+        <!-- contact form -->
+        <h3>Send Us Your Feedback</h3>
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% for field in form.visible_fields %}
+                <div class="form-group" data-no-translate>
+                    {{ field.errors }}
+                    <label><span>{{ field.label_tag }}</span></label>
+                    <p>{{ field }}</p>
+                </div>
+            {% endfor %}
+
+            <!-- buttons for reset and submit (contact developers) -->
+            <div class="form-actions">
+                <button type="reset" class="btn btn-secondary">Reset</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+
+        <!-- button for back to profile -->
+        <a href="{% url 'profile' %}" class="btn btn-secondary mt-3">Back to Profile</a>
     </div>
-</div>
-</div>
-{% endblock %}
+
+</body>
+</html>

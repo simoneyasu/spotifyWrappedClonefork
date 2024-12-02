@@ -1,33 +1,26 @@
 import uuid
-from datetime import timedelta
-from urllib.parse import uses_relative
-
-from django.contrib.auth.models import User
-from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
-from django.utils.timezone import now
-from pyexpat.errors import messages
-from django.contrib import messages
 
 from functionality.views import get_User_Data
 import openai
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from register.models import SpotifyWrap, UserProfile
+from register.models import SpotifyWrap
 from django.http import JsonResponse
+import os
+import requests
+import base64
+from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
+from requests_oauthlib import OAuth1
 from openai import OpenAI
 from django.core.exceptions import ObjectDoesNotExist
-import json
-import requests
-
-from register.views import refresh_spotify_token
+import uuid
 
 '''
-Displays the dashboard showing recent Spotify Wraps for the logged-in user.
 
-@param request: The HTTP request object.
-@return: Rendered HTML page with the user's dashboard.
+dashboard of wraps. Shows buttons to create/view wraps
+
 '''
 @login_required
 def dashboard(request):
@@ -35,20 +28,14 @@ def dashboard(request):
     return render(request, 'wrap/dashboard.html', {'user' : request.user, 'recent_wraps': recent_wraps})
 
 '''
-Displays the details of a specific Spotify Wrap.
 
-@param request: The HTTP request object.
-@param wrap_id: The unique identifier of the Spotify Wrap.
-@return: Rendered HTML page with the wrap's details and user data.
+view your wrap
+
 '''
 def your_wrap(request, wrap_id):
     spotify_wrap = get_object_or_404(SpotifyWrap, wrap_id=wrap_id)
 
-    user_profile = UserProfile.objects.get(user=request.user)
-    if user_profile.token_expires_at is None:
-        user_profile.token_expires_at = now() + timedelta(hours=1)
-        user_profile.save()
-    access_token = user_profile.access_token
+    access_token = request.session.get('access_token', None)
     if not access_token:
         return redirect('login')
 
@@ -60,41 +47,23 @@ def your_wrap(request, wrap_id):
 
     term = time_range_mapping.get(spotify_wrap.time_range)
 
-    user_data = get_User_Data(access_token, user_profile, term)
-
-    duo_data = None
-
-    if spotify_wrap.theme == 'duo':
-        duo_user = User.objects.get(username=spotify_wrap.duo_username)
-        duo_user_profile = UserProfile.objects.get(user=duo_user)
-        if duo_user_profile.token_expires_at is None:
-            duo_user_profile.token_expires_at = now() + timedelta(hours=1)
-            duo_user_profile.save()
-
-        refresh_spotify_token(duo_user_profile)
-        duo_access_token = duo_user_profile.access_token
-        duo_data = get_User_Data(duo_access_token, duo_user_profile, term)
-
-
+    user_data = get_User_Data(access_token, term)
 
     context = {
         'user_data': user_data,
-        'duo_user_data': duo_data,
-        'spotify_wrap': spotify_wrap,
-        'token': access_token
+        'spotify_wrap': spotify_wrap
     }
 
     return render(request, 'wrap/your_wrap.html', context)
 
 '''
-Displays a list of all Spotify Wraps for the logged-in user.
 
-@param request: The HTTP request object.
-@return: Rendered HTML page with a list of wraps and shareable URLs.
+View wrap
+
 '''
 @login_required
 def view_wraps(request):
-    wraps = SpotifyWrap.objects.filter(Q(user=request.user) | Q(duo_username=request.user.username)).order_by('-created_at')
+    wraps = SpotifyWrap.objects.filter(user=request.user).order_by('-created_at')
     no_wraps = wraps.count() == 0
 
     share_urls = []
@@ -121,81 +90,26 @@ def view_wraps(request):
 
 
 '''
-Displays detailed information about a specific Spotify Wrap.
 
-@param request: The HTTP request object.
-@param wrap_id: The unique identifier of the Spotify Wrap.
-@return: Rendered HTML page with detailed wrap information.
+shows the details of a wrap
+
 '''
 @login_required
 def wrap_detail(request, wrap_id):
     wrap = get_object_or_404(SpotifyWrap, wrap_id=wrap_id, user=request.user)
 
-    access_token = request.session.get('access_token', None)
-    if not access_token:
-        return redirect('spotify_login')
+    # Convert track durations from milliseconds to "minutes:seconds"
+    for track in wrap.data.get('tracks', []):
+        duration_ms = track.get('duration', 0)
+        minutes, seconds = divmod(duration_ms // 1000, 60)
+        track['formatted_duration'] = f"{minutes}:{seconds:02}"
 
-    try:
-        if isinstance(wrap.data, str):
-            wrap_data = json.loads(wrap.data)
-        elif isinstance(wrap.data, dict):
-            wrap_data = wrap.data
-        else:
-            return render(request, 'wrap/wrap_detail.html', {
-                'error': "Wrap data is in an unsupported format."
-            })
-    except json.JSONDecodeError as e:
-        return render(request, 'wrap/wrap_detail.html', {
-            'error': f"Failed to parse wrap data: {e}"
-        })
-
-    try:
-        user_data = get_User_Data(access_token, request.user, wrap_data.get('time_range', 'long_term'))
-        print("DEBUG: User data fetched successfully:", user_data)
-    except Exception as e:
-        return render(request, 'wrap/wrap_detail.html', {
-            'error': f"Error fetching data from Spotify API: {e}"
-        })
-
-    top_tracks_names = user_data.get('top_tracks', [])
-    top_tracks = []
-
-    headers = {'Authorization': f'Bearer {access_token}'}
-    for track_name in top_tracks_names:
-        track_search_url = f"https://api.spotify.com/v1/search?q={track_name}&type=track&limit=1"
-        response = requests.get(track_search_url, headers=headers)
-
-        if response.status_code == 200:
-            search_data = response.json()
-            if search_data.get('tracks', {}).get('items'):
-                track = search_data['tracks']['items'][0]
-                duration_ms = track.get('duration_ms', 0)
-                minutes, seconds = divmod(duration_ms // 1000, 60)
-                track['formatted_duration'] = f"{minutes}:{seconds:02}"
-                top_tracks.append(track)
-            else:
-                print(f"DEBUG: No track found for {track_name}")
-        else:
-            print(f"DEBUG: Failed to fetch track details for {track_name}: {response.status_code}")
-
-    top_artists = user_data.get('top_artists', wrap_data.get('artists', []))
-    top_genres = user_data.get('top_genres', [])
-    total_mins_listened = user_data.get('total_mins_listened', 0)
-
-    return render(request, 'wrap/wrap_detail.html', {
-        'wrap': wrap,
-        'top_tracks': top_tracks,
-        'top_artists': top_artists,
-        'top_genres': top_genres,
-        'total_mins_listened': total_mins_listened,
-    })
-
+    return render(request, 'wrap/wrap_detail.html', {'wrap': wrap})
 '''
-Deletes a specific Spotify Wrap for the logged-in user.
 
-@param request: The HTTP request object.
-@param wrap_id: The unique identifier of the Spotify Wrap.
-@return: Redirect to the wraps list page or an error response.
+
+Gives user ability to delete a wrap
+
 '''
 @login_required
 def delete_wrap(request, wrap_id):
@@ -212,11 +126,9 @@ def delete_wrap(request, wrap_id):
 
 
 '''
-Uses ChatGPT to analyze a Spotify Wrap and generate a description based on the music taste.
 
-@param request: The HTTP request object.
-@param wrap_id: The unique identifier of the Spotify Wrap.
-@return: Rendered HTML page with analysis results.
+Uses ChatGPT to analyze 
+
 '''
 openai.api_key = settings.OPENAI_API_KEY
 
@@ -267,29 +179,18 @@ def analyze_wrap(request, wrap_id):
 
 
 '''
-Creates a new Spotify Wrap for the logged-in user.
 
-@param request: The HTTP request object.
-@return: Redirect to the wraps list page or rendered HTML page for creating a wrap.
+Loads create wrap page
+
 '''
 def create(request):
     if request.method == 'POST':
         name = request.POST.get('wrap_name')
         theme = request.POST.get('theme')
         time_range = request.POST.get('time')
-        username = request.POST.get('username') if theme == 'duo' else None
 
-        # Ensure a valid user is logged in
+        # Ensure valid user is logged in
         user = request.user
-
-        # Check for duo mode and validate username
-        if theme == 'duo':
-            if not username:
-                messages.error(request, "Duo mode selected, but no username provided.")
-                return render(request, 'wrap/create_wrap.html', {'form_data': request.POST})
-            if not User.objects.filter(username=username).exists():
-                messages.error(request, f"Username '{username}' does not exist.")
-                return render(request, 'wrap/create_wrap.html', {'form_data': request.POST})
 
         # Create the SpotifyWrap object
         wrap = SpotifyWrap.objects.create(
@@ -298,12 +199,206 @@ def create(request):
             name=name,
             theme=theme,
             time_range=time_range,
-            year=2024,
-            duo_username=username,
-            data={},
+            year=2024,  # Example year, update accordingly
+            data={},  # Assuming you're adding data here later
         )
 
         # Redirect to a page that shows the created wrap
         return redirect('view_wraps')
 
     return render(request, 'wrap/create_wrap.html')
+
+# LinkedIn Login View
+def linkedin_login(request):
+    auth_url = (
+        f"https://www.linkedin.com/oauth/v2/authorization?"
+        f"response_type=code&client_id={os.getenv('LINKEDIN_CLIENT_ID')}&"
+        f"redirect_uri={os.getenv('LINKEDIN_REDIRECT_URI')}&"
+        f"scope=w_member_social"
+    )
+    return redirect(auth_url)
+
+# LinkedIn Callback View
+def linkedin_callback(request):
+    code = request.GET.get('code')
+    if not code:
+        return JsonResponse({'error': 'Authorization code not found'}, status=400)
+
+    token_url = "https://www.linkedin.com/oauth/v2/accessToken"
+    data = {
+        "grant_type": "authorization_code",
+        "code": code,
+        "redirect_uri": os.getenv('LINKEDIN_REDIRECT_URI'),
+        "client_id": os.getenv('LINKEDIN_CLIENT_ID'),
+        "client_secret": os.getenv('LINKEDIN_CLIENT_SECRET'),
+    }
+
+    response = requests.post(token_url, data=data)
+    if response.status_code == 200:
+        access_token = response.json().get('access_token')
+        request.session['linkedin_access_token'] = access_token  # Save the token in the session
+        return JsonResponse({'access_token': access_token})
+    else:
+        return JsonResponse({'error': 'Failed to fetch access token'}, status=response.status_code)
+
+def twitter_login(request):
+    base_url = "https://twitter.com/i/oauth2/authorize"
+    params = {
+        "response_type": "code",
+        "client_id": os.getenv("TWITTER_CLIENT_ID"),
+        "redirect_uri": os.getenv("TWITTER_REDIRECT_URI"),
+        "scope": "tweet.read tweet.write users.read offline.access",
+        "state": "random_string_for_csrf_protection",
+        "code_challenge": "challenge_value",  # PKCE 값
+        "code_challenge_method": "plain",
+    }
+    request_url = f"{base_url}?{'&'.join([f'{key}={value}' for key, value in params.items()])}"
+    return redirect(request_url)
+
+def twitter_callback(request):
+    code = request.GET.get("code")
+    if not code:
+        return JsonResponse({"error": "No authorization code provided"}, status=400)
+
+    token_url = "https://api.twitter.com/2/oauth2/token"
+    data = {
+        "grant_type": "authorization_code",
+        "code": code,
+        "redirect_uri": os.getenv("TWITTER_REDIRECT_URI"),
+        "client_id": os.getenv("TWITTER_CLIENT_ID"),
+        "client_secret": os.getenv("TWITTER_CLIENT_SECRET"),
+    }
+
+    response = requests.post(token_url, data=data)
+    if response.status_code == 200:
+        tokens = response.json()
+        request.session["twitter_access_token"] = tokens.get("access_token")
+        request.session["twitter_refresh_token"] = tokens.get("refresh_token")
+        return JsonResponse({"message": "Twitter authorization successful"})
+    else:
+        return JsonResponse({"error": "Failed to fetch access token"}, status=response.status_code)
+
+'''
+
+Upload to Twitter
+
+'''
+@csrf_exempt
+def upload_to_twitter(request):
+    if request.method == "POST":
+        image_data = request.POST.get("image")
+        text = request.POST.get("text", "Check out my Spotify Wrapped!")
+
+        if not image_data:
+            return JsonResponse({"error": "No image data provided"}, status=400)
+
+        try:
+            header, encoded = image_data.split(",", 1)
+            image_binary = base64.b64decode(encoded)
+
+            auth = OAuth1(
+                os.getenv("TWITTER_API_KEY"),
+                os.getenv("TWITTER_API_SECRET"),
+                os.getenv("TWITTER_ACCESS_TOKEN"),
+                os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
+            )
+
+            upload_url = "https://upload.twitter.com/1.1/media/upload.json"
+            files = {"media": image_binary}
+            upload_response = requests.post(upload_url, auth=auth, files=files)
+
+            if upload_response.status_code == 200:
+                media_id = upload_response.json().get("media_id_string")
+
+                post_url = "https://api.twitter.com/1.1/statuses/update.json"
+                payload = {"status": text, "media_ids": media_id}
+                post_response = requests.post(post_url, auth=auth, data=payload)
+
+                if post_response.status_code == 200:
+                    return JsonResponse({"message": "Tweet posted successfully!"})
+                else:
+                    return JsonResponse({"error": "Failed to post tweet"}, status=500)
+            else:
+                return JsonResponse({"error": "Failed to upload media"}, status=500)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request method"}, status=400)
+
+'''
+
+Upload to LinkedIn
+
+'''
+@csrf_exempt
+def upload_to_linkedin(request):
+    if request.method == "POST":
+        image_data = request.POST.get("image")
+        text = request.POST.get("text", "Check out my Spotify Wrapped!")
+        linkedin_access_token = request.session.get("linkedin_access_token")
+
+        if not linkedin_access_token:
+            return JsonResponse({"error": "LinkedIn access token is missing"}, status=401)
+
+        user_id = fetch_linkedin_user_id(linkedin_access_token)
+        if not user_id:
+            return JsonResponse({"error": "Failed to fetch LinkedIn user ID"}, status=400)
+
+        try:
+            header, encoded = image_data.split(",", 1)
+            image_binary = base64.b64decode(encoded)
+
+            initialize_url = "https://api.linkedin.com/v2/assets?action=registerUpload"
+            headers = {
+                "Authorization": f"Bearer {linkedin_access_token}",
+                "Content-Type": "application/json",
+            }
+            payload = {
+                "registerUploadRequest": {
+                    "recipes": ["urn:li:digitalmediaRecipe:feedshare-image"],
+                    "owner": f"urn:li:person:{user_id}",
+                }
+            }
+            init_response = requests.post(initialize_url, headers=headers, json=payload)
+
+            if init_response.status_code != 201:
+                return JsonResponse({"error": "Failed to initialize upload"}, status=400)
+
+            upload_url = init_response.json()["value"]["uploadUrl"]
+            asset = init_response.json()["value"]["asset"]
+
+            upload_response = requests.put(upload_url, headers=headers, data=image_binary)
+
+            if upload_response.status_code != 201:
+                return JsonResponse({"error": "Failed to upload image"}, status=400)
+
+            post_url = "https://api.linkedin.com/v2/shares"
+            post_payload = {
+                "content": {
+                    "contentEntities": [{"entityLocation": asset, "thumbnails": []}],
+                    "title": text,
+                },
+                "owner": f"urn:li:person:{user_id}",
+                "text": {"text": text},
+            }
+            post_response = requests.post(post_url, headers=headers, json=post_payload)
+
+            if post_response.status_code == 201:
+                return JsonResponse({"message": "Post shared successfully on LinkedIn!"})
+            else:
+                return JsonResponse({"error": "Failed to post on LinkedIn"}, status=500)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request method"}, status=400)
+
+def fetch_linkedin_user_id(access_token):
+    url = "https://api.linkedin.com/v2/me"
+    headers = {"Authorization": f"Bearer {access_token}"}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json().get("id")
+    else:
+        print(f"Failed to fetch LinkedIn user ID: {response.json()}")
+        return None
+
