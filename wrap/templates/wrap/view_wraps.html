@@ -1,234 +1,268 @@
-{% load static %}
-{% csrf_token %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Spotify Wraps</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: white;
-            margin: 0;
-            padding: 0;
-        }
 
-        .container {
-            margin: 20px auto;
-            padding: 20px;
-            max-width: 800px;
-            background-color: #1e1e1e;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
+    {% extends 'register/base.html' %}
+    {% load static %}
+    {% csrf_token %}
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #1DB954;
-            font-size: 24px;
-        }
+    {% block title %}{{ wrap.name }} - Spotify Wrap Details{% endblock %}
 
-        .wrap-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            margin-bottom: 15px;
-            background-color: #2a2a2a;
-            border-radius: 5px;
-        }
+    {% block extra_css %}
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+            }
+            body {
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background-color: var(--bg-color-light);
+                color: var(--text-color-light);
+                transition: background-color 0.3s, color 0.3s;
+            }
 
-        .wrap-left, .wrap-center, .wrap-right {
-            flex: 1;
-            text-align: center;
-        }
+            body.dark-mode {
+                background-color: var(--bg-color-dark);
+                color: var(--text-color-dark);
+            }
 
-        .wrap-center {
-            margin: 0 20px;
-        }
+            .header-buttons {
+                display: flex;
+                justify-content: flex-start;
+                gap: 10px;
+                margin: 20px 15px;
+            }
 
-        .wrap-details {
-            text-align: left;
-            font-size: 16px;
-            line-height: 1.8;
-        }
+            .header-buttons a {
+                display: inline-block;
+                padding: 10px 15px;
+                font-size: 14px;
+                color: white;
+                background-color: #1DB954;
+                border-radius: 5px;
+                text-decoration: none;
+                transition: background-color 0.3s;
+            }
 
-        .wrap-meta {
-            font-size: 14px;
-            color: #b3b3b3;
-        }
+            .header-buttons a:hover {
+                background-color: #1aa34a;
+            }
+            .container {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                max-width: 900px;
+                width: 90%;
+                padding: 20px;
+                background-color: var(--container-bg-light);
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                text-align: center;
+                box-sizing: border-box;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
 
-        .detail-link {
-            font-size: 14px;
-            color: #1DB954;
-            text-decoration: none;
-        }
+            body.dark-mode .container {
+                background-color: var(--container-bg-dark);
+                box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+            }
 
-        .detail-link:hover {
-            text-decoration: underline;
-        }
+            h1 {
+                text-align: center;
+                margin-bottom: 20px;
+                color: var(--primary-color);
+                font-size: 24px;
+                font-weight: bold;
+            }
 
-        .share-buttons-row {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
+            ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
 
-        .share-buttons-row .btn, .btn-danger {
-            width: 120px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 14px;
-            text-align: center;
-            line-height: 1.5;
-            white-space: nowrap;
-            padding: 0;
-            margin: 0;
-        }
+            .wrap-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px;
+                margin: 20px auto;
+                background-color: var(--user-info-bg-light);
+                border-radius: 8px;
+                transition: background-color 0.3s ease;
+                max-width: 100%;
+                text-align: center;
+                flex-wrap: wrap;
+            }
 
-        .btn {
-            background-color: #1DB954;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            text-decoration: none;
-        }
+            body.dark-mode .wrap-item {
+                background-color: var(--user-info-bg-dark);
+            }
 
-        .btn:hover {
-            background-color: #17a74a;
-        }
+            .wrap-left, .wrap-center, .wrap-right {
+                flex: 1;
+                text-align: center;
+                margin: 10px;
+            }
 
-        .btn-danger {
-            background-color: #f44336;
-            color: white;
-            text-align: center;
-            width: 120px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 14px;
-            text-align: center;
-            line-height: 1.5;
-            white-space: nowrap;
-            padding: 0;
-            margin: 0;
-            margin-left: 50px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
+            .wrap-left a {
+                color: #1DB954;
+                text-decoration: none;
+            }
+            .wrap-left a:hover {
+                text-decoration: underline;
+            }
+            .wrap-meta {
+                color: #555;
+                font-size: 14px;
+            }
+            body.dark-mode .wrap-meta {
+                color: #b3b3b3;
+            }
 
-        .btn-danger:hover {
-            background-color: #d32f2f;
-        }
+            .share-buttons-row {
+                display: flex;
+                gap: 10px;
+                justify-content: center;
+            }
 
-        .create-wrap {
-            text-align: center;
-            margin-top: 20px;
-        }
+            .btn {
+                display: inline-block;
+                padding: 8px 12px;
+                font-size: 14px;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                text-decoration: none;
+                cursor: pointer;
+                background-color: var(--primary-color);
+                transition: background-color 0.3s;
+                white-space: nowrap;
+            }
 
-        .create-wrap .btn {
-            width: 50%;
-        }
+            .btn:hover {
+                background-color: var(--primary-color-hover);
+            }
 
-        a {
-            font-size: 20px;
-        }
+            .btn-danger {
+                background-color: var(--danger-color);
+            }
 
-        small {
-            font-size: 20px;
-        }
 
-    </style>
-</head>
-<body>
+            .btn-danger:hover {
+                background-color: var(--danger-color-hover);
+            }
 
-<!-- navigation -->
-<div class="top-left">
-    <a href="{% url 'home' %}" class="btn btn">Back to Home</a>
-    <a href="{% url 'profile' %}" class="btn btn">Go to Profile</a>
-</div>
+            body.dark-mode .btn {
+                background-color: var(--primary-color-hover);
+            }
 
-<div class="container" id="content">
-    <h1>Your Spotify Wraps</h1>
-    {% if no_wraps %}
-        <p>No Wrap data available. Please listen to some music to generate your Spotify Wrap!</p>
-    {% else %}
-        <ul>
-            {% for wrap in wraps %}
-                <div class="wrap-item">
-                    <div class="wrap-left">
-                        <strong><a href="{% url 'your_wrap' wrap.wrap_id %}">{{ wrap.name }}</a></strong><br>
-                        <span class="wrap-meta">Year: {{ wrap.year }} | Theme: {{ wrap.theme|default:"N/A"|title }}</span>
-                        <br>
-                        <a href="{% url 'wrap_detail' wrap.wrap_id %}" class="detail-link">View Details</a>
-                        <a href="{% url 'analyze_wrap' wrap.wrap_id %}" class="detail-link">| Analyze Wrap</a>
-                    </div>
+            body.dark-mode .btn-danger {
+                background-color: var(--danger-color-hover);
+            }
 
-                    <div class="wrap-center">
-                        <h3>Share Your Wrap</h3>
-                        <div class="share-buttons-row">
-                            <a href="https://twitter.com/intent/tweet?text=Check out my Spotify Wrap!&url={{ request.scheme }}://{{ request.get_host }}{% url 'your_wrap' wrap.wrap_id %}"
-                               target="_blank" class="btn">Share on Twitter</a>
-                            <button onclick="copyLink('{{ wrap.wrap_id }}')" class="btn">Copy Link</button>
+            .create-wrap {
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            .create-wrap .btn {
+                padding: 10px 15px;
+                font-size: 16px;
+                background-color: var(--primary-color);
+                color: white;
+                border: none;
+                border-radius: 5px;
+                text-decoration: none;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            .create-wrap .btn:hover {
+                background-color: var(--primary-color-hover);
+            }
+        </style>
+
+    {% endblock %}
+
+    {% block content %}
+    <!-- navigation -->
+    <div class="header-buttons">
+        <a href="{% url 'home' %}" class="btn btn">Back to Home</a>
+        <a href="{% url 'profile' %}" class="btn btn">Go to Profile</a>
+    </div>
+
+    <div class="container" id="content">
+        <h1>Your Spotify Wraps</h1>
+        {% if no_wraps %}
+            <p>No Wrap data available. Please listen to some music to generate your Spotify Wrap!</p>
+        {% else %}
+            <ul>
+                {% for wrap in wraps %}
+                    <div class="wrap-item">
+                        <div class="wrap-left">
+                            <strong><a href="{% url 'your_wrap' wrap.wrap_id %}">{{ wrap.name }}</a></strong><br>
+                            <span class="wrap-meta">Year: {{ wrap.year }} | Theme: {{ wrap.theme|default:"N/A" }}</span>
+                            <br>
+                            <a href="{% url 'wrap_detail' wrap.wrap_id %}" class="detail-link">View Details</a>
+                            <a href="{% url 'analyze_wrap' wrap.wrap_id %}" class="detail-link">| Analyze Wrap</a>
+                        </div>
+
+                        <div class="wrap-center">
+                            <h3>Share Your Wrap</h3>
+                            <div class="share-buttons-row">
+                                <a href="https://twitter.com/intent/tweet?text=Check out my Spotify Wrap!&url={{ request.scheme }}://{{ request.get_host }}{% url 'your_wrap' wrap.wrap_id %}"
+                                   target="_blank" class="btn">Share on Twitter</a>
+                                <button onclick="copyLink('{{ wrap.wrap_id }}')" class="btn">Copy Link</button>
+                            </div>
+                        </div>
+
+                        <div class="wrap-right">
+                            <form action="{% url 'delete_wrap' wrap.wrap_id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
                         </div>
                     </div>
-
-                    <div class="wrap-right">
-                        <form action="{% url 'delete_wrap' wrap.wrap_id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                    </div>
-                </div>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    <div class="create-wrap">
-        <a href="{% url 'create_wrap' %}" class="btn btn">Create New Wrap</a>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <div class="create-wrap">
+            <a href="{% url 'create_wrap' %}" class="btn btn">Create New Wrap</a>
+        </div>
     </div>
-</div>
+    {% endblock %}
 
+    {% block extra_js %}
+    <!-- copy link function -->
+    <script>
 
-<!-- copy link function -->
-<script>
+    /**
+     * copies wrap link to the computer and shows a confirmation message
+     *
+     * @param {string} wrapId - The unique ID of the wrap to copy the link for
+     *
+     * @description Retrieves the wrap URL, copies it to the clipboard, and displays
+     * a confirmation message for 3 seconds. Logs an error and alerts the user if
+     * copying fails.
+     *
+     */
+    function copyLink(wrapId) {
+        const wrapLink = document.getElementById("wrapLink-" + wrapId).value;
 
-/**
- * copies wrap link to the computer and shows a confirmation message
- *
- * @param {string} wrapId - The unique ID of the wrap to copy the link for
- *
- * @description Retrieves the wrap URL, copies it to the clipboard, and displays
- * a confirmation message for 3 seconds. Logs an error and alerts the user if
- * copying fails.
- *
- */
-function copyLink(wrapId) {
-    const wrapLink = document.getElementById("wrapLink-" + wrapId).value;
+        navigator.clipboard.writeText(wrapLink).then(() => {
 
-    navigator.clipboard.writeText(wrapLink).then(() => {
+            const message = document.getElementById("copyMessage-" + wrapId);
+            message.style.display = "block";
 
-        const message = document.getElementById("copyMessage-" + wrapId);
-        message.style.display = "block";
-
-        setTimeout(() => {
-            message.style.display = "none";
-        }, 3000);
-    }).catch((err) => {
-        // Error handling
-        console.error("Failed to copy: ", err);
-        alert("Your browser does not support automatic copying. Please copy manually.");
-    });
-}
-</script>
-
-</body>
-</html>
+            setTimeout(() => {
+                message.style.display = "none";
+            }, 3000);
+        }).catch((err) => {
+            // Error handling
+            console.error("Failed to copy: ", err);
+            alert("Your browser does not support automatic copying. Please copy manually.");
+        });
+    }
+    </script>
+    {% endblock %}

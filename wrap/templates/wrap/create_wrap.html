@@ -1,44 +1,133 @@
+{% extends 'register/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create Wrap</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
+
+{% block title %}Create Wrap{% endblock %}
+
+{% block extra_css %}
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 900px;
+            width: 90%;
+            padding: 20px;
+            background-color: var(--container-bg-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode .container {
+            background-color: var(--container-bg-dark);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            text-align: left;
+            font-weight: bold;
+            color: var(--text-color-light);
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode label {
+            color: var(--text-color-dark);
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        body.dark-mode input[type="text"],
+        body.dark-mode select {
+            background-color: #1E1E1E;
+            color: var(--text-color-dark);
+            border: 1px solid #444;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--primary-color-hover);
+        }
+
+        #username-field {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <h1>Create Your Wrap</h1>
-    <form method="post" action="{% url 'create_wrap' %}">
-        {% csrf_token %}
+        <form method="post" action="{% url 'create_wrap' %}">
+            {% csrf_token %}
 
-        <label for="wrap_name">What will you Wrap be named:</label>
-        <input type="text" name="wrap_name" id="wrap_name" required>
+            <label for="wrap_name">What will you Wrap be named:</label>
+            <input type="text" name="wrap_name" id="wrap_name" required>
 
-        <label for="theme">Will your Wrap have a special theme:</label>
-        <select name="theme" id="theme">
-            <option value="none">None</option>
-            <option value="christmas">Christmas</option>
-            <option value="halloween">Halloween</option>
-            <option value="duo">Duo-Wrap</option>
-        </select>
+            <label for="theme">Will your Wrap have a special theme:</label>
+            <select name="theme" id="theme">
+                <option value="none">None</option>
+                <option value="christmas">Christmas</option>
+                <option value="halloween">Halloween</option>
+                <option value="duo">Duo-Wrap</option>
+            </select>
 
-        <label for="time">How far back will your wrap go:</label>
-        <select name="time" id="time">
-            <option value="small">Small</option>
-            <option value="medium">Medium</option>
-            <option value="large">Large</option>
-        </select>
+            <label for="time">How far back will your wrap go:</label>
+            <select name="time" id="time">
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+            </select>
 
 
-        <div id="username-field" style="display: none; margin-top: 10px;">
-            <label for="username">Enter the username for Duo-Wrap:</label>
-            <input type="text" name="username" id="username">
-        </div>
+            <div id="username-field" style="display: none; margin-top: 10px;">
+                <label for="username">Enter the username for Duo-Wrap:</label>
+                <input type="text" name="username" id="username">
+            </div>
 
-        <button type="submit">Create Wrap</button>
-    </form>
+            <button type="submit">Create Wrap</button>
+        </form>
     </div>
+{% endblock %}
+
+{% block extra_js %}
     <script>
         document.addEventListener('DOMContentLoaded', function (){
             const themeDropdown = document.getElementById('theme');
@@ -54,5 +143,4 @@
         })
 
     </script>
-</body>
-</html>
+{% endblock %}
