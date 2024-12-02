@@ -8,10 +8,9 @@ from django.utils.timezone import now
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    spotify_id = models.CharField(max_length=255, null=True, blank=True)  # Add this field
     access_token = models.TextField()
     refresh_token = models.TextField()
-    token_expires_at = models.DateTimeField()
+    token_expires_at = models.DateTimeField(default=now)
 
     def __str__(self):
         return self.user.username
