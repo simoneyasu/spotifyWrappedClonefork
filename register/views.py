@@ -3,115 +3,115 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.utils.timezone import now
 
-from spotifyWrappedClone.settings import redirect_uri, SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI
-from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from spotifywrappedclone.settings import redirect_uri, spotify_client_id, spotify_redirect_uri
+from .forms import customusercreationform, customauthenticationform
 from django.utils import timezone
 from django.conf import settings
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import UserProfile
+from .models import userprofile
 
-# Create your views here.
+# create your views here.
 
 '''
-Allows users to register for an account
-args: request (HttpRequest): The HTTP request object
-returns: HttpResponse: Renders the registration page or redirects to login
+allows users to register for an account
+args: request (httprequest): the http request object
+returns: httpresponse: renders the registration page or redirects to login
 '''
 def register(request):
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+    if request.method == 'post':
+        form = customusercreationform(request.post)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Your account has been created! You can now log in.')
+            messages.success(request, 'your account has been created! you can now log in.')
             return redirect('login')
         else:
-            # Handle invalid form submission (e.g., email already exists)
-            messages.error(request, 'There was a problem with your registration. Please fix the errors below.')
+            # handle invalid form submission (e.g., email already exists)
+            messages.error(request, 'there was a problem with your registration. please fix the errors below.')
     else:
-        form = CustomUserCreationForm()
+        form = customusercreationform()
 
     return render(request, 'register/register.html', {'form': form})
 
 '''
-Allows users to log into their account
-Args: request (HttpRequest): The HTTP request object
-Returns: HttpResponse: Renders the login page or redirects to home
+allows users to log into their account
+args: request (httprequest): the http request object
+returns: httpresponse: renders the login page or redirects to home
 '''
 def login_view(request):
-    if request.method == 'POST':
-        form = CustomAuthenticationForm(request, data=request.POST)
+    if request.method == 'post':
+        form = customauthenticationform(request, data=request.post)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('home')  # Redirect to a home
+            return redirect('home')  # redirect to a home
     else:
-        form = CustomAuthenticationForm()
+        form = customauthenticationform()
     return render(request, 'register/login.html', {'form': form})
 
 '''
-Allows users to log into their account
-args: request (HttpRequest): The HTTP request object
-returns: HttpResponse: Renders account deletion page or redirects to login
+allows users to log into their account
+args: request (httprequest): the http request object
+returns: httpresponse: renders account deletion page or redirects to login
 '''
 @login_required
 def delete_account(request):
-    if request.method == 'POST':
-        # Delete the user account if the form is submitted
+    if request.method == 'post':
+        # delete the user account if the form is submitted
         user = request.user
         user.delete()
-        messages.success(request, 'Your account has been successfully deleted.')
-        return redirect('login')  # Redirect to login or homepage after deletion
+        messages.success(request, 'your account has been successfully deleted.')
+        return redirect('login')  # redirect to login or homepage after deletion
     return render(request, 'register/delete_account.html')
 
 '''
-Allows users to view their profile. Shows their email and password
-args: request (HttpRequest): The HTTP request object
-returns: HttpResponse: Renders the profile page
+allows users to view their profile. shows their email and password
+args: request (httprequest): the http request object
+returns: httpresponse: renders the profile page
 '''
 @login_required
 def profile(request):
     return render(request, 'register/profile.html', {
-        'user': request.user  # Pass the current user to the template
+        'user': request.user  # pass the current user to the template
     })
 
 '''
-Brings to home page
-args: request (HttpRequest): The HTTP request object
-returns: HttpResponse: Renders the home page
+brings to home page
+args: request (httprequest): the http request object
+returns: httpresponse: renders the home page
 '''
 def home(request):
     return render(request, 'register/home.html')
 
 '''
-gets authorization code for an access token and refreshes token from Spotify
-args: code (str): Authorization code from Spotify
-returns: dict: Token data including access and refresh tokens
+gets authorization code for an access token and refreshes token from spotify
+args: code (str): authorization code from spotify
+returns: dict: token data including access and refresh tokens
 '''
 def get_spotify_token(code):
     url = "https://accounts.spotify.com/api/token"
     data = {
         'grant_type': 'authorization_code',
         'code': code,
-        'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
-        'client_id': settings.SPOTIFY_CLIENT_ID,
-        'client_secret': settings.SPOTIFY_CLIENT_SECRET,
+        'redirect_uri': settings.spotify_redirect_uri,
+        'client_id': settings.spotify_client_id,
+        'client_secret': settings.spotify_client_secret,
     }
     response = requests.post(url, data=data)
     response_data = response.json()
-    print("Access Token Scopes get_token:", response_data.get("scope"))
+    print("access token scopes get_token:", response_data.get("scope"))
 
     return response.json()
 
 '''
-retrieves and stores Spotify tokens in session
-args: request (HttpRequest): The HTTP request object
-returns: HttpResponseRedirect: Redirects to fetch_wrap_data view
+retrieves and stores spotify tokens in session
+args: request (httprequest): the http request object
+returns: httpresponseredirect: redirects to fetch_wrap_data view
 '''
 def spotify_callback(request):
-    code = request.GET.get('code')
+    code = request.get.get('code')
     token_data = get_spotify_token(code)
 
     # access_token& refresh_token store at session
@@ -122,23 +122,23 @@ def spotify_callback(request):
 
 '''
 landing page
-args: request (HttpRequest): The HTTP request object
-returns: HttpResponse: Renders the landing page
+args: request (httprequest): the http request object
+returns: httpresponse: renders the landing page
 '''
 def landing_view(request):
     return render(request, 'register/landing.html')
 
 '''
-allows users to log into their Spotify account
-args: request (HttpRequest): The HTTP request object.
-returns: HttpResponseRedirect: Redirects to Spotify authorization URL.
+allows users to log into their spotify account
+args: request (httprequest): the http request object.
+returns: httpresponseredirect: redirects to spotify authorization url.
 '''
 def spotify_login(request):
-    # Spotify OAuth URL creation
+    # spotify oauth url creation
     spotify_auth_url = (
         f"https://accounts.spotify.com/authorize?response_type=code&"
-        f"client_id={SPOTIFY_CLIENT_ID}&"
-        f"redirect_uri={SPOTIFY_REDIRECT_URI}&"
+        f"client_id={spotify_client_id}&"
+        f"redirect_uri={spotify_redirect_uri}&"
         f"scope="
         "user-library-read user-library-modify user-read-private user-read-email "
         "user-top-read user-read-recently-played user-follow-read user-follow-modify "
@@ -146,66 +146,66 @@ def spotify_login(request):
     )
     return redirect(spotify_auth_url)
 def check_token_scopes(access_token):
-    headers = {'Authorization': f'Bearer {access_token}'}
+    headers = {'authorization': f'bearer {access_token}'}
     response = requests.get('https://api.spotify.com/v1/me', headers=headers)
     response_data = response.json()
     print(response_data)
     if response.status_code == 200:
-        print("Token is valid")
-        print("Scopes:", response.json().get('scope'))
+        print("token is valid")
+        print("scopes:", response.json().get('scope'))
     else:
-        print("Invalid token or missing scopes")
+        print("invalid token or missing scopes")
 '''
-uses Spotify API to get data
-args: request (HttpRequest): The HTTP request object.
-returns: HttpResponseRedirect: Redirects to view_wraps page.
+uses spotify api to get data
+args: request (httprequest): the http request object.
+returns: httpresponseredirect: redirects to view_wraps page.
 '''
 @login_required
 def fetch_wrap_data(request):
     access_token = request.session.get('access_token')
     if not access_token:
-        return redirect('spotify_login')  # Redirect to login if no access token
+        return redirect('spotify_login')  # redirect to login if no access token
 
     headers = {
-        'Authorization': f'Bearer {access_token}'
+        'authorization': f'bearer {access_token}'
     }
 
-    # Get user profile data from Spotify API
+    # get user profile data from spotify api
     profile_response = requests.get('https://api.spotify.com/v1/me', headers=headers)
     if profile_response.status_code != 200:
-        return redirect('spotify_login')  # Redirect to login if profile fetch fails
+        return redirect('spotify_login')  # redirect to login if profile fetch fails
 
     profile_data = profile_response.json()
-    spotify_id = profile_data.get('id')  # Get the Spotify user ID
+    spotify_id = profile_data.get('id')  # get the spotify user id
 
-    # Check if UserProfile exists, otherwise create it
-    if not UserProfile.objects.filter(user=request.user).exists():
-        UserProfile.objects.create(
+    # check if userprofile exists, otherwise create it
+    if not userprofile.objects.filter(user=request.user).exists():
+        userprofile.objects.create(
             user=request.user,
-            spotify_id=spotify_id,  # Set the Spotify user ID
+            spotify_id=spotify_id,  # set the spotify user id
             access_token=access_token,
             refresh_token=request.session.get('refresh_token'),
             token_expires_at=now() + timedelta(hours=1)
         )
 
-    # Request wrap data using Spotify API
+    # request wrap data using spotify api
     response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers)
     if response.status_code != 200:
-        return redirect('spotify_login')  # Redirect to login if wrap fetch fails
+        return redirect('spotify_login')  # redirect to login if wrap fetch fails
 
     wrap_data = response.json()
 
-    # Store wrap data in session
+    # store wrap data in session
     request.session['wrap_data'] = wrap_data
 
-    # Redirect to screen that shows wrap data
+    # redirect to screen that shows wrap data
     return redirect('view_wraps')
 
 
 
 '''
-Refreshes the Spotify access token if expired.
-args: user_profile (UserProfile): The user's profile containing tokens.
+refreshes the spotify access token if expired.
+args: user_profile (userprofile): the user's profile containing tokens.
 '''
 def refresh_spotify_token(user_profile):
     if timezone.now() > user_profile.token_expires_at:
@@ -213,8 +213,8 @@ def refresh_spotify_token(user_profile):
         data = {
             'grant_type': 'refresh_token',
             'refresh_token': user_profile.refresh_token,
-            'client_id': settings.SPOTIFY_CLIENT_ID,
-            'client_secret': settings.SPOTIFY_CLIENT_SECRET,
+            'client_id': settings.spotify_client_id,
+            'client_secret': settings.spotify_client_secret,
         }
         response = requests.post(url, data=data)
         token_data = response.json()
