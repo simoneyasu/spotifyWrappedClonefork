@@ -5,15 +5,25 @@
 
 {% block extra_css %}
     <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
         .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             max-width: 400px;
-            margin: 40px auto;
+            width: 90%;
             padding: 20px;
             background-color: var(--container-bg-light);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease, color 0.3s ease;
             text-align: center;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         body.dark-mode .container {
