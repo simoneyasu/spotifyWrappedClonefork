@@ -163,32 +163,44 @@ returns: HttpResponseRedirect: Redirects to view_wraps page.
 @login_required
 def fetch_wrap_data(request):
     access_token = request.session.get('access_token')
-    if not UserProfile.objects.filter(user = request.user).exists():
-        UserProfile.objects.create(
-            user=request.user,
-            access_token= request.session.get('access_token'),
-            refresh_token= request.session.get('refresh_token'),
-            token_expires_at= now() + timedelta(hours=1)
-        )
     if not access_token:
-        return redirect('spotify_login') # access_token(X) -> login
+        return redirect('spotify_login')  # Redirect to login if no access token
 
     headers = {
         'Authorization': f'Bearer {access_token}'
     }
 
-    # request wrap1 data using spotify api
-    response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers)
+    # Get user profile data from Spotify API
+    profile_response = requests.get('https://api.spotify.com/v1/me', headers=headers)
+    if profile_response.status_code != 200:
+        return redirect('spotify_login')  # Redirect to login if profile fetch fails
 
+    profile_data = profile_response.json()
+    spotify_id = profile_data.get('id')  # Get the Spotify user ID
+
+    # Check if UserProfile exists, otherwise create it
+    if not UserProfile.objects.filter(user=request.user).exists():
+        UserProfile.objects.create(
+            user=request.user,
+            spotify_id=spotify_id,  # Set the Spotify user ID
+            access_token=access_token,
+            refresh_token=request.session.get('refresh_token'),
+            token_expires_at=now() + timedelta(hours=1)
+        )
+
+    # Request wrap data using Spotify API
+    response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers)
+    if response.status_code != 200:
+        return redirect('spotify_login')  # Redirect to login if wrap fetch fails
 
     wrap_data = response.json()
 
-
-    # store wrap1 data into session storage
+    # Store wrap data in session
     request.session['wrap_data'] = wrap_data
 
-    # redirect to screen that shows wrap1 data
+    # Redirect to screen that shows wrap data
     return redirect('view_wraps')
+
 
 
 '''
