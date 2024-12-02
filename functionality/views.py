@@ -22,7 +22,7 @@ returns: dict: Dictionary containing top tracks, artists, genres, and total minu
 '''
 
 
-def get_User_Data(access_token, user_profile, time_range='long_term'):
+def get_User_Data(access_token, user_profile, time_range):
     headers = {
         'Authorization': f'Bearer {access_token}',
         'Content-Type': 'application/json'
